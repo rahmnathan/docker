@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  vpn:
+    image: vpn 
+    cap_add:
+      - net_admin
+    devices:
+     - "/dev/net/tun"
+    dns:
+     - "10.4.0.1"
+     - "10.5.0.1"
+  deluge:
+    image: deluge
+    network_mode: "service:vpn"
+    depends_on:
+     - vpn
+    volumes:
+     - "/home/nathan/Downloads:/root/Downloads"
+  nginx:
+   image: nginx
+   ports:
+     - "58846:58846"
+   links:
+     - vpn:deluge  

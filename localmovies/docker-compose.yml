@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  localmovies:
+    image: localmovies
+    ports:
+     - "8443:8443"
+    volumes:
+     - /home/nathan/LocalMedia/:/home/nathan/LocalMedia/
+  keycloak:
+    image: keycloak
+    ports:
+     - "8445:8445"
+  postgres:
+    image: postgres
+  webapp:
+    image: webapp
+    ports:
+     - "8452:8452"   
