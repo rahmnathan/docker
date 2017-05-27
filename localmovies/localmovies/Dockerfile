@@ -3,7 +3,8 @@ FROM openjdk:8-alpine
 MAINTAINER nathan
 
 ADD localmovies.jar localmovies.jar
-ADD keystore.jks keystore.jks
 ADD application.properties application.properties
-EXPOSE 5432
+ADD ssl-gen.sh /ssl-gen.sh
+RUN /ssl-gen.sh
+
 ENTRYPOINT java -jar localmovies.jar

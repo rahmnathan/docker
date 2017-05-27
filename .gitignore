@@ -2,8 +2,6 @@
 *.war
 *.jar
 *.tar.gz
-*.xml
-*.jks
 *.sql
-adapters
-export.json
+*.pem
+localmovies-realm.json
