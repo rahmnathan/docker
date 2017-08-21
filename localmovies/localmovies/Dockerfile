@@ -5,7 +5,7 @@ MAINTAINER nathan
 ADD ssl-gen.sh /ssl-gen.sh
 RUN /ssl-gen.sh
 RUN apt update && \
-    apt -y install handbrake-cli && \
+    apt -y install ffmpeg && \
     apt clean
 ADD localmovies.jar localmovies.jar
 ADD application.properties application.properties
