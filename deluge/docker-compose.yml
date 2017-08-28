@@ -21,5 +21,6 @@ services:
    image: nginx
    ports:
      - "58846:58846"
+     - "8112:8112"
    links:
      - vpn:deluge  

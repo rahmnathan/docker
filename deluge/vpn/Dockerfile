@@ -11,4 +11,4 @@ RUN apt-get update &&\
 
 ADD vpn-entry.sh /vpn-entry.sh
 
-ENTRYPOINT /vpn-entry.sh
+ENTRYPOINT /vpn-entry.sh -s

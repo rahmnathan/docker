@@ -3,7 +3,7 @@ FROM debian:jessie-slim
 MAINTAINER nathan
 
 RUN apt-get update &&\
-    apt-get install -y deluged deluge-console &&\
+    apt-get install -y deluged deluge-console deluge-web &&\
     deluged &&\
     pkill deluged
 
