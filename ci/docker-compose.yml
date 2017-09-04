@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:latest
+    volumes:
+     - /home/nathan/docker/ci/artifactory:/var/opt/jfrog/artifactory
+    ports:
+      - "8081:8081"
+  jenkins:
+    image: jenkins
+    ports:
+      - "8082:8080"
+    volumes:
+     - jenkins_home:/var/jenkins_home
+volumes:
+  jenkins_home:
