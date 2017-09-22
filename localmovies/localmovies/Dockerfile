@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM openjdk:9-jre-slim
 
 MAINTAINER nathan
 
@@ -11,4 +11,4 @@ ADD localmovies.jar localmovies.jar
 ADD application.properties application.properties
 
 EXPOSE 5432
-ENTRYPOINT java -Xms64m -Xmx3G -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=3G -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -jar localmovies.jar
+ENTRYPOINT java --add-modules java.xml.bind -Xms64m -Xmx3G -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=3G -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -jar localmovies.jar
