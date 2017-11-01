@@ -1,4 +1,4 @@
-curl -i -X POST --url http://localhost:8001/apis/ --data "uris=/movie-api/v1" --data "strip_uri=false" --data 'name=movie-api' --data 'preserve_host=true' --data 'upstream_url=https://localmovies:8444/' --data "https_only=true"
+curl -i -X POST --url http://localhost:8001/apis/ --data "uris=/movie-api" --data "strip_uri=false" --data 'name=movie-api' --data 'preserve_host=true' --data 'upstream_url=https://localmovies:8444/' --data "https_only=true"
 
 curl -i -X POST --url http://localhost:8001/apis/ --data "uris=/auth/realms/LocalMovies" --data "strip_uri=false" --data 'name=keycloak-localmovies-realm' --data 'preserve_host=true' --data 'upstream_url=https://keycloak:8446/' --data "https_only=true"
 
