@@ -10,4 +10,6 @@ RUN wget https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip &&
 
 ENV ANDROID_HOME /etc/android-sdk/tools
 
-RUN yes | $ANDROID_HOME/bin/sdkmanager --licenses
+# Add license files from your local installation
+ADD android-sdk-preview-license $ANDROID_HOME/licenses/android-sdk-preview-license
+ADD android-sdk-license $ANDROID_HOME/licenses/android-sdk-license
