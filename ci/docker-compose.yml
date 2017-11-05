@@ -13,5 +13,6 @@ services:
       - "8082:8080"
     volumes:
      - jenkins_home:/var/jenkins_home
+     - /home/nathan/docker/ci/jenkins/tools:/etc/android-sdk
 volumes:
   jenkins_home:
