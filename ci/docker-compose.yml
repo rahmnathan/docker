@@ -14,5 +14,6 @@ services:
     volumes:
      - jenkins_home:/var/jenkins_home
      - /home/nathan/docker/ci/jenkins/tools:/etc/android-sdk
+     - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   jenkins_home:
