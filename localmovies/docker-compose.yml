@@ -2,8 +2,9 @@ version: '3'
 
 services:
   localmovies:
-    image: localmovies
+    image: 192.168.1.8:5000/localmovies-server:latest
     volumes:
+     - /opt/localmovies/config:/opt/localmovies/config
      - /media/nathan/LocalMedia/:/home/nathan/LocalMedia/
      - /mnt/storage/LocalMedia/:/mnt/storage/LocalMedia/
     extra_hosts:
