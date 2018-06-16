@@ -6,14 +6,14 @@ metadata:
   creationTimestamp: null
   generation: 1
   labels:
-    app: kong
-  name: kong
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/kong
+    app: localmovies-webapp
+  name: localmovies-webapp
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/localmovies-webapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kong
+      app: localmovies-webapp
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,16 +23,12 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: kong
+        app: localmovies-webapp
     spec:
-      hostAliases:
-      - ip: "192.168.1.8"
-        hostnames:
-        - "postgres"
       containers:
-      - image: 192.168.1.8:5000/kong
+      - image: {{.Values.localmovies.imageRepository}}/localmovies-webapp:latest
         imagePullPolicy: Always
-        name: kong
+        name: localmovies-webapp
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

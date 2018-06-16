@@ -6,14 +6,14 @@ metadata:
   creationTimestamp: null
   generation: 1
   labels:
-    app: localmovies-keycloak
-  name: localmovies-keycloak
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/localmovies-keycloak
+    app: kong
+  name: kong
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/kong
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: localmovies-keycloak
+      app: kong
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,12 +23,16 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: localmovies-keycloak
+        app: kong
     spec:
+      hostAliases:
+      - ip: {{.Values.localmovies.postgresIp}}
+        hostnames:
+        - "postgres"
       containers:
-      - image: 192.168.1.8:5000/keycloak
+      - image: {{.Values.localmovies.imageRepository}}/localmovies-kong
         imagePullPolicy: Always
-        name: localmovies-keycloak
+        name: kong
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

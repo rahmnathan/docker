@@ -8,7 +8,7 @@ spec:
     app: localmovies
   ports:  
   - name: https
-    port: 8443
-    targetPort: 8443
+    port: 8444
+    targetPort: 8444
     nodePort: 30036
     protocol: TCP

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: localmovies
+ namespace: default
+data:
+ bootstrap.properties: |
+  vault.pki.enabled: true
+  vault.pki.commonName: localmovies
+  vault.pki.role: localmovies
+  spring.application.name: server
+  spring.cloud.vault.enabled: true
+  spring.cloud.vault.host: 192.168.1.8
+  spring.cloud.vault.port: 8200
+  spring.cloud.vault.scheme: https
+  spring.cloud.vault.authentication: TOKEN
+  spring.cloud.vault.generic.backend: localmovies
+  spring.cloud.vault.token: <vault-token>
