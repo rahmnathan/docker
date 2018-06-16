@@ -6,14 +6,14 @@ metadata:
   creationTimestamp: null
   generation: 1
   labels:
-    app: localmovies-keycloak
-  name: localmovies-keycloak
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/localmovies-keycloak
+    app: keycloak
+  name: keycloak
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/keycloak
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: localmovies-keycloak
+      app: keycloak
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -23,12 +23,12 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: localmovies-keycloak
+        app: keycloak
     spec:
       containers:
       - image: {{.Values.localmovies.imageRepository}}/keycloak
         imagePullPolicy: Always
-        name: localmovies-keycloak
+        name: keycloak
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File

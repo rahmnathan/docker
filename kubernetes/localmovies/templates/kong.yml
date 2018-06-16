@@ -36,9 +36,6 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
-      dnsConfig:
-        nameservers:
-         - 8.8.8.8
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

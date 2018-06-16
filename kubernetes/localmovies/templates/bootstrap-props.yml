@@ -11,8 +11,8 @@ data:
   spring.application.name: server
   spring.cloud.vault.enabled: true
   spring.cloud.vault.host: 192.168.1.8
-  spring.cloud.vault.port: 8200
+  spring.cloud.vault.port: 30033
   spring.cloud.vault.scheme: https
   spring.cloud.vault.authentication: TOKEN
   spring.cloud.vault.generic.backend: localmovies
-  spring.cloud.vault.token: <vault-token>
+  spring.cloud.vault.token: b958f88e-47c0-3296-7169-0a59a618ae50

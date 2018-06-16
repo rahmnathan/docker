@@ -12,3 +12,8 @@ spec:
     targetPort: 443
     nodePort: 30039
     protocol: TCP
+  - name: admin
+    port: 8001
+    targetPort: 8001
+    nodePort: 30030
+    protocol: TCP

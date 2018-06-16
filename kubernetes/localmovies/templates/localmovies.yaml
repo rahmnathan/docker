@@ -28,7 +28,7 @@ spec:
       containers:
       - image: {{.Values.localmovies.imageRepository}}/localmovies-server:latest
         imagePullPolicy: Always
-        name: localmovies-server
+        name: localmovies
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
