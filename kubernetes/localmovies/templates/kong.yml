@@ -25,10 +25,6 @@ spec:
       labels:
         app: kong
     spec:
-      hostAliases:
-      - ip: {{.Values.localmovies.postgresIp}}
-        hostnames:
-        - "postgres"
       containers:
       - image: {{.Values.localmovies.imageRepository}}/localmovies-kong
         imagePullPolicy: Always

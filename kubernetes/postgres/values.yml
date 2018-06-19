@@ -1,0 +1,5 @@
+postgresUser: "localmovies"
+postgresPassword: "pw123"
+postgresDatabase: "localmovies"
+persistence:
+  existingClaim: "persistent-claim"

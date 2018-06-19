@@ -36,7 +36,7 @@ spec:
         - name: application-config 
           mountPath: /opt/localmovies/config
           readOnly: true
-        - name: series
+        - name: videos
           mountPath: /opt/localmovies/data
           readOnly: true
       dnsConfig:
@@ -49,9 +49,9 @@ spec:
           items:
           - key: bootstrap.properties
             path: bootstrap.properties
-      - name: series
+      - name: videos
         hostPath:
-          path: /media/nathan/server-data
+          path: /media/nathan/localmovies-data
           type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always

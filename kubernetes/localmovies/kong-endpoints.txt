@@ -1,7 +1,7 @@
-curl -i -X PATCH --url http://localhost:30030/apis/movie-api --data "uris=/movie-api" --data "strip_uri=false" --data 'name=movie-api' --data 'preserve_host=true' --data 'upstream_url=https://localmovies.default:8444/' --data "https_only=true"
+curl -i -X POST --url http://localhost:30030/apis --data "uris=/movie-api" --data "strip_uri=false" --data 'name=movie-api' --data 'preserve_host=true' --data 'upstream_url=https://localmovies.default:8444/' --data "https_only=true"
 
-curl -i -X PATCH --url http://localhost:30030/apis/keycloak-localmovies-realm --data "uris=/auth/realms/LocalMovies" --data "strip_uri=false" --data 'name=keycloak-localmovies-realm' --data 'preserve_host=true' --data 'upstream_url=https://keycloak.default:8446/' --data "https_only=true"
+curl -i -X POST --url http://localhost:30030/apis --data "uris=/auth/realms/LocalMovies" --data "strip_uri=false" --data 'name=keycloak-localmovies-realm' --data 'preserve_host=true' --data 'upstream_url=https://keycloak.default:8446/' --data "https_only=true"
 
-curl -i -X PATCH --url http://localhost:30030/apis/keycloak-ui-resources --data "uris=/auth/resources" --data "strip_uri=false" --data 'name=keycloak-ui-resources' --data 'preserve_host=true' --data 'upstream_url=https://keycloak.default:8446/' --data "https_only=true"
+curl -i -X POST --url http://localhost:30030/apis --data "uris=/auth/resources" --data "strip_uri=false" --data 'name=keycloak-ui-resources' --data 'preserve_host=true' --data 'upstream_url=https://keycloak.default:8446/' --data "https_only=true"
 
-curl -i -X PATCH --url http://localhost:30030/apis/movie-ui --data "uris=/" --data "strip_uri=false" --data 'name=movie-ui' --data 'preserve_host=true' --data 'upstream_url=https://localmovies-webapp.default:8443/' --data "https_only=true"
+curl -i -X POST --url http://localhost:30030/apis --data "uris=/" --data "strip_uri=false" --data 'name=movie-ui' --data 'preserve_host=true' --data 'upstream_url=https://localmovies-webapp.default:8443/' --data "https_only=true"
