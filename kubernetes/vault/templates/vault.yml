@@ -3,12 +3,9 @@ kind: Deployment
 metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
-  creationTimestamp: null
-  generation: 1
   labels:
     app: vault
   name: vault
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/vault
 spec:
   replicas: 1
   selector:
@@ -21,7 +18,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: vault
     spec:
@@ -53,5 +49,3 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
-status: {}
-
