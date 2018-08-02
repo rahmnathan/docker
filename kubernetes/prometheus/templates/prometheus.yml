@@ -29,19 +29,26 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-        - name: prometheus-data
+        - name: prometheus-config
           mountPath: /etc/prometheus
+          readOnly: false
+        - name: prometheus-data
+          mountPath: /prometheus
           readOnly: false
       dnsConfig:
         nameservers:
          - 8.8.8.8
       volumes:
-       - name: prometheus-data
+       - name: prometheus-config
          configMap:
           name: prometheus
           items:
           - key: prometheus-config.yml
             path: prometheus.yml
+       - name: prometheus-data
+         hostPath:
+           path: /opt/prometheus
+           type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
