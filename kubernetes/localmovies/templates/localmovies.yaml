@@ -38,7 +38,7 @@ spec:
           readOnly: true
         - name: videos
           mountPath: /opt/localmovies/data
-          readOnly: true
+          readOnly: false
       dnsConfig:
         nameservers:
          - 8.8.8.8
