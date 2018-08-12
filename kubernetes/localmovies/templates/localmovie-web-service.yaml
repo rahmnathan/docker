@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:  
-  name: localmovies
+  name: localmovie-web
 spec:
   type: ClusterIP
   selector:
-    app: localmovies
+    app: localmovie-web
   ports:  
   - name: https
-    port: 8444
-    targetPort: 8444
+    port: 8450
+    targetPort: 8450

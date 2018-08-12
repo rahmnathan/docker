@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: localmovie-media-manger
+spec:
+  type: ClusterIP
+  selector:
+    app: localmovie-media-manager
+  ports:  
+  - name: https
+    port: 8449
+    targetPort: 8449

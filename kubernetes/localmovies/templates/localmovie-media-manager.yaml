@@ -4,13 +4,13 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: localmovies
-  name: localmovies
+    app: localmovie-media-manager
+  name: localmovie-media-manager
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: localmovies
+      app: localmovie-media-manager
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,21 +19,21 @@ spec:
   template:
     metadata:
       labels:
-        app: localmovies
+        app: localmovie-media-manager
     spec:
       containers:
-      - image: {{.Values.localmovies.imageRepository}}/localmovies-server:latest
+      - image: {{.Values.localmovies.imageRepository}}/localmovie-media-manager:latest
         imagePullPolicy: Always
-        name: localmovies
+        name: localmovie-media-manager
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
         - name: application-config 
-          mountPath: /opt/localmovies/config
+          mountPath: /opt/localmovie/config
           readOnly: true
         - name: videos
-          mountPath: /opt/localmovies/data
+          mountPath: /opt/localmovie/data
           readOnly: false
       dnsConfig:
         nameservers:
@@ -41,7 +41,7 @@ spec:
       volumes:
       - name: application-config
         configMap:
-          name: localmovies
+          name: localmovie-media-manager
           items:
           - key: bootstrap.properties
             path: bootstrap.properties
