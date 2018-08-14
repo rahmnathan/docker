@@ -5,7 +5,7 @@ metadata:
  namespace: default
 data:
  bootstrap.properties: |
-  vault.pki.enabled: true
+  vault.pki.enabled: false
   vault.pki.commonName: localmovie-media-manager
   vault.pki.role: localmovies
   spring.application.name: localmovie-media-manager
@@ -15,4 +15,4 @@ data:
   spring.cloud.vault.scheme: https
   spring.cloud.vault.authentication: TOKEN
   spring.cloud.vault.generic.backend: localmovies
-  spring.cloud.vault.token: 6ea348ca-79f1-a91b-66e1-8e8cc9b7d5e5
+  spring.cloud.vault.token: vault-token
