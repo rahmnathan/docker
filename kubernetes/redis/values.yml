@@ -1,3 +1,5 @@
 usePassword: false
-persistence:
-  existingClaim: persistent-data-claim
+master:
+  disableCommands: ""
+  persistence:
+    enabled: false
