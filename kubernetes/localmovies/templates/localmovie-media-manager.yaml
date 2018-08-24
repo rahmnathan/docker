@@ -35,6 +35,9 @@ spec:
         - name: videos
           mountPath: /opt/localmovie/data
           readOnly: false
+        - name: secrets
+          mountPath: /opt/localmovie/secrets
+          readOnly: true
       dnsConfig:
         nameservers:
          - 8.8.8.8
@@ -45,6 +48,12 @@ spec:
           items:
           - key: bootstrap.properties
             path: bootstrap.properties
+      - name: secrets
+        secret:
+          secretName: localmovie-firebase-key
+          items:
+            - key: api-9073148299832435984-82417-firebase-adminsdk-2c2il-d32c007afd.json
+              path: localmovie-firebase-key.json
       - name: videos
         hostPath:
           path: /media/nathan/localmovies-data
