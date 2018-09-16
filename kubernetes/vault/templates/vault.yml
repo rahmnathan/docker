@@ -42,7 +42,7 @@ spec:
       volumes:
       - name: config
         hostPath:
-          path: /opt/vault/config
+          path: /mnt/data/hashicorp-vault/config
           type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always

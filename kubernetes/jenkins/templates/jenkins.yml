@@ -48,11 +48,11 @@ spec:
       volumes:
       - name: jenkins-home
         hostPath:
-          path: /home/nathan/docker/ci/jenkins/jenkins_home
+          path: /mnt/data/jenkins_home
           type: Directory
       - name: android-sdk
         hostPath:
-          path: /home/nathan/docker/ci/jenkins/android_home
+          path: /mnt/data/android_home
           type: Directory
       - name: docker
         hostPath:
