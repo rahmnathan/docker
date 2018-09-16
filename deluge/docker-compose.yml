@@ -7,9 +7,8 @@ services:
       - net_admin
     devices:
      - "/dev/net/tun"
-    dns:
-     - "10.4.0.1"
-     - "10.5.0.1"
+    volumes:
+    - /home/nathan/docker/deluge/vpn/resolv.conf:/etc/resolv.conf
   deluge:
     image: deluge
     network_mode: "service:vpn"
