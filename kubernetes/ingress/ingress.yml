@@ -17,8 +17,8 @@ spec:
       paths:
        - path: /localmovies
          backend:
-          serviceName: localmovies
-          servicePort: 8444
+          serviceName: localmovie-web
+          servicePort: 8450
        - path: /auth/realms/LocalMovies
          backend:
            serviceName: keycloak

@@ -50,10 +50,8 @@ spec:
             path: bootstrap.properties
       - name: secrets
         secret:
+# Create this secret via: kubectl create secret generic localmovie-firebase-key --from-file=localmovie-firebase-key.json
           secretName: localmovie-firebase-key
-          items:
-            - key: api-9073148299832435984-82417-firebase-adminsdk-2c2il-d32c007afd.json
-              path: localmovie-firebase-key.json
       - name: videos
         hostPath:
           path: /media/nathan/localmovies-data
