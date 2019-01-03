@@ -12,8 +12,6 @@ data:
    - job_name: 'localmovie-media-manager'
      scheme: http
      metrics_path: '/actuator/prometheus'
-     tls_config:
-       insecure_skip_verify: true
      static_configs:
       - targets: ['localmovie-media-manager:8449']
    - job_name: 'localmovie-web'
