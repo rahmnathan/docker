@@ -1,25 +1,28 @@
 version: '3'
 
 services:
-  vpn:
-    image: vpn 
+  airvpn:
+    image: airvpn
     cap_add:
       - net_admin
     devices:
-     - "/dev/net/tun"
+      - "/dev/net/tun"
+    environment:
+      USERNAME: username
+      PASSWORD: password
     volumes:
-    - /home/nathan/docker/deluge/vpn/resolv.conf:/etc/resolv.conf
+      - "/home/nathan/docker/deluge/vpn/resolv.conf:/etc/resolv.conf"
   deluge:
     image: deluge
-    network_mode: "service:vpn"
+    network_mode: "service:airvpn"
     depends_on:
-     - vpn
+      - airvpn
     volumes:
-     - "/home/nathan/Downloads:/root/Downloads"
+      - "/home/nathan/Downloads:/root/Downloads"
   nginx:
-   image: nginx
-   ports:
-     - "58846:58846"
-     - "8112:8112"
-   links:
-     - vpn:deluge  
+    image: nginx
+    ports:
+      - "58846:58846"
+      - "8112:8112"
+    links:
+      - airvpn:deluge
