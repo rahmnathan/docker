@@ -7,6 +7,6 @@ spec:
   selector:
     app: localmovie-web
   ports:  
-  - name: https
-    port: 8450
-    targetPort: 8450
+  - name: http
+    port: 8080
+    targetPort: 8080

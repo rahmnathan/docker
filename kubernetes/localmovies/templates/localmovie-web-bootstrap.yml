@@ -5,7 +5,7 @@ metadata:
  namespace: default
 data:
  bootstrap.properties: |
-  vault.pki.enabled: true
+  vault.pki.enabled: false
   vault.pki.commonName: localmovie-web
   vault.pki.role: localmovies
   spring.application.name: localmovie-web

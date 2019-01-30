@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -22,15 +22,33 @@ spec:
         app: keycloak
     spec:
       containers:
-      - image: {{.Values.localmovies.imageRepository}}/keycloak
+      - image: jboss/keycloak
         imagePullPolicy: Always
         name: keycloak
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+          - name: localmovies-realm
+            mountPath: /tmp
+            readOnly: false
+        env:
+        - name: KEYCLOAK_USER
+          value: "admin"
+        - name: KEYCLOAK_PASSWORD
+          value: "pw123"
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: KEYCLOAK_IMPORT
+          value: /tmp/localmovies-realm.json
       dnsConfig:
         nameservers:
          - 8.8.8.8
+      volumes:
+        - name: localmovies-realm
+          hostPath:
+            path: /home/nathan/docker/image-build-files/localmovies/keycloak/realm
+            type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

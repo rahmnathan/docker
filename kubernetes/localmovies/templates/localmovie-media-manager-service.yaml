@@ -7,6 +7,6 @@ spec:
   selector:
     app: localmovie-media-manager
   ports:  
-  - name: https
-    port: 8449
-    targetPort: 8449
+  - name: http
+    port: 8080
+    targetPort: 8080

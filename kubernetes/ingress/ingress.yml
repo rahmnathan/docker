@@ -5,7 +5,6 @@ kind: Ingress
 metadata:
   name: localmovies-ingress
   annotations:
-      nginx.ingress.kubernetes.io/secure-backends: "true"
       kubernetes.io/tls-acme: 'true'
       ingress.kubernetes.io/ssl-redirect: "true"
       certmanager.k8s.io/issuer: letsencrypt-prod
@@ -15,22 +14,18 @@ spec:
   - host: localmovies.hopto.org
     http:
       paths:
-       - path: /localmovies
+       - path: /
          backend:
           serviceName: localmovie-web
-          servicePort: 8450
+          servicePort: 8080
        - path: /auth/realms/LocalMovies
          backend:
            serviceName: keycloak
-           servicePort: 8446
+           servicePort: 8080
        - path: /auth/resources
          backend:
            serviceName: keycloak
-           servicePort: 8446
-       - path: /
-         backend:
-           serviceName: localmovies-webapp
-           servicePort: 8443
+           servicePort: 8080
   tls:
   - hosts:
     - "localmovies.hopto.org"
