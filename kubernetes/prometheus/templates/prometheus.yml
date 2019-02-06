@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
@@ -38,6 +38,10 @@ spec:
       dnsConfig:
         nameservers:
          - 8.8.8.8
+      hostAliases:
+      - ip: "10.32.0.85"
+        hostnames:
+        - "localmovie-media-manager"
       volumes:
        - name: prometheus-config
          configMap:
