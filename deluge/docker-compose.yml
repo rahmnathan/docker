@@ -2,21 +2,31 @@ version: '3'
 
 services:
   airvpn:
-    image: rahmnathan/airvpn:latest
+    image: dperson/openvpn-client
     cap_add:
       - net_admin
-    devices:
-      - "/dev/net/tun"
     environment:
-      USERNAME: username
-      PASSWORD: password
+      TZ: 'America/Chicago'
+    networks:
+      - default
+    read_only: true
+    tmpfs:
+      - /run
+      - /tmp
+    restart: unless-stopped
+    security_opt:
+      - label:disable
+    stdin_open: true
+    tty: true
     volumes:
-      - "/home/nathan/docker/deluge/vpn/resolv.conf:/etc/resolv.conf"
+      - /dev/net:/dev/net:z
+      - /home/nathan/docker/deluge/vpn:/vpn:z
+    dns:
+      - 1.1.1.1
+    command: -f ''
   deluge:
     image: rahmnathan/deluge:latest
     network_mode: "service:airvpn"
-    depends_on:
-      - airvpn
     volumes:
       - "/home/nathan/Downloads:/root/Downloads"
   nginx:
