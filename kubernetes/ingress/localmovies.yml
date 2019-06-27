@@ -1,6 +1,6 @@
 # Using this together with nginx-ingress installed as described here - https://kubernetes.github.io/ingress-nginx/deploy/#generic-deployment
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: localmovies-ingress

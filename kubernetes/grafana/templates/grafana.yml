@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - image: grafana/grafana
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: grafana
         resources: {}
         terminationMessagePath: /dev/termination-log
@@ -32,6 +32,13 @@ spec:
         - name: grafana-data
           mountPath: /var/lib/grafana
           readOnly: false
+        env:
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+          value: Viewer
+        - name: GF_AUTH_ANONYMOUS_ORG_NAME
+          value: Main Org.
       dnsConfig:
         nameservers:
          - 8.8.8.8

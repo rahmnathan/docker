@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    certmanager.k8s.io/issuer: letsencrypt-prod
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  name: portfolio-ingress
+spec:
+  rules:
+    - host: nathanrahm.com
+      http:
+        paths:
+          - backend:
+              serviceName: rahmnathan-portfolio
+              servicePort: 8080
+            path: /
+  tls:
+    - hosts:
+        - nathanrahm.com
+      secretName: rahmnathan-portfolio-tls
