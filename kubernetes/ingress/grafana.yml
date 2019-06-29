@@ -6,7 +6,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-  name: localmovies-grafana-ingress
+  name: grafana-ingress
 spec:
   rules:
     - host: localmovies-grafana.hopto.org
@@ -16,7 +16,15 @@ spec:
               serviceName: grafana
               servicePort: 3000
             path: /
+    - host: nathanrahm-grafana.ddns.net
+      http:
+        paths:
+          - backend:
+              serviceName: grafana
+              servicePort: 3000
+            path: /
   tls:
     - hosts:
         - localmovies-grafana.hopto.org
-      secretName: localmovies-grafana
+        - nathanrahm-grafana.ddns.net
+      secretName: grafana
