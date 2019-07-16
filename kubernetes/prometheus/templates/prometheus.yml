@@ -39,7 +39,7 @@ spec:
         nameservers:
          - 8.8.8.8
       hostAliases:
-      - ip: "10.32.0.85"
+      - ip: "10.100.62.216"
         hostnames:
         - "localmovie-media-manager"
       volumes:
