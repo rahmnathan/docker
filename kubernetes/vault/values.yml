@@ -1,5 +1,38 @@
 vault:
   config:
+    listener:
+      tcp:
+        tls_disable: true
     storage:
       postgresql:
         connection_url: "postgres://vault:pw123@postgres-postgresql.postgres.svc.cluster.local:5432/vault?sslmode=disable"
+  externalConfig:
+    policies:
+      - name: localmovies
+        rules: path "localmovies/*" {
+          capabilities = ["create", "read", "update", "delete", "list"]
+          }
+    auth:
+      - type: kubernetes
+        roles:
+          - name: localmovies
+            bound_service_account_names: localmovies
+            bound_service_account_namespaces: localmovies
+            policies: localmovies
+            ttl: 1h
+    secrets:
+      - path: localmovies
+        type: kv
+        description: LocalMovies
+        options:
+          version: 2
+
+unsealer:
+  args: [
+    "--mode",
+    "k8s",
+    "--k8s-secret-namespace",
+    "vault",
+    "--k8s-secret-name",
+    "bank-vaults"
+  ]
