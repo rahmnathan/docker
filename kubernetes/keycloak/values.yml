@@ -1,0 +1,37 @@
+keycloak:
+  ingress:
+    enabled: true
+    path: /auth/realms/LocalMovies
+    annotations:
+      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+      nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+      nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+
+    hosts:
+      - localmovies.hopto.org
+
+    tls:
+      - hosts:
+          - localmovies.hopto.org
+        secretName: keycloak-tls
+
+  persistence:
+    dbVendor: postgres
+
+    dbName: keycloak
+    dbHost: postgres-postgresql.postgres.svc.cluster.local
+    dbPort: 5432
+    dbUser: keycloak
+
+    # Only used if no existing secret is specified. In this case a new secret is created
+    dbPassword: "pw123"
+  livenessProbe:
+    initialDelaySeconds: 1200
+    timeoutSeconds: 5
+  readinessProbe:
+    initialDelaySeconds: 300
+    timeoutSeconds: 1

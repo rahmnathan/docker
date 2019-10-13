@@ -16,6 +16,9 @@ initdbScripts:
 
     CREATE INDEX parent_path_idx ON vault_kv_store (parent_path);
     RESET SESSION AUTHORIZATION;
+  keycloak.sql: |
+    create user keycloak with password 'pw123';
+    create database keycloak owner keycloak;
 
 postgresqlPassword: pw123
 postgresqlUsername: postgres
