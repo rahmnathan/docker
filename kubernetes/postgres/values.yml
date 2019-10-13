@@ -1,5 +1,31 @@
-postgresUser: "localmovies"
-postgresPassword: "pw123"
-postgresDatabase: "localmovies"
-persistence:
-  existingClaim: "persistent-claim"
+initdbScripts:
+  vault.sql: |
+    create user vault with password 'pw123';
+    create database vault;
+    GRANT ALL PRIVILEGES ON DATABASE vault TO vault;
+    SET SESSION AUTHORIZATION vault;
+
+    \c vault
+
+    CREATE TABLE vault_kv_store (
+      parent_path TEXT COLLATE "C" NOT NULL,
+      path        TEXT COLLATE "C",
+      key         TEXT COLLATE "C",
+      value       BYTEA,
+      CONSTRAINT pkey PRIMARY KEY (path, key)
+    );
+
+    CREATE INDEX parent_path_idx ON vault_kv_store (parent_path);
+    RESET SESSION AUTHORIZATION;
+
+postgresqlPassword: pw123
+postgresqlUsername: postgres
+postgresqlDatabase: postgres
+
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 1500
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 1500
