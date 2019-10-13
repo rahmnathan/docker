@@ -1,0 +1,5 @@
+vault:
+  config:
+    storage:
+      postgresql:
+        connection_url: "postgres://vault:pw123@postgres-postgresql.postgres.svc.cluster.local:5432/vault?sslmode=disable"

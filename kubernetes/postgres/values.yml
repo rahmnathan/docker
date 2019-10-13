@@ -1,11 +1,10 @@
 initdbScripts:
   vault.sql: |
     create user vault with password 'pw123';
-    create database vault;
-    GRANT ALL PRIVILEGES ON DATABASE vault TO vault;
-    SET SESSION AUTHORIZATION vault;
-
+    create database vault owner vault;
     \c vault
+
+    SET SESSION AUTHORIZATION vault;
 
     CREATE TABLE vault_kv_store (
       parent_path TEXT COLLATE "C" NOT NULL,
