@@ -32,16 +32,22 @@ spec:
         - name: application-config 
           mountPath: /opt/localmovie/config
           readOnly: true
-        - name: videos
-          mountPath: /opt/localmovie/data
-          readOnly: false
+        - name: media1
+          mountPath: /opt/localmovie/1/LocalMedia
+        - name: media2
+          mountPath: /opt/localmovie/2/LocalMedia
         - name: secrets
           mountPath: /opt/localmovie/secrets
           readOnly: true
-      dnsConfig:
-        nameservers:
-         - 8.8.8.8
       volumes:
+      - name: media1
+        nfs:
+          server: 192.168.1.189
+          path: /LocalMedia1
+      - name: media2
+        nfs:
+          server: 192.168.1.189
+          path: /LocalMedia2
       - name: application-config
         configMap:
           name: localmovie-media-manager
@@ -52,10 +58,6 @@ spec:
         secret:
 # Create this secret via: kubectl create secret generic localmovie-firebase-key --from-file=localmovie-firebase-key.json
           secretName: localmovie-firebase-key
-      - name: videos
-        hostPath:
-          path: /media/nathan/localmovies-data
-          type: Directory
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

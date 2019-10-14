@@ -1,0 +1,20 @@
+ingress:
+  enabled: true
+  paths:
+    - /
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+
+  hosts:
+    - nathanrahm-kubernetes.ddns.net
+
+  tls:
+    - hosts:
+        - nathanrahm-kubernetes.ddns.net
+      secretName: kubernetes-dashboard-tls

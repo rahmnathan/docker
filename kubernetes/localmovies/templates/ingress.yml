@@ -19,16 +19,8 @@ spec:
       paths:
        - path: /
          backend:
-          serviceName: localmovie-web
+          serviceName: localmovie-media-manager
           servicePort: 8080
-       - path: /auth/realms/LocalMovies
-         backend:
-           serviceName: keycloak
-           servicePort: 8080
-       - path: /auth/resources
-         backend:
-           serviceName: keycloak
-           servicePort: 8080
   tls:
   - hosts:
     - "localmovies.hopto.org"

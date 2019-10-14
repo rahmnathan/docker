@@ -2,17 +2,14 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
  name: localmovie-media-manager
- namespace: default
 data:
  bootstrap.properties: |
   vault.pki.enabled: false
-  vault.pki.commonName: localmovie-media-manager
-  vault.pki.role: localmovies
   spring.application.name: localmovie-media-manager
   spring.cloud.vault.enabled: true
-  spring.cloud.vault.host: 192.168.1.8
-  spring.cloud.vault.port: 30033
-  spring.cloud.vault.scheme: https
+  spring.cloud.vault.host: vault.vault.svc.cluster.local
+  spring.cloud.vault.port: 8200
+  spring.cloud.vault.scheme: http
   spring.cloud.vault.authentication: TOKEN
   spring.cloud.vault.generic.enabled: false
   spring.cloud.vault.kv.enabled: true
