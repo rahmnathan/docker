@@ -4,7 +4,7 @@ master:
     resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: 3000m, memory: 6096Mi}}
     ingress:
         enabled: true
-        hostname: nathanrahm-jenkins.ddns.net
+        hostname: jenkins.nathanrahm.ddns.net
         path: /
         annotations: 
             certmanager.k8s.io/cluster-issuer: letsencrypt-prod
@@ -16,7 +16,7 @@ master:
             nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
         tls:
           - hosts:
-              - nathanrahm-jenkins.ddns.net
+              - jenkins.nathanrahm.ddns.net
             secretName: jenkins-tls
 agent:
     resources: {requests: {cpu: 2048m, memory: 2048Mi}, limits: {cpu: 6000m, memory: 6000Mi}}

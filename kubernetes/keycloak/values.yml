@@ -1,7 +1,7 @@
 keycloak:
   ingress:
     enabled: true
-    path: /auth/
+    path: /
     annotations:
       certmanager.k8s.io/cluster-issuer: letsencrypt-prod
       ingress.kubernetes.io/ssl-redirect: "true"
@@ -12,16 +12,15 @@ keycloak:
       nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
 
     hosts:
-      - localmovies.hopto.org
+      - login.localmovies.hopto.org
 
     tls:
       - hosts:
-          - localmovies.hopto.org
+          - login.localmovies.hopto.org
         secretName: keycloak-tls
 
   persistence:
     dbVendor: postgres
-
     dbName: keycloak
     dbHost: postgres-postgresql.postgres.svc.cluster.local
     dbPort: 5432

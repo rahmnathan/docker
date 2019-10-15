@@ -3,6 +3,7 @@ ingress:
   paths:
     - /
   annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
@@ -12,9 +13,9 @@ ingress:
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
 
   hosts:
-    - nathanrahm-kubernetes.ddns.net
+    - kube.nathanrahm.ddns.net
 
   tls:
     - hosts:
-        - nathanrahm-kubernetes.ddns.net
+        - kube.nathanrahm.ddns.net
       secretName: kubernetes-dashboard-tls
