@@ -12,11 +12,11 @@ keycloak:
       nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
 
     hosts:
-      - login.localmovies.hopto.org
+      - login.nathanrahm.com
 
     tls:
       - hosts:
-          - login.localmovies.hopto.org
+          - login.nathanrahm.com
         secretName: keycloak-tls
 
   persistence:

@@ -4,7 +4,8 @@ master:
     resources: {requests: {cpu: 100m, memory: 512Mi}, limits: {cpu: 3000m, memory: 6096Mi}}
     ingress:
         enabled: true
-        hostname: jenkins.nathanrahm.ddns.net
+        # Hostname does not work as expected. I had to manually add host to the ingress after installation.
+        hostname: jenkins.nathanrahm.com
         path: /
         annotations: 
             certmanager.k8s.io/cluster-issuer: letsencrypt-prod
@@ -16,7 +17,7 @@ master:
             nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
         tls:
           - hosts:
-              - jenkins.nathanrahm.ddns.net
+              - jenkins.nathanrahm.com
             secretName: jenkins-tls
 agent:
     resources: {requests: {cpu: 2048m, memory: 2048Mi}, limits: {cpu: 6000m, memory: 6000Mi}}

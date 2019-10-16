@@ -14,7 +14,7 @@ metadata:
       nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
 spec:
   rules:
-  - host: localmovies.hopto.org
+  - host: movies.nathanrahm.com
     http:
       paths:
        - path: /
@@ -23,5 +23,5 @@ spec:
           servicePort: 8080
   tls:
   - hosts:
-    - "localmovies.hopto.org"
+    - "movies.nathanrahm.com"
     secretName: localmovies-tls

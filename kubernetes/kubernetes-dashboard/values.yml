@@ -13,9 +13,9 @@ ingress:
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
 
   hosts:
-    - kube.nathanrahm.ddns.net
+    - kube.nathanrahm.com
 
   tls:
     - hosts:
-        - kube.nathanrahm.ddns.net
+        - kube.nathanrahm.com
       secretName: kubernetes-dashboard-tls

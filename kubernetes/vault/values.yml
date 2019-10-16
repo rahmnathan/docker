@@ -30,7 +30,7 @@ vault:
 ingress:
   enabled: true
   hosts:
-  - vault.nathanrahm.ddns.net
+  - vault.nathanrahm.com
   annotations:
     kubernetes.io/tls-acme: 'true'
     ingress.kubernetes.io/ssl-redirect: "true"
@@ -40,9 +40,9 @@ ingress:
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
   tls:
-  - secretName: vault-tls
+  - secretName: vault-ingress-tls
     hosts:
-    - vault.nathanrahm.ddns.net
+    - vault.nathanrahm.com
 
 unsealer:
   args: [
