@@ -4,13 +4,13 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: localmovie-media-manager
-  name: localmovie-media-manager
+    app: localmovies
+  name: localmovies
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: localmovie-media-manager
+      app: localmovies
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -19,12 +19,12 @@ spec:
   template:
     metadata:
       labels:
-        app: localmovie-media-manager
+        app: localmovies
     spec:
       containers:
       - image: {{.Values.localmovies.imageRepository}}/localmovie-media-manager:latest
         imagePullPolicy: Always
-        name: localmovie-media-manager
+        name: localmovies
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
@@ -50,7 +50,7 @@ spec:
           path: /LocalMedia2
       - name: application-config
         configMap:
-          name: localmovie-media-manager
+          name: localmovies
           items:
           - key: bootstrap.properties
             path: bootstrap.properties

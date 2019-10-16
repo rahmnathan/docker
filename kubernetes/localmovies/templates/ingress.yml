@@ -7,7 +7,7 @@ metadata:
   annotations:
       kubernetes.io/tls-acme: 'true'
       ingress.kubernetes.io/ssl-redirect: "true"
-      certmanager.k8s.io/issuer: letsencrypt-prod
+      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
       kubernetes.io/ingress.class: "nginx"
       nginx.ingress.kubernetes.io/enable-modsecurity: "true"
       nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
@@ -19,9 +19,9 @@ spec:
       paths:
        - path: /
          backend:
-          serviceName: localmovie-media-manager
-          servicePort: 8080
+          serviceName: localmovies
+          servicePort: http
   tls:
   - hosts:
-    - "movies.nathanrahm.com"
+    - movies.nathanrahm.com
     secretName: localmovies-tls

@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:  
-  name: localmovie-media-manger
+  name: localmovies
 spec:
   type: ClusterIP
   selector:
-    app: localmovie-media-manager
+    app: localmovies
   ports:  
   - name: http
     port: 8080
-    targetPort: 8080

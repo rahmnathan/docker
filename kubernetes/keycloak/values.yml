@@ -10,15 +10,12 @@ keycloak:
       nginx.ingress.kubernetes.io/enable-modsecurity: "true"
       nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
       nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-
     hosts:
       - login.nathanrahm.com
-
     tls:
       - hosts:
           - login.nathanrahm.com
-        secretName: keycloak-tls
-
+        secretName: keycloak-ingress-tls
   persistence:
     dbVendor: postgres
     dbName: keycloak
@@ -34,3 +31,8 @@ keycloak:
   readinessProbe:
     initialDelaySeconds: 300
     timeoutSeconds: 1
+  podLabels:
+    app: keycloak
+  service:
+    labels:
+      app: keycloak
