@@ -22,7 +22,7 @@ services:
       - /dev/net:/dev/net:z
       - /home/nathan/docker/deluge/vpn:/vpn:z
     dns:
-      - 1.1.1.1
+      - 192.168.1.24
     command: -f ''
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0
