@@ -16,3 +16,11 @@ grafana:
           - hosts:
               - grafana.nathanrahm.com
             secretName: grafana-ingress-tls
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+    - job_name: 'localmovies'
+      scheme: http
+      metrics_path: '/actuator/prometheus'
+      static_configs:
+        - targets: ['localmovies.localmovies:8080']
