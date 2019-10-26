@@ -38,3 +38,25 @@ services:
       - "8112:8112"
     links:
       - airvpn:deluge
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/nathan/docker/deluge/sonarr:/config
+      - nfsmountCC:/tv
+      - /home/nathan/Downloads:/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+volumes:
+  nfsmountCC:
+    driver: local
+    driver_opts:
+      type: nfs4
+      o: addr=192.168.1.189,nolock,soft,rw
+      device: ":LocalMedia3"
