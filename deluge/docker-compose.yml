@@ -39,6 +39,7 @@ services:
       - "58846:58846"
       - "8112:8112"
       - "9898:9898"
+      - "9117:9117"
     links:
       - airvpn:deluge
     volumes:
@@ -56,7 +57,17 @@ services:
       - nfsmountCC:/tv
       - /home/nathan/Downloads:/downloads
     restart: unless-stopped
-
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/nathan/docker/deluge/jackett/config:/config
+      - /home/nathan/docker/deluge/jackett/downloads:/downloads
+    restart: unless-stopped
 volumes:
   nfsmountCC:
     driver: local
