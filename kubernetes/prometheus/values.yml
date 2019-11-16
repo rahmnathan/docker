@@ -1,4 +1,6 @@
 grafana:
+  persistence:
+    enabled: true
   grafana.ini:
     users:
       viewers_can_edit: false
