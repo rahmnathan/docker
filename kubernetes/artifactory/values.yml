@@ -12,6 +12,7 @@ ingress:
     - artifactory.nathanrahm.com
   path: /
   annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 400m
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/ingress.class: nginx
