@@ -2,30 +2,15 @@ version: '3'
 
 services:
   airvpn:
-    image: dperson/openvpn-client
+    image: rahmnathan/airvpn
     cap_add:
       - net_admin
     environment:
       TZ: 'America/Chicago'
-    networks:
-      - default
-    read_only: true
-    tmpfs:
-      - /run
-      - /tmp
     restart: always
-    security_opt:
-      - label:disable
-    stdin_open: true
-    tty: true
     volumes:
       - /dev/net:/dev/net:z
-      - /home/nathan/docker/deluge/vpn:/vpn:z
-    dns:
-      - 1.1.1.1
-    command: -f ''
-    sysctls:
-      - net.ipv6.conf.all.disable_ipv6=0
+      - /home/nathan/docker/deluge/airvpn/AirVPN_Canada_UDP-443.ovpn:/config.ovpn
   deluge:
     restart: always
     image: rahmnathan/deluge:latest
@@ -45,33 +30,3 @@ services:
     volumes:
       - "/home/nathan/docker/deluge/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "/home/nathan/docker/deluge/nginx/ssl/:/etc/nginx/ssl/"
-  sonarr:
-    image: linuxserver/sonarr:preview
-    container_name: sonarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
-    volumes:
-      - /home/nathan/docker/deluge/sonarr:/config
-      - nfsmountCC:/tv
-      - /home/nathan/Downloads:/downloads
-    restart: unless-stopped
-  jackett:
-    image: linuxserver/jackett
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Chicago
-    volumes:
-      - /home/nathan/docker/deluge/jackett/config:/config
-      - /home/nathan/docker/deluge/jackett/downloads:/downloads
-    restart: unless-stopped
-volumes:
-  nfsmountCC:
-    driver: local
-    driver_opts:
-      type: nfs4
-      o: addr=192.168.1.189,nolock,soft,rw
-      device: ":LocalMedia3"
