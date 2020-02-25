@@ -35,8 +35,3 @@ prometheus:
       metrics_path: '/actuator/prometheus'
       static_configs:
         - targets: ['localmovies.localmovies:8080']
-    - job_name: 'fridge-manager'
-      scheme: http
-      metrics_path: '/actuator/prometheus'
-      static_configs:
-        - targets: ['fridge-manager.fridge-manager:8080']
