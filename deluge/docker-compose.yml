@@ -11,6 +11,7 @@ services:
     volumes:
       - /dev/net:/dev/net:z
       - /home/nathan/docker/deluge/airvpn/AirVPN_Canada_UDP-443.ovpn:/config.ovpn
+    dns: 1.1.1.1
   deluge:
     restart: always
     image: rahmnathan/deluge:latest
