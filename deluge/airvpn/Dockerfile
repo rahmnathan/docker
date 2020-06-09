@@ -1,9 +1,9 @@
-FROM ubuntu:19.10
+FROM ubuntu:20.04
 
 RUN apt update &&\
     apt install wget iptables -y &&\
-    wget https://airvpn.org/mirrors/eddie.website/repository/hummingbird/1.0.2/hummingbird-linux-x86_64-1.0.2.tar.gz &&\
-    tar -zxvf hummingbird-linux-x86_64-1.0.2.tar.gz &&\
-    rm -f hummingbird-linux-x86_64-1.0.2.tar.gz
+    wget https://airvpn.org/mirrors/eddie.website/repository/hummingbird/1.0.3/hummingbird-linux-x86_64-1.0.3.tar.gz &&\
+    tar -zxvf hummingbird-linux-x86_64-1.0.3.tar.gz &&\
+    rm -f hummingbird-linux-x86_64-1.0.3.tar.gz
 
-ENTRYPOINT ./hummingbird-linux-x86_64-1.0.2/hummingbird /config.ovpn --network-lock off
+ENTRYPOINT ./hummingbird-linux-x86_64-1.0.3/hummingbird /config.ovpn --network-lock off
