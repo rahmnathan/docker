@@ -1,4 +1,4 @@
-FROM jenkins/jnlp-slave:4.0.1-1
+FROM jenkins/jnlp-slave:4.3-4
 
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.3/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
