@@ -2,7 +2,7 @@ version: '3'
 
 services:
   airvpn:
-    image: rahmnathan/airvpn
+    image: rahmnathan/airvpn:1.1
     cap_add:
       - net_admin
     environment:
@@ -10,23 +10,57 @@ services:
     restart: always
     volumes:
       - /dev/net:/dev/net:z
-      - /home/nathan/docker/deluge/airvpn/AirVPN_Canada_UDP-443.ovpn:/config.ovpn
+      - /home/nathan/docker/deluge/airvpn/AirVPN_All-servers_UDP-443.ovpn:/config.ovpn
+    dns: 1.1.1.1
   deluge:
     restart: always
     image: rahmnathan/deluge:latest
     network_mode: "service:airvpn"
     volumes:
-      - "/home/nathan/Downloads:/root/Downloads"
+      - "downloads:/root/Downloads"
+      - "/home/nathan/docker/deluge/deluge/auth:/root/.config/deluge/auth"
   nginx:
     restart: always
     image: nginx:alpine
     ports:
       - "58846:58846"
       - "8112:8112"
-      - "9898:9898"
       - "9117:9117"
+      - "8989:8989"
     links:
       - airvpn:deluge
     volumes:
       - "/home/nathan/docker/deluge/nginx/nginx.conf:/etc/nginx/nginx.conf"
       - "/home/nathan/docker/deluge/nginx/ssl/:/etc/nginx/ssl/"
+  sonarr:
+    image: linuxserver/sonarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/nathan/docker/deluge/sonarr:/config
+      - sonarrDownloads:/tv
+      - downloads:/downloads
+    restart: unless-stopped
+  jackett:
+    image: linuxserver/jackett:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - /home/nathan/docker/deluge/jackett/config:/config
+    restart: unless-stopped
+
+volumes:
+  downloads:
+    driver_opts:
+      type: nfs
+      o: "addr=192.168.1.189,nolock,soft,rw"
+      device: ":/export/deluge/downloads"
+  sonarrDownloads:
+    driver_opts:
+      type: nfs
+      o: "addr=192.168.1.189,nolock,soft,rw"
+      device: ":/export/LocalMedia3/Series/"

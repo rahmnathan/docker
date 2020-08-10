@@ -1,38 +1,37 @@
-keycloak:
-  ingress:
-    enabled: true
-    path: /
-    annotations:
-      certmanager.k8s.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/ssl-redirect: "true"
-      kubernetes.io/ingress.class: nginx
-      kubernetes.io/tls-acme: "true"
-      nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-      nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-      nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-    hosts:
-      - login.nathanrahm.com
-    tls:
-      - hosts:
-          - login.nathanrahm.com
-        secretName: keycloak-ingress-tls
-  persistence:
-    dbVendor: postgres
-    dbName: keycloak
-    dbHost: postgres-postgresql.postgres.svc.cluster.local
-    dbPort: 5432
-    dbUser: keycloak
+# codecentric/keycloak
+ingress:
+  enabled: true
+  servicePort: https
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+  rules:
+    - host: 'login.nathanrahm.com'
+      paths:
+        - /
+  tls:
+    - hosts:
+        - login.nathanrahm.com
+      secretName: keycloak-ingress-tls
+postgresql:
+  enabled: false
 
-    # Only used if no existing secret is specified. In this case a new secret is created
-    dbPassword: "pw123"
-  livenessProbe:
-    initialDelaySeconds: 1200
-    timeoutSeconds: 5
-  readinessProbe:
-    initialDelaySeconds: 300
-    timeoutSeconds: 1
-  podLabels:
-    app: keycloak
-  service:
-    labels:
-      app: keycloak
+extraEnv: |
+  - name: 'DB_VENDOR'
+    value: 'postgres'
+  - name: 'DB_ADDR'
+    value: 'postgres-postgresql.postgres.svc.cluster.local'
+  - name: 'DB_PORT'
+    value: '5432'
+  - name: 'DB_DATABASE'
+    value: 'keycloak'
+  - name: 'DB_USER'
+    value: 'keycloak'
+  - name: 'DB_PASSWORD'
+    value: 'pw123'
