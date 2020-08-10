@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  cloudflare-wildcard-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=<api-key>
+      - ZONE=nathanrahm.com
+      - SUBDOMAIN=*
+      - PROXIED=true
+  cloudflare-vpn-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=<api-key>
+      - ZONE=nathanrahm.com
+      - SUBDOMAIN=vpn
+      - PROXIED=false
