@@ -1,6 +1,8 @@
+# helm install -n monitoring prometheus-operator stable/prometheus-operator --values prometheus/values.yml
+
 grafana:
   persistence:
-    enabled: true
+    enabled: false # Enabling this causes Grafana to fail to start.
   grafana.ini:
     users:
       viewers_can_edit: false
