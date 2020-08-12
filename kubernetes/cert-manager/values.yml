@@ -1,0 +1,3 @@
+# helm install -n cert-manager cert-manager jetstack/cert-manager --values cert-manager/values.yml
+
+installCRDs: true

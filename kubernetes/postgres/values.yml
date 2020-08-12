@@ -1,3 +1,5 @@
+# helm install -n postgres postgresql bitnami/postgresql --values postgres/values.yml
+
 initdbScripts:
   vault.sql: |
     create user vault with password 'pw123';
@@ -26,8 +28,13 @@ postgresqlDatabase: postgres
 
 livenessProbe:
   enabled: true
-  initialDelaySeconds: 1500
 
 readinessProbe:
   enabled: true
-  initialDelaySeconds: 1500
+
+metrics:
+  enabled: true
+
+# Removed this for fresh deployment
+persistence:
+  existingClaim: data-postgres-postgresql-0
