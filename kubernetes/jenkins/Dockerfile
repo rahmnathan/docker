@@ -1,10 +1,10 @@
-FROM jenkins/jnlp-slave:4.3-4
+FROM jenkins/jnlp-slave:4.3-8
 
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.3/bin/linux/amd64/kubectl && \
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
-    wget https://get.helm.sh/helm-v2.15.2-linux-amd64.tar.gz && \
-    tar -zxvf helm-v2.15.2-linux-amd64.tar.gz && \
-    rm -f helm-v2.15.2-linux-amd64.tar.gz && \
+    wget https://get.helm.sh/helm-v3.3.0-linux-amd64.tar.gz && \
+    tar -zxvf helm-v3.3.0-linux-amd64.tar.gz && \
+    rm -f helm-v3.3.0-linux-amd64.tar.gz && \
     mv ./kubectl ./linux-amd64/kubectl && \
     chmod +x ./linux-amd64/helm && \
     wget https://dl.google.com/android/repository/commandlinetools-linux-6200805_latest.zip && \
