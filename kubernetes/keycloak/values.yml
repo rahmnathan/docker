@@ -1,4 +1,5 @@
-# codecentric/keycloak
+# helm install -n keycloak keycloak codecentric/keycloak --values keycloak/values.yml
+
 ingress:
   enabled: true
   servicePort: https
@@ -10,7 +11,7 @@ ingress:
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.org/ssl-services: keycloak-http
   rules:
     - host: 'login.nathanrahm.com'
       paths:
@@ -22,11 +23,15 @@ ingress:
 postgresql:
   enabled: false
 
+serviceMonitor:
+  enabled: true
+  namespace: keycloak
+
 extraEnv: |
   - name: 'DB_VENDOR'
     value: 'postgres'
   - name: 'DB_ADDR'
-    value: 'postgres-postgresql.postgres.svc.cluster.local'
+    value: 'postgresql.postgres.svc.cluster.local'
   - name: 'DB_PORT'
     value: '5432'
   - name: 'DB_DATABASE'
