@@ -1,3 +1,5 @@
+# helm install -n vault vault banzaicloud-stable/vault --values vault/values.yml
+
 vault:
   config:
     listener:
@@ -5,7 +7,7 @@ vault:
         tls_disable: true
     storage:
       postgresql:
-        connection_url: "postgres://vault:pw123@postgres-postgresql.postgres.svc.cluster.local:5432/vault?sslmode=disable"
+        connection_url: "postgres://vault:pw123@postgresql.postgres.svc.cluster.local:5432/vault?sslmode=disable"
   externalConfig:
     policies:
       - name: localmovies
