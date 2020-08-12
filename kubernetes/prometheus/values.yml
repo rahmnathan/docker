@@ -40,8 +40,3 @@ prometheus:
       metrics_path: '/metrics'
       static_configs:
         - targets: ['postgresql-metrics.postgres:9187']
-    - job_name: 'nginx'
-      scheme: http
-      metrics_path: '/metrics'
-      static_configs:
-        - targets: ['nginx-ingress-nginx-ingress.ingress:9113']
