@@ -17,3 +17,6 @@ ingress:
         secretName: jenkins-tls
 metrics:
     enabled: true
+
+service:
+  type: ClusterIP

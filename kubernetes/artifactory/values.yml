@@ -1,3 +1,5 @@
+# helm install -n artifactory artifactory center/jfrog/artifactory --values artifactory/values.yml
+
 artifactory:
   image:
     pullPolicy: IfNotPresent
