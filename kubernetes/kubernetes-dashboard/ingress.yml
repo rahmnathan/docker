@@ -1,7 +1,3 @@
-# Using this together with nginx-ingress installed as described here - https://kubernetes.github.io/ingress-nginx/deploy/#generic-deployment
-# Using this in conjunction with the following command as the dashboard Helm chart doesn't support the latest version of Kubernetes.
-# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta6/aio/deploy/recommended.yaml
-
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -9,7 +5,7 @@ metadata:
   annotations:
     kubernetes.io/tls-acme: 'true'
     ingress.kubernetes.io/ssl-redirect: "true"
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer:  letsencrypt-prod
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
@@ -26,4 +22,4 @@ spec:
   tls:
     - hosts:
         - kube.nathanrahm.com
-      secretName: kube-tls
+      secretName: kubernetes-dashboard-tls
