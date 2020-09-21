@@ -1,4 +1,4 @@
-FROM jenkins/jnlp-slave:4.3-8
+FROM jenkins/jnlp-slave:4.3-9
 
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
@@ -11,11 +11,14 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/b
     unzip commandlinetools-linux-6200805_latest.zip &&\
     rm -f commandlinetools-linux-6200805_latest.zip &&\
     mkdir android-home &&\
-    mv tools/ ./android-home/tools
+    mv tools/ ./android-home/tools &&\
+    wget https://mirrors.ocf.berkeley.edu/apache//jmeter/binaries/apache-jmeter-5.3.tgz &&\
+    tar -zxvf apache-jmeter-5.3.tgz &&\
+    rm -f apache-jmeter-5.3.tgz
 
 ENV ANDROID_HOME /home/jenkins/android-home
 ENV SDK_MANAGER_ROOT $ANDROID_HOME/tools
-ENV PATH /home/jenkins/linux-amd64/:$SDK_MANAGER_ROOT/bin:$PATH
+ENV PATH /home/jenkins/linux-amd64/:/home/jenkins/apache-jmeter-5.3/bin/:$SDK_MANAGER_ROOT/bin:$PATH
 
 RUN yes | sdkmanager --sdk_root=$SDK_MANAGER_ROOT --licenses &&\
     sdkmanager --sdk_root=$SDK_MANAGER_ROOT "platforms;android-29" "build-tools;29.0.3"
