@@ -3,6 +3,10 @@
 nfs:
   server: 192.168.1.189
   path: /export/PersistentVolumes
+  mountOptions:
+    - nolock
+    - soft
+    - rw
 
 storageClass:
   defaultClass: true
