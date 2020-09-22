@@ -1,23 +1,9 @@
 version: '2'
 
+# Using with CNAME records for subdomains.
+
 services:
-  cloudflare-wildcard-ddns:
-    image: oznu/cloudflare-ddns:latest
-    restart: always
-    environment:
-      - API_KEY=<api-key>
-      - ZONE=nathanrahm.com
-      - SUBDOMAIN=*
-      - PROXIED=true
-  cloudflare-vpn-ddns:
-    image: oznu/cloudflare-ddns:latest
-    restart: always
-    environment:
-      - API_KEY=<api-key>
-      - ZONE=nathanrahm.com
-      - SUBDOMAIN=vpn
-      - PROXIED=false
-  cloudflare-portfolio-ddns:
+  cloudflare-nathanrahm-ddns:
     image: oznu/cloudflare-ddns:latest
     restart: always
     environment:
