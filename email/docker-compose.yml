@@ -1,0 +1,14 @@
+version: '3'
+
+# Initialization
+# docker run --rm -it -v protonmail:/root shenxn/protonmail-bridge init
+
+services:
+  protonmail-bridge:
+    image: shenxn/protonmail-bridge
+    restart: always
+    ports:
+      - "1025:25"
+      - "1143:143"
+    volumes:
+      - "/home/nathan/docker/email/data:/root"
