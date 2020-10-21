@@ -1,7 +1,7 @@
 version: '3'
 
 # Initialization
-# docker run --rm -it -v protonmail:/root shenxn/protonmail-bridge init
+# docker run --rm -it -v /home/nathan/docker/email/data:/root shenxn/protonmail-bridge init
 
 services:
   protonmail-bridge:
