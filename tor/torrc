@@ -1,0 +1,20 @@
+RunAsDaemon 0
+
+SocksPort 0
+BridgeRelay 1
+
+Nickname DockerObfs4Bridge
+Log notice file /var/log/tor/log
+Log notice stdout
+ServerTransportPlugin obfs4 exec /usr/bin/obfs4proxy
+ExtORPort auto
+DataDirectory /var/lib/tor
+
+ORPort 9001
+ServerTransportListenAddr obfs4 0.0.0.0:444
+ContactInfo rahm.nathan@protonmail.com
+
+AccountingStart day 0:00
+AccountingMax 30 GBytes
+RelayBandwidthRate 1000 KBytes
+RelayBandwidthBurst 5000 KBytes

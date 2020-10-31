@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+  obfs4-bridge:
+    image: thetorproject/obfs4-bridge:latest
+    environment:
+      - OR_PORT=9001
+      - PT_PORT=444
+      - EMAIL=rahm.nathan@protonmail.com
+    volumes:
+      - data:/var/lib/tor
+      - /home/nathan/development/workspaces/docker/tor/torrc:/etc/tor/torrc
+    ports:
+      - 9001:9001
+      - 444:444
+    restart: unless-stopped
+
+volumes:
+  data:
+    name: tor-datadir
