@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  bitcoin-core:
+    image: ruimarinho/bitcoin-core:0.20
+    command: -rpcuser=user -rpcpassword=password -rpcallowip=0.0.0.0/0 -rpcbind=0.0.0.0
+    network_mode: "service:airvpn"
+    volumes:
+      - "/home/nathan/docker/bitcoin/bitcoin-core:/home/bitcoin/.bitcoin"
+  electrum-personal-server:
+    image: rahmnathan/electrum-personal-server:latest
+    ports:
+      - "50002:50002"
+    volumes:
+      - "/home/nathan/docker/bitcoin/electrum-personal-server/config.ini:/opt/eps/config.ini"
+      - "/home/nathan/docker/bitcoin/electrum-personal-server/data:/opt/eps/electrum-personal-server-eps-v0.2.1.1"
+    depends_on:
+      - bitcoin-core
+    links:
+      - airvpn:bitcoin-core
+  airvpn:
+    restart: always
+    image: rahmnathan/airvpn:1.1.0
+    cap_add:
+      - net_admin
+    environment:
+      TZ: 'America/Chicago'
+    volumes:
+      - /dev/net:/dev/net:z
+      - /home/nathan/docker/deluge/airvpn/AirVPN_America_UDP-443.ovpn:/config.ovpn
+    dns: 1.1.1.1
