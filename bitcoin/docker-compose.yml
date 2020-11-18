@@ -23,7 +23,7 @@ services:
       #    entrypoint: tail -f /dev/null # For running electrum-personl-server --rescan manually.
   airvpn:
     restart: always
-    image: rahmnathan/airvpn:1.1.0
+    image: rahmnathan/airvpn:1.1.0.1
     cap_add:
       - net_admin
     environment:
@@ -31,4 +31,3 @@ services:
     volumes:
       - /dev/net:/dev/net:z
       - /home/nathan/docker/deluge/airvpn/AirVPN_America_UDP-443.ovpn:/config.ovpn
-    dns: 1.1.1.1
