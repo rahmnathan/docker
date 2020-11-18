@@ -12,12 +12,15 @@ services:
     ports:
       - "50002:50002"
     volumes:
+      - "/home/nathan/docker/bitcoin/electrum-personal-server/server.key:/opt/eps/server.key"
+      - "/home/nathan/docker/bitcoin/electrum-personal-server/server.crt:/opt/eps/server.crt"
       - "/home/nathan/docker/bitcoin/electrum-personal-server/config.ini:/opt/eps/config.ini"
       - "/home/nathan/docker/bitcoin/electrum-personal-server/data:/opt/eps/electrum-personal-server-eps-v0.2.1.1"
     depends_on:
       - bitcoin-core
     links:
       - airvpn:bitcoin-core
+      #    entrypoint: tail -f /dev/null # For running electrum-personl-server --rescan manually.
   airvpn:
     restart: always
     image: rahmnathan/airvpn:1.1.0
