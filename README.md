@@ -44,7 +44,7 @@ docker-compose
  - nginx:alpine
     - Facilitates communication into the Docker network to access Sonarr, Jackett, and Deluge.
     
-<h1>OpenVPN</h1>
+<h1>Email</h1>
 <h4>Deployment Type</h4>
 
 docker-compose
