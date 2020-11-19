@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  airvpn:
-    image: rahmnathan/airvpn:1.1.0.1
+  hummingbird:
+    image: rahmnathan/hummingbird:1.1.0
     cap_add:
       - net_admin
     environment:
@@ -10,11 +10,11 @@ services:
     restart: always
     volumes:
       - /dev/net:/dev/net:z
-      - /home/nathan/docker/deluge/airvpn/AirVPN_All-servers_UDP-443.ovpn:/config.ovpn
+      - /home/nathan/docker/deluge/hummingbird/AirVPN_All-servers_UDP-443.ovpn:/config.ovpn
   deluge:
     restart: always
     image: rahmnathan/deluge:latest
-    network_mode: "service:airvpn"
+    network_mode: "service:hummingbird"
     volumes:
       - "downloads:/root/Downloads"
       - "/home/nathan/docker/deluge/deluge/auth:/root/.config/deluge/auth"
@@ -27,7 +27,7 @@ services:
       - "9117:9117"
       - "8989:8989"
     links:
-      - airvpn:deluge
+      - hummingbird:deluge
     volumes:
       - "/home/nathan/docker/deluge/nginx/nginx.conf:/etc/nginx/nginx.conf"
   sonarr:
