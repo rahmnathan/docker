@@ -30,7 +30,6 @@ services:
       - airvpn:deluge
     volumes:
       - "/home/nathan/docker/deluge/nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "/home/nathan/docker/deluge/nginx/ssl/:/etc/nginx/ssl/"
   sonarr:
     image: linuxserver/sonarr:latest
     environment:
