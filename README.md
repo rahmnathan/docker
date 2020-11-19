@@ -7,6 +7,7 @@ This repo is a collection of container resources used to manage my homelab.
 docker-compose
 
 <h4>Containers</h4>
+
  - ruimarinho/bitcoin-core
     - Full Bitcoin node.
  - rahmnathan/electrum-personal-server
@@ -20,6 +21,7 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  - oznu/cloudflare-ddns
     - Updates cloudflare DNS IPs on a schedule.
     
@@ -29,6 +31,7 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  - rahmnathan/airvpn:1.1.0.1
     - Routes all network traffic through VPN for anonymity.
  - rahmnathan/deluge
@@ -47,6 +50,7 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  - shenxn/protonmail-bridge
     - Bridge for connecting generic desktop clients (Evolution) to ProtonMail servers.
     
@@ -56,6 +60,7 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  - shenxn/protonmail-bridge
     - Bridge for connecting generic desktop clients (Evolution) to ProtonMail servers.
     
@@ -65,6 +70,7 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  -  kylemanna/openvpn
     - Runs an OpenVPN server allowing me to remotely access my home network.
     
@@ -74,5 +80,6 @@ docker-compose
 docker-compose
 
 <h4>Containers</h4>
+
  -  thetorproject/obfs4-bridge
     - Runs a Tor Bridge to allow users to safely and anonymously browse the internet.
