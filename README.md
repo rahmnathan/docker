@@ -54,16 +54,6 @@ docker-compose
  - shenxn/protonmail-bridge
     - Bridge for connecting generic desktop clients (Evolution) to ProtonMail servers.
     
-<h1>Email</h1>
-<h4>Deployment Type</h4>
-
-docker-compose
-
-<h4>Containers</h4>
-
- - shenxn/protonmail-bridge
-    - Bridge for connecting generic desktop clients (Evolution) to ProtonMail servers.
-    
 <h1>OpenVPN</h1>
 <h4>Deployment Type</h4>
 
