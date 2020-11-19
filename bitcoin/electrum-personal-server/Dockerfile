@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.10
 
 RUN apt-get update && apt-get install wget python3-pip -y && mkdir /opt/eps
 
