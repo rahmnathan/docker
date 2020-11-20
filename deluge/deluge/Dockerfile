@@ -1,4 +1,4 @@
-FROM ubuntu:19.04
+FROM ubuntu:20.10
 
 RUN apt-get update &&\
     apt-get install -y software-properties-common &&\
@@ -8,9 +8,6 @@ RUN apt-get update &&\
     deluged &&\
     pkill deluged
 
-ADD auth /root/.config/deluge/auth
 ADD deluge-entry.sh /deluge-entry.sh
-
-EXPOSE 58846
 
 ENTRYPOINT /deluge-entry.sh
