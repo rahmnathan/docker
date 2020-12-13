@@ -2,24 +2,24 @@ version: '3'
 
 services:
   hummingbird:
-    image: rahmnathan/hummingbird:1.1.0
+    image: rahmnathan/hummingbird:1.1.0.1
     cap_add:
       - net_admin
     environment:
       TZ: 'America/Chicago'
-    restart: always
+    restart: unless-stopped
     volumes:
       - /dev/net:/dev/net:z
       - /home/nathan/docker/deluge/hummingbird/AirVPN_All-servers_UDP-443.ovpn:/config.ovpn
   deluge:
-    restart: always
+    restart: unless-stopped
     image: rahmnathan/deluge:latest
     network_mode: "service:hummingbird"
     volumes:
       - "downloads:/root/Downloads"
       - "/home/nathan/docker/deluge/deluge/auth:/root/.config/deluge/auth"
   nginx:
-    restart: always
+    restart: unless-stopped
     image: nginx:alpine
     ports:
       - "58846:58846"

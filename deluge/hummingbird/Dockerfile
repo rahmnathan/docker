@@ -1,7 +1,7 @@
-FROM ubuntu:20.10
+FROM debian:stable-slim
 
-RUN apt update &&\
-    apt install wget iptables -y &&\
+RUN apt-get update &&\
+    apt-get install apt-utils wget iptables -y &&\
     wget https://gitlab.com/AirVPN/hummingbird/-/raw/master/binary/hummingbird-linux-x86_64-1.1.0.tar.gz &&\
     tar -zxvf hummingbird-linux-x86_64-1.1.0.tar.gz &&\
     rm -f hummingbird-linux-x86_64-1.1.0.tar.gz
