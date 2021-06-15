@@ -1,4 +1,4 @@
-FROM jenkins/jnlp-slave:4.6-1
+FROM jenkins/jnlp-slave:4.7-1
 
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/bin/linux/amd64/kubectl && \
     chmod +x ./kubectl && \
@@ -15,6 +15,10 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/b
     wget https://mirrors.ocf.berkeley.edu/apache//jmeter/binaries/apache-jmeter-5.3.tgz &&\
     tar -zxvf apache-jmeter-5.3.tgz &&\
     rm -f apache-jmeter-5.3.tgz
+
+USER root
+RUN apt-get update && apt-get install ffmpeg -y
+USER jenkins
 
 ENV ANDROID_HOME /home/jenkins/android-home
 ENV SDK_MANAGER_ROOT $ANDROID_HOME/tools
