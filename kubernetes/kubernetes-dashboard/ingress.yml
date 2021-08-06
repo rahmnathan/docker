@@ -11,6 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
     nginx.org/ssl-services: kubernetes-dashboard
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
     - host: kube.nathanrahm.com

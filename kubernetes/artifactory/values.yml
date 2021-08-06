@@ -1,28 +1,24 @@
-# helm install -n artifactory artifactory center/jfrog/artifactory --values artifactory/values.yml
+# helm install -n artifactory artifactory jfrog/artifactory-oss --values artifactory/values.yml
 
 artifactory:
-  image:
-    pullPolicy: IfNotPresent
-    repository: docker.bintray.io/jfrog/artifactory-oss
+  postgresql:
+    enabled: false
 
-postgresql:
-  enabled: false
-
-ingress:
-  enabled: true
-  hosts:
-    - artifactory.nathanrahm.com
-  path: /
-  annotations:
-    nginx.org/client-max-body-size: 500m
-    cert-manager.io/cluster-issuer:  letsencrypt-prod
-    ingress.kubernetes.io/ssl-redirect: "true"
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-  tls:
-    - hosts:
-        - artifactory.nathanrahm.com
-      secretName: artifactory-ingress-tls
+  ingress:
+    enabled: true
+    hosts:
+      - artifactory.nathanrahm.com
+    path: /
+    annotations:
+      nginx.org/client-max-body-size: 500m
+      cert-manager.io/cluster-issuer:  letsencrypt-prod
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+      nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+      nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+    tls:
+      - hosts:
+          - artifactory.nathanrahm.com
+        secretName: artifactory-ingress-tls

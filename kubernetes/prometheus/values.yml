@@ -1,4 +1,4 @@
-# helm install -n monitoring prometheus-operator stable/prometheus-operator --values prometheus/values.yml
+# helm install -n monitoring prometheus-operator prometheus-community/prometheus-operator --values prometheus/values.yml
 
 grafana:
   persistence:

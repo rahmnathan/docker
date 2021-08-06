@@ -12,20 +12,18 @@ ingress:
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
     nginx.org/ssl-services: keycloak-http
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
   rules:
     - host: 'login.nathanrahm.com'
       paths:
-        - /
+        - path: /
+          pathType: Prefix
   tls:
     - hosts:
         - login.nathanrahm.com
       secretName: keycloak-ingress-tls
 postgresql:
   enabled: false
-
-serviceMonitor:
-  enabled: true
-  namespace: keycloak
 
 extraEnv: |
   - name: 'DB_VENDOR'

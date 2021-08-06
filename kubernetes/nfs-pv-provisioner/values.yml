@@ -1,4 +1,4 @@
-# helm install -n nfs-pv-provisioner nfs-pv-provisioner stable/nfs-client-provisioner --values nfs-pv-provisioner/values.yml
+# helm -n nfs-pv-provisioner install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner -f nfs-pv-provisioner/values.yml
 
 nfs:
   server: 192.168.1.189

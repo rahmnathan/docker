@@ -1,4 +1,5 @@
 # helm install -n jenkins jenkins bitnami/jenkins --values jenkins/values.yml
+# kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts:jenkins
 
 ingress:
     enabled: true

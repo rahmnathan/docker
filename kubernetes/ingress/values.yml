@@ -1,7 +1,7 @@
-# helm install -n ingress nginx-ingress nginx-stable/nginx-ingress --values ingress/values.yml
+# helm install -n ingress ingress-nginx ingress-nginx/ingress-nginx --values ingress/values.yml
 
-prometheus:
-  create: true
+metrics:
+  prometheusRules: true
 
 controller:
   service:
