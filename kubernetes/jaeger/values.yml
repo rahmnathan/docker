@@ -1,0 +1,51 @@
+#  helm install -n jaeger jaeger jaegertracing/jaeger -f jaeger/values.yml
+
+query:
+  enabled: true
+  oAuthSidecar:
+    enabled: true
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.1.0
+    pullPolicy: IfNotPresent
+    containerPort: 4180
+    args:
+      - --config
+      - /etc/oauth2-proxy/oauth2-proxy.cfg
+      - --client-secret
+      - "$(client-secret)"
+    extraEnv:
+      - name: client-secret
+        valueFrom:
+          secretKeyRef:
+            name: client-secret
+            key: client-secret-key
+    extraConfigmapMounts: []
+    extraSecretMounts: []
+    config: |-
+      provider = "oidc"
+      https_address = ":4180"
+      upstreams = ["http://localhost:16686"]
+      redirect_url = "https://jaeger-svc-domain/oauth2/callback"
+      client_id = "jaeger-query"
+      oidc_issuer_url = "https://keycloak-svc-domain/auth/realms/Default"
+      cookie_secure = "true"
+      email_domains = "*"
+      oidc_groups_claim = "groups"
+      user_id_claim = "preferred_username"
+      skip_provider_button = "true"
+      cookie_secret = "OSolRRYb1Tt5xFV3Xopa4ReHG9x7v4c"
+  ingress:
+    enabled: true
+    hosts:
+      - jaeger.nathanrahm.com
+    annotations:
+      cert-manager.io/cluster-issuer:  letsencrypt-prod
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+      nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+      nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+    tls:
+      - hosts:
+          - jaeger.nathanrahm.com
+        secretName: jaeger-tls
