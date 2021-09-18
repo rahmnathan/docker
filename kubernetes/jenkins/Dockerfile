@@ -1,7 +1,7 @@
-FROM jenkins/inbound-agent:4.9-1
+FROM jenkins/inbound-agent:4.10-2
 
 USER root
-RUN apt-get update && apt-get install wget ffmpeg unzip -y
+RUN apt-get update && apt-get install wget ffmpeg unzip curl -y
 USER jenkins
 
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/bin/linux/amd64/kubectl && \
