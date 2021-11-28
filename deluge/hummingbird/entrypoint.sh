@@ -1,9 +1,12 @@
 #!/bin/bash
 
-touch ./airvpn_log
-./hummingbird-linux-x86_64-1.1.0/hummingbird /config.ovpn --persist-tun --network-lock off &> airvpn_log &
+rm /etc/airvpn/hummingbird.lock
+/usr/bin/hummingbird --recover-network &> /dev/null
 
-sleep 10
+touch ./airvpn_log
+/usr/bin/hummingbird -p tcp --persist-tun --network-lock off /config.ovpn &> airvpn_log &
+
+sleep 3
 
 echo "nameserver $(grep -oP "(?<=\[DNS\]\s\[)[\d\.]*" airvpn_log)" > /etc/resolv.conf
 echo "nameserver $(grep -oP "(?<=\[DNS6\]\s\[)[a-zA-Z\d\:]*" airvpn_log)" >> /etc/resolv.conf
