@@ -1,0 +1,23 @@
+version: "2.1"
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - SERVERURL=your-server.com
+      - SERVERPORT=51820
+      - PEERS=3
+    volumes:
+      - /home/nathan/docker/wireguard/config:/config
+      - /home/nathan/docker/wireguard/app-data:/lib/modules
+    ports:
+      - "51820:51820/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
