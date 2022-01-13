@@ -10,4 +10,14 @@ services:
      - "1194:1194/udp"
     restart: always
     volumes:
-     - ./openvpn-data/conf:/etc/openvpn 
+      - ./openvpn-data/conf:/etc/openvpn
+  openvpn-tcp:
+    cap_add:
+      - NET_ADMIN
+    image: kylemanna/openvpn
+    container_name: openvpn-tcp
+    ports:
+      - "443:443/tcp"
+    restart: always
+    volumes:
+      - ./openvpn-data-tcp/conf:/etc/openvpn
