@@ -1,3 +1,4 @@
+# helm -n nextcloud install nextcloud nextcloud/nextcloud --values values.yml
 
 ## Official nextcloud image version
 ## ref: https://hub.docker.com/r/library/nextcloud/tags/
