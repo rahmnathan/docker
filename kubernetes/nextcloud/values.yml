@@ -74,7 +74,7 @@ lifecycle: {}
 nextcloud:
   host: nextcloud.nathanrahm.com
   username: nrahm
-  password: hTx4cfNBdb2pqUwv
+  password: <password>
   ## Use an existing secret
   existingSecret:
     enabled: false
