@@ -102,7 +102,9 @@ nextcloud:
       password: pass
   # PHP Configuration files
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
-  phpConfigs: {}
+  phpConfigs:
+    nextcloud-custom.ini: |-
+      max_execution_time=360
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
@@ -163,6 +165,10 @@ nextcloud:
   ##
   ## Extra environment variables
   extraEnv:
+    - name: PHP_MEMORY_LIMIT
+      value: "2G"
+    - name: PHP_UPLOAD_LIMIT
+      value: "12G"
   #  - name: SOME_SECRET_ENV
   #    valueFrom:
   #      secretKeyRef:
