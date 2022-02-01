@@ -434,11 +434,11 @@ affinity: {}
 ## Prometheus Exporter / Metrics
 ##
 metrics:
-  enabled: false
+  enabled: true
 
   replicaCount: 1
   # The metrics exporter needs to know how you serve Nextcloud either http or https
-  https: false
+  https: true
   timeout: 5s
 
   image:

@@ -1,8 +1,6 @@
-# helm install -n monitoring prometheus-operator prometheus-community/prometheus-operator --values prometheus/values.yml
+# helm install -n monitoring kube-prometheus-stack prometheus-community/kube-prometheus-stack --values prometheus/values.yml
 
 grafana:
-  persistence:
-    enabled: false # Enabling this causes Grafana to fail to start.
   grafana.ini:
     users:
       viewers_can_edit: false
@@ -37,6 +35,14 @@ grafana:
           secretName: grafana-ingress-tls
 prometheus:
   prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+    retention: 60d
     additionalScrapeConfigs:
     - job_name: 'localmovies'
       scheme: http
@@ -48,3 +54,12 @@ prometheus:
       metrics_path: '/metrics'
       static_configs:
         - targets: ['postgresql-metrics.postgres:9187']
+    - job_name: 'nextcloud'
+      scheme: http
+      metrics_path: '/metrics'
+      static_configs:
+        - targets: ['nextcloud-metrics.nextcloud:9205']
+alertmanager:
+  alertmanagerSpec:
+    alertmanagerConfigNamespaceSelector: {}
+    alertmanagerConfigSelector: {}
