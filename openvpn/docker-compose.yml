@@ -21,3 +21,4 @@ services:
     restart: always
     volumes:
       - ./openvpn-data-tcp/conf:/etc/openvpn
+    network_mode: "host"
