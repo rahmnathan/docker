@@ -1,5 +1,9 @@
 # helm install -n keycloak keycloak codecentric/keycloak --values keycloak/values.yml
 
+image:
+  repository: quay.io/keycloak/keycloak
+  tag: 19.0.3-legacy
+
 ingress:
   enabled: true
   servicePort: https
