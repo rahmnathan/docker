@@ -1,4 +1,5 @@
 # helm -n nextcloud install nextcloud nextcloud/nextcloud --values values.yml
+# UPGRADE WARNING: Disable all health/liveness/readiness probes before upgrading or they will kill the pod mid-update.
 
 # Backup files: aws s3 sync /srv/dev-disk-by-id-ata-Samsung_SSD_860_EVO_1TB_S4X5NE0M704625B/PersistentVolumes/nextcloud-nextcloud-nextcloud-pvc-ba0e3573-dc02-4277-9149-017290a8e0f1/ s3://rahm-nextcloud-backup/
 # Backup DB: echo '<password>' | kubectl -n postgres exec -it postgresql-postgresql-0 -- pg_dump -U postgres nextcloud >> /home/nathan/Nextcloud/Developement/nextcloud-backups/nextcloud-$(date "+%Y.%m.%d-%H.%M.%S").sql
