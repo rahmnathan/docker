@@ -1,8 +1,8 @@
 # helm -n nfs-pv-provisioner install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner -f nfs-pv-provisioner/values.yml
 
 nfs:
-  server: 192.168.1.189
-  path: /export/PersistentVolumes
+  server: 10.0.0.195
+  path: /export/PersistentVolumes1
   mountOptions:
     - nolock
     - soft
