@@ -33,8 +33,12 @@ readinessProbe:
   enabled: true
 
 metrics:
-  enabled: true
+  enabled: false
+
+image:
+  tag: 15-debian-11
 
 # Removed this for fresh deployment
-persistence:
-  existingClaim: data-postgres-postgresql-0
+primary:
+  persistence:
+    existingClaim: postgres-postgresql-2
