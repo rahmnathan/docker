@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+    - kubernetes.io/pv-protection
+  name: pv-nextcloud-2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 150Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: nextcloud-nextcloud-2
+    namespace: nextcloud
+  mountOptions:
+  - nolock
+  - soft
+  - rw
+  nfs:
+    path: /export/PersistentVolumes1/nextcloud-nextcloud-nextcloud-pvc-b066e9e8-ed1a-49b2-870a-bcd7f34f9c74
+    server: 10.0.0.195
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-client
+  volumeMode: Filesystem
