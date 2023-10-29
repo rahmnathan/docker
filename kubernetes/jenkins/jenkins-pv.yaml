@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+    - kubernetes.io/pv-protection
+  name: pv-jenkins-2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 150Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: jenkins-jenkins-2
+    namespace: jenkins
+  mountOptions:
+  - nolock
+  - soft
+  - rw
+  nfs:
+    path: /export/PersistentVolumes1/jenkins-jenkins-pvc-803d5de6-356c-44dc-b57b-47dec9cb94d6
+    server: 10.0.0.195
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-client
+  volumeMode: Filesystem
