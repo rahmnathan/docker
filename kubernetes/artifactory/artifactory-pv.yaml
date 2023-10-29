@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+    - kubernetes.io/pv-protection
+  name: pv-artifactory-2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 150Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: artifactory-artifactory-2
+    namespace: artifactory
+  mountOptions:
+  - nolock
+  - soft
+  - rw
+  nfs:
+    path: /export/PersistentVolumes1/artifactory-artifactory-volume-artifactory-0-pvc-21d2b76b-3995-4c87-9980-d1ad0439fd23
+    server: 10.0.0.195
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-client
+  volumeMode: Filesystem

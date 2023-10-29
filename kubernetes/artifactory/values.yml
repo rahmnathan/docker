@@ -3,6 +3,9 @@
 artifactory:
   postgresql:
     enabled: false
+  artifactory:
+    persistence:
+      existingClaim: artifactory-artifactory-2
 
   ingress:
     enabled: true
