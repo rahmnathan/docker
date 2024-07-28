@@ -1,4 +1,4 @@
-FROM jenkins/inbound-agent:4.10-2
+FROM jenkins/inbound-agent:latest
 
 USER root
 RUN apt-get update && apt-get install wget ffmpeg unzip curl -y
@@ -16,9 +16,9 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/b
     rm -f commandlinetools-linux-6200805_latest.zip &&\
     mkdir android-home &&\
     mv tools/ ./android-home/tools &&\
-    wget https://mirrors.ocf.berkeley.edu/apache//jmeter/binaries/apache-jmeter-5.3.tgz &&\
-    tar -zxvf apache-jmeter-5.3.tgz &&\
-    rm -f apache-jmeter-5.3.tgz
+    wget https://mirrors.ocf.berkeley.edu/apache//jmeter/binaries/apache-jmeter-5.6.3.tgz &&\
+    tar -zxvf apache-jmeter-5.6.3.tgz &&\
+    rm -f apache-jmeter-5.6.3.tgz
 
 ENV ANDROID_HOME /home/jenkins/android-home
 ENV SDK_MANAGER_ROOT $ANDROID_HOME/tools
