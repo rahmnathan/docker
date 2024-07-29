@@ -22,7 +22,7 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/b
 
 ENV ANDROID_HOME /home/jenkins/android-home
 ENV SDK_MANAGER_ROOT $ANDROID_HOME/tools
-ENV PATH /home/jenkins/linux-amd64/:/home/jenkins/apache-jmeter-5.3/bin/:$SDK_MANAGER_ROOT/bin:$PATH
+ENV PATH /home/jenkins/linux-amd64/:/home/jenkins/apache-jmeter-5.6.3/bin/:$SDK_MANAGER_ROOT/bin:$PATH
 
 RUN yes | sdkmanager --sdk_root=$SDK_MANAGER_ROOT --licenses &&\
     sdkmanager --sdk_root=$SDK_MANAGER_ROOT "platforms;android-29" "build-tools;29.0.3"
