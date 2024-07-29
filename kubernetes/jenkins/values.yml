@@ -27,4 +27,4 @@ tls:
   password: password1234
 
 persistence:
-    existingClaim: jenkins-jenkins-2
+    existingClaim: jenkins
