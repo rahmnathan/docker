@@ -38,7 +38,19 @@ metrics:
 image:
   tag: 15-debian-11
 
-# Removed this for fresh deployment
 primary:
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1G"
+    limits:
+      cpu: "4"
+      memory: "4G"
+
+# To mount and run init scripts?
+#  containerSecurityContext:
+#    readOnlyRootFilesystem: false
+
+  # Removed this for fresh deployment
   persistence:
     existingClaim: postgres-postgresql-2
