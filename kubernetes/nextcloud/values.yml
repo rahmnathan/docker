@@ -9,7 +9,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 29.0.4-apache
+  tag: 30.0.1-apache
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - myRegistrKeySecretName
@@ -340,8 +340,8 @@ cronjob:
 service:
   type: ClusterIP
   port: 8080
-  loadBalancerIP: nil
-  nodePort: nil
+  loadBalancerIP: ""
+  nodePort:
 
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
