@@ -11,8 +11,6 @@ spec:
   selector:
     matchLabels:
       app: audiobookshelf
-  strategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -20,16 +18,14 @@ spec:
     spec:
       serviceAccountName: audiobookshelf
       containers:
-        - image: "ghcr.io/advplyr/audiobookshelf:2.16.2"
+        - image: "{{ .Values.image.registry }}/audiobookshelf:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: IfNotPresent
           name: audiobookshelf
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
           env:
             - name: LANG
               value: en_US.utf8
             - name: TZ
-              value: "America/Los_Angeles"
+              value: {{ .Values.service.timezone }}
           volumeMounts:
             - name: metadata
               mountPath: /metadata
@@ -54,7 +50,3 @@ spec:
         - name: config
           persistentVolumeClaim:
             claimName: audiobookshelf-config
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      terminationGracePeriodSeconds: 30

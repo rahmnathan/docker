@@ -1,0 +1,15 @@
+ingress:
+  hostname: audiobooks.nathanrahm.com
+
+image:
+  registry: ghcr.io/advplyr
+  tag: 2.16.2
+
+persistence:
+  capacity:
+    audiobooks: 100Gi
+    config: 5Gi
+    metadata: 25Gi
+
+service:
+  timezone: "America/Los_Angeles"
