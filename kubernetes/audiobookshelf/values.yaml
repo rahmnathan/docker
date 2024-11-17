@@ -1,9 +1,11 @@
+# helm install -n audiobookshelf audiobookshelf ./audiobookshelf
+
 ingress:
   hostname: audiobooks.nathanrahm.com
 
 image:
   registry: ghcr.io/advplyr
-  tag: 2.16.2
+  tag: 2.17.0
 
 persistence:
   capacity:
