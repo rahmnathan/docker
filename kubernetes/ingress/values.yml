@@ -6,3 +6,9 @@ metrics:
 controller:
   service:
     type: NodePort
+  metrics:
+    enabled: true
+  podAnnotations:
+    prometheus.io/port: "10254"
+    prometheus.io/scrape: "true"
+  allowSnippetAnnotations: true
