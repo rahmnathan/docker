@@ -2,6 +2,7 @@ FROM jenkins/inbound-agent:latest
 
 USER root
 RUN apt-get update && apt-get install wget ffmpeg unzip curl -y
+RUN curl -fsSL https://get.docker.com | sh
 USER jenkins
 
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.3/bin/linux/amd64/kubectl && \
