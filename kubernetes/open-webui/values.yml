@@ -8,7 +8,7 @@ ollama:
     gpu:
       enabled: false
     models:
-      - llama3
+      - llama3.1
   persistentVolume:
     enabled: true
   resources:
@@ -17,7 +17,7 @@ ollama:
       memory: "6Gi"
     limits:
       cpu: "14"
-      memory: "24Gi"
+      memory: "32Gi"
 
 ingress:
   enabled: true
