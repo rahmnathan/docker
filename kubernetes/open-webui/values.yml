@@ -9,6 +9,7 @@ ollama:
       enabled: false
     models:
       - llama3.1
+      - llama3.2
   persistentVolume:
     enabled: true
   resources:
