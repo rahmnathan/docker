@@ -11,6 +11,13 @@ ollama:
       - llama3
   persistentVolume:
     enabled: true
+  resources:
+    requests:
+      cpu: "4"
+      memory: "6Gi"
+    limits:
+      cpu: "14"
+      memory: "24Gi"
 
 ingress:
   enabled: true
@@ -29,11 +36,3 @@ ingress:
 persistence:
   enabled: true
   size: 8Gi
-
-resources:
-  requests:
-    cpu: "4"
-    memory: "6Gi"
-  limits:
-    cpu: "12"
-    memory: "24Gi"
