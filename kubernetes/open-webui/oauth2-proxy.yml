@@ -25,7 +25,7 @@ spec:
           - --email-domain=*
           - --skip-jwt-bearer-tokens=true
           - --client-id=ollama
-          - --client-secret=KCskeQSvjYpQr7rKhqCXalDETuN9Ldji
+          - --client-secret=<client-secret>
           - --redirect-url=https://ollama.nathanrahm.com/oauth2/callback
           - --allowed-role=ollama
           - --allowed-role=ollama:ollama
