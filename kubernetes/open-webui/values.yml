@@ -27,6 +27,7 @@ ollama:
     models:
       - llama3.1
       - llama3.2
+      - codellama
   persistentVolume:
     enabled: true
   resources:
