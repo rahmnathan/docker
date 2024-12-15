@@ -19,6 +19,7 @@ spec:
           - --provider=keycloak-oidc
           - --oidc-issuer-url=https://login.nathanrahm.com/auth/realms/Ollama
           - --email-domain=*
+          - --skip-jwt-bearer-tokens=true
           - --client-id=ollama
           - --client-secret=KCskeQSvjYpQr7rKhqCXalDETuN9Ldji
           - --redirect-url=https://ollama.nathanrahm.com/oauth2/callback
