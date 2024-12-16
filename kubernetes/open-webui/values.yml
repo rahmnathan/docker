@@ -60,5 +60,3 @@ ollama:
       nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
       nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.open-webui.svc.cluster.local:4180/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: "https://ollama.nathanrahm.com/oauth2/start?rd=$escaped_request_uri"
-#      nginx.ingress.kubernetes.io/auth-url: "https://$host/oauth2/auth"
-#      nginx.ingress.kubernetes.io/auth-signin: "https://$host/oauth2/start?rd=$escaped_request_uri"
