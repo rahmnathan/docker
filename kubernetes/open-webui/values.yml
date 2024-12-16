@@ -28,6 +28,7 @@ ollama:
       - llama3.1
       - llama3.2
       - codellama
+      - hf.co/bartowski/Llama-3.2-3B-Instruct-uncensored-GGUF
   persistentVolume:
     enabled: true
   resources:
