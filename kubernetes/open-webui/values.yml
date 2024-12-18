@@ -1,3 +1,5 @@
+# To secure ollama with Keycloak for external use, see the oauth2-proxy chart and 'values-ollama.yaml'
+
 # helm repo add open-webui https://helm.openwebui.com/
 # helm -n open-webui upgrade --install open-webui open-webui/open-webui -f open-webui/values.yml
 
