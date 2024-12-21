@@ -1,12 +1,12 @@
-# helm install -n keycloak keycloak codecentric/keycloak --values keycloak/values.yml
+# helm repo add codecentric https://codecentric.github.io/helm-charts
+# helm install -n keycloak keycloak codecentric/keycloakx --values keycloak/values.yml
 
 image:
   repository: quay.io/keycloak/keycloak
-  tag: 19.0.3-legacy
+  tag: "25.0"
 
 ingress:
   enabled: true
-  servicePort: https
   annotations:
     cert-manager.io/cluster-issuer:  letsencrypt-prod
     ingress.kubernetes.io/ssl-redirect: "true"
@@ -15,8 +15,7 @@ ingress:
     nginx.ingress.kubernetes.io/enable-modsecurity: "true"
     nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
     nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-    nginx.org/ssl-services: keycloak-http
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "256k"
   rules:
     - host: 'login.nathanrahm.com'
       paths:
@@ -26,19 +25,34 @@ ingress:
     - hosts:
         - login.nathanrahm.com
       secretName: keycloak-ingress-tls
-postgresql:
-  enabled: false
+
+
+http:
+  relativePath: "/"
+
+command:
+  - "/opt/keycloak/bin/kc.sh"
+  - "start"
+  - "--http-port=8080"
+  - "--hostname=https://login.nathanrahm.com"
+dbchecker:
+  enabled: true
+
+database:
+  vendor: postgres
+  hostname: postgresql.postgres.svc.cluster.local
+  port: 5432
+  username: 'keycloak'
+  password: 'pw123'
+  database: keycloak
 
 extraEnv: |
-  - name: 'DB_VENDOR'
-    value: 'postgres'
-  - name: 'DB_ADDR'
-    value: 'postgresql.postgres.svc.cluster.local'
-  - name: 'DB_PORT'
-    value: '5432'
-  - name: 'DB_DATABASE'
-    value: 'keycloak'
-  - name: 'DB_USER'
-    value: 'keycloak'
-  - name: 'DB_PASSWORD'
-    value: 'pw123'
+  - name: KC_BOOTSTRAP_ADMIN_USERNAME
+    value: admin
+  - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+    value: admin
+  - name: KC_PROXY
+    value: "passthrough"
+  - name: JAVA_OPTS_APPEND
+    value: >-
+      -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless

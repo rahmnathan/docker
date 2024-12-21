@@ -7,7 +7,7 @@ ingress:
 cookieSecret: <cookie-secret>
 
 keycloak:
-  realm: Ollama
+  realm: NathanRahm
   clientId: ollama
   clientSecret: <client-secret>
   role: ollama

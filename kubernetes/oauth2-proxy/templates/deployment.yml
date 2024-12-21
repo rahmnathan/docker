@@ -18,7 +18,7 @@ spec:
       containers:
         - args:
             - --provider=keycloak-oidc
-            - --oidc-issuer-url=https://{{ .Values.keycloak.hostname }}/auth/realms/{{ .Values.keycloak.realm }}
+            - --oidc-issuer-url=https://{{ .Values.keycloak.hostname }}/realms/{{ .Values.keycloak.realm }}
             - --email-domain=*
             - --skip-jwt-bearer-tokens=true
             - --client-id={{ .Values.keycloak.clientId }}
