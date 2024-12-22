@@ -1,0 +1,16 @@
+# helm install -n stable-diffusion stable-diffusion ./stable-diffusion
+
+ingress:
+  hostname: sd.nathanrahm.com
+
+image:
+  registry: rahmnathan
+  tag: 78
+
+persistence:
+  capacity:
+    data: 100Gi
+    output: 100Gi
+
+service:
+  timezone: "America/Los_Angeles"

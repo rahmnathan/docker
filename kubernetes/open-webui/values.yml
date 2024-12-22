@@ -25,7 +25,9 @@ ollama:
   enabled: true
   ollama:
     gpu:
-      enabled: false
+      enabled: true
+      type: 'nvidia'
+      number: 1
     models:
       - llama3.2
   persistentVolume:
