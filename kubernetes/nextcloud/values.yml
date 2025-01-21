@@ -9,7 +9,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 30.0.3-apache
+  tag: 30.0.5-apache
   pullPolicy: IfNotPresent
   # pullSecrets:
   #   - myRegistrKeySecretName
