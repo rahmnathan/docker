@@ -4,6 +4,8 @@ metrics:
   prometheusRules: true
 
 controller:
+  config:
+    enable-modsecurity: "false"
   service:
     type: NodePort
   metrics:
