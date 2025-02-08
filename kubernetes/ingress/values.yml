@@ -5,6 +5,7 @@ metrics:
 
 controller:
   config:
+    annotations-risk-level: Critical
     enable-modsecurity: "false"
   service:
     type: NodePort
