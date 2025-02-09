@@ -66,7 +66,32 @@ nextcloud:
   username: nrahm
   password: <password>
   mail:
-    enabled: false
+    enabled: true
+    fromAddress: support
+    domain: nathanrahm.com
+    smtp:
+      host: 10.0.0.33
+      secure: STARTTLS
+      port: 1025
+      authtype: LOGIN
+      name: <username>
+      password: <password>
+  defaultConfigs:
+    smtp.config.php: false
+  configs:
+    smtp.config.php: |-
+      <?php
+      $CONFIG = array (
+        'mail_smtpstreamoptions' =>
+        array (
+          'ssl' =>
+          array (
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+          ),
+        ),
+      );
 
 lifecycle:
   postStartCommand: ["/bin/bash", "-c", "apt update -y && apt install ffmpeg -y"]
