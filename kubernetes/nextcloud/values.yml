@@ -4,6 +4,8 @@
 # Backup files: aws s3 sync /srv/dev-disk-by-id-ata-Samsung_SSD_860_EVO_1TB_S4X5NE0M704625B/PersistentVolumes/nextcloud-nextcloud-nextcloud-pvc-ba0e3573-dc02-4277-9149-017290a8e0f1/ s3://rahm-nextcloud-backup/
 # Backup DB: echo '<password>' | kubectl -n postgres exec -it postgresql-postgresql-0 -- pg_dump -U postgres nextcloud >> /home/nathan/Nextcloud/Developement/nextcloud-backups/nextcloud-$(date "+%Y.%m.%d-%H.%M.%S").sql
 
+# Trigger memory index inside container: su -s /bin/bash www-data -c "./occ memories:index"
+
 ## Official nextcloud image version
 ## ref: https://hub.docker.com/r/library/nextcloud/tags/
 ##
@@ -20,7 +22,6 @@ replicaCount: 1
 ##
 ingress:
   enabled: true
-  # className: nginx
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 12G
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -67,15 +68,9 @@ nextcloud:
   mail:
     enabled: false
 
-nginx:
-  enabled: false
+lifecycle:
+  postStartCommand: ["/bin/bash", "-c", "apt update -y && apt install ffmpeg -y"]
 
-internalDatabase:
-  enabled: false
-
-##
-## External database configuration
-##
 externalDatabase:
   enabled: true
   type: postgresql
@@ -85,6 +80,24 @@ externalDatabase:
   database: nextcloud
   existingSecret:
     enabled: false
+
+persistence:
+  enabled: true
+  existingClaim: nextcloud-nextcloud-2
+  accessMode: ReadWriteOnce
+  size: 150Gi
+
+imaginary:
+  enabled: true
+
+cronjob:
+  enabled: true
+
+
+
+##
+## Disabled Stuff
+##
 
 mariadb:
   enabled: false
@@ -98,42 +111,21 @@ redis:
 collabora:
   enabled: false
 
-cronjob:
-  enabled: false
-
-persistence:
-  enabled: true
-  existingClaim: nextcloud-nextcloud-2
-  accessMode: ReadWriteOnce
-  size: 150Gi
-
 livenessProbe:
   enabled: false
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
 readinessProbe:
   enabled: false
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
 startupProbe:
   enabled: false
-  initialDelaySeconds: 120
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 30
-  successThreshold: 1
+
+nginx:
+  enabled: false
+
+internalDatabase:
+  enabled: false
 
 hpa:
   enabled: false
-
-imaginary:
-  enabled: true
 
 metrics:
   enabled: false
