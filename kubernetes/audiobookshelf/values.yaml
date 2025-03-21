@@ -5,7 +5,7 @@ ingress:
 
 image:
   registry: ghcr.io/advplyr
-  tag: 2.19.5
+  tag: 2.20.0
 
 persistence:
   capacity:
