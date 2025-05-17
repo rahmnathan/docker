@@ -31,9 +31,6 @@ ollama:
       enabled: true
       type: 'nvidia'
       number: 1
-    models:
-      pull:
-        - llama3.2
   persistentVolume:
     enabled: true
   resources:
