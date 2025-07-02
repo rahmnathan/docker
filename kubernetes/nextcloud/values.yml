@@ -1,4 +1,4 @@
-# helm -n nextcloud install nextcloud nextcloud/nextcloud --values nextcloud/values.yml
+# helm -n nextcloud upgrade nextcloud nextcloud/nextcloud --values nextcloud/values.yml
 # UPGRADE WARNING: Disable all health/liveness/readiness probes before upgrading or they will kill the pod mid-update.
 
 # Backup files: aws s3 sync /srv/dev-disk-by-id-ata-Samsung_SSD_860_EVO_1TB_S4X5NE0M704625B/PersistentVolumes/nextcloud-nextcloud-nextcloud-pvc-ba0e3573-dc02-4277-9149-017290a8e0f1/ s3://rahm-nextcloud-backup/
@@ -11,7 +11,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 31.0.5-apache
+  tag: 31.0.6-apache
   pullPolicy: IfNotPresent
 
 # Number of replicas to be deployed
