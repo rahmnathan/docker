@@ -28,5 +28,4 @@ jdbcOverwrite:
   jdbcPassword: "pw123"
 
 postgresql:
-  # Enable to deploy the bitnami PostgreSQL chart
   enabled: false

@@ -11,7 +11,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 31.0.6-apache
+  tag: 31.0.9-apache
   pullPolicy: IfNotPresent
 
 # Number of replicas to be deployed
