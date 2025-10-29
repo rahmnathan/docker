@@ -1,4 +1,4 @@
-# helm upgrade -n postgres postgresql bitnami/postgresql --values postgres/values.yml
+# helm upgrade --install -n postgres postgresql bitnami/postgresql --values postgres/values.yml
 
 initdbScripts:
   vault.sql: |
@@ -36,6 +36,7 @@ metrics:
   enabled: false
 
 image:
+  repository: bitnamilegacy/postgresql
   tag: 15-debian-12
 
 primary:

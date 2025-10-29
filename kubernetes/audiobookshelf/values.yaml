@@ -1,4 +1,4 @@
-# helm upgrade -n audiobookshelf audiobookshelf ./audiobookshelf
+# helm upgrade --install -n audiobookshelf audiobookshelf ./audiobookshelf
 
 ingress:
   hostname: audiobooks.nathanrahm.com

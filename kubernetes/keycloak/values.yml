@@ -1,5 +1,5 @@
 # helm repo add codecentric https://codecentric.github.io/helm-charts
-# helm install -n keycloak keycloak codecentric/keycloakx --values keycloak/values.yml
+# helm upgrade --install -n keycloak keycloak codecentric/keycloakx --values keycloak/values.yml
 
 image:
   repository: quay.io/keycloak/keycloak

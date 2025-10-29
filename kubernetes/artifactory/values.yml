@@ -1,4 +1,4 @@
-# helm install -n artifactory artifactory jfrog/artifactory-oss --values artifactory/values.yml
+# helm upgrade --install -n artifactory artifactory jfrog/artifactory-oss --values artifactory/values.yml
 
 artifactory:
   postgresql:
@@ -7,11 +7,17 @@ artifactory:
     persistence:
       existingClaim: artifactory-artifactory-2
 
+  nginx:
+    enabled: false
+
   ingress:
     enabled: true
     hosts:
       - artifactory.nathanrahm.com
     path: /
+    defaultBackend:
+      enabled: false
+    className: "nginx"
     annotations:
       nginx.org/client-max-body-size: 500m
       nginx.ingress.kubernetes.io/proxy-body-size: 500m

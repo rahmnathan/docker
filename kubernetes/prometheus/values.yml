@@ -1,4 +1,4 @@
-# helm install -n monitoring kube-prometheus-stack prometheus-community/kube-prometheus-stack --values prometheus/values.yml
+# helm upgrade --install -n monitoring kube-prometheus-stack prometheus-community/kube-prometheus-stack --values prometheus/values.yml
 
 grafana:
   assertNoLeakedSecrets: false
