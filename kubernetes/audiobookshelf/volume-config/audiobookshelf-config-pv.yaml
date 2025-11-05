@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+    - kubernetes.io/pv-protection
+  name: pvc-91506ad8-4c7e-450e-b07c-bec6d2076d25
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  mountOptions:
+    - nolock
+    - soft
+    - rw
+  nfs:
+    path: /export/PersistentVolumes1/audiobookshelf-audiobookshelf-config-pvc-91506ad8-4c7e-450e-b07c-bec6d2076d25
+    server: 10.0.0.195
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: nfs-client
+  volumeMode: Filesystem

@@ -1,3 +1,4 @@
+{{- if not .Values.persistence.existingClaim.audiobooks }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -8,7 +9,9 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.capacity.audiobooks }}
+{{ end }}
 ---
+{{- if not .Values.persistence.existingClaim.config }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -19,7 +22,9 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.capacity.config }}
+{{ end }}
 ---
+{{- if not .Values.persistence.existingClaim.metadata }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -30,3 +35,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistence.capacity.metadata }}
+{{ end }}

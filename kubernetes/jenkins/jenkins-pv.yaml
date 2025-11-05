@@ -19,7 +19,7 @@ spec:
   - soft
   - rw
   nfs:
-    path: /export/PersistentVolumes1/jenkins-jenkins-pvc-803d5de6-356c-44dc-b57b-47dec9cb94d6
+    path: /export/PersistentVolumes1/jenkins-jenkins-pvc-b3ab1453-93af-4ab0-a03d-42d3cc7220bb
     server: 10.0.0.195
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-client

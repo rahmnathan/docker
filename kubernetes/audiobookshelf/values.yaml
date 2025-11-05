@@ -1,5 +1,7 @@
 # helm upgrade --install -n audiobookshelf audiobookshelf ./audiobookshelf
 
+### Apply existing volumes configuration if restoring from backup
+
 ingress:
   hostname: audiobooks.nathanrahm.com
 
@@ -12,6 +14,10 @@ persistence:
     audiobooks: 100Gi
     config: 5Gi
     metadata: 25Gi
+  existingClaim:
+    audiobooks: audiobookshelf-audiobooks
+    config: audiobookshelf-config
+    metadata: audiobookshelf-metadata
 
 service:
   timezone: "America/Los_Angeles"
