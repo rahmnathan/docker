@@ -1,57 +1,22 @@
-# helm install -n vault vault banzaicloud-stable/vault --values vault/values.yml
+# helm install -n vault vault hashicorp/vault --values vault/values.yml
 
-vault:
-  config:
-    listener:
-      tcp:
-        tls_disable: true
-    storage:
-      postgresql:
-        connection_url: "postgres://vault:pw123@postgresql.postgres.svc.cluster.local:5432/vault?sslmode=disable"
-  externalConfig:
-    policies:
-      - name: localmovies
-        rules: path "localmovies/*" {
-          capabilities = ["create", "read", "update", "delete", "list"]
-          }
-    auth:
-      - type: kubernetes
-        roles:
-          - name: localmovies
-            bound_service_account_names: localmovies
-            bound_service_account_namespaces: localmovies
-            policies: localmovies
-            ttl: 1h
-    secrets:
-      - path: localmovies
-        type: kv
-        description: LocalMovies
-        options:
-          version: 2
-
-ingress:
-  enabled: true
-  hosts:
-  - vault.nathanrahm.com
-  annotations:
-    kubernetes.io/tls-acme: 'true'
-    ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/cluster-issuer:  letsencrypt-prod
-    kubernetes.io/ingress.class: "nginx"
-#    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-#    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-#    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-  tls:
-  - secretName: vault-ingress-tls
+server:
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
     hosts:
-    - vault.nathanrahm.com
-
-unsealer:
-  args: [
-    "--mode",
-    "k8s",
-    "--k8s-secret-namespace",
-    "vault",
-    "--k8s-secret-name",
-    "bank-vaults"
-  ]
+      - host: vault.nathanrahm.com
+        paths: []
+    annotations:
+      kubernetes.io/tls-acme: 'true'
+      ingress.kubernetes.io/ssl-redirect: "true"
+      cert-manager.io/cluster-issuer:  letsencrypt-prod
+  #    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+  #    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+  #    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
+    tls:
+    - secretName: vault-ingress-tls
+      hosts:
+      - vault.nathanrahm.com
+  ui:
+    enabled: true
