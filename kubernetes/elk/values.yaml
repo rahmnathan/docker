@@ -121,7 +121,9 @@ eck-beats:
                   - container: {}
                 prospector:
                   scanner:
-                    fingerprint.enabled: true
+                    fingerprint:
+                      enabled: true
+                      length: 64
                     symlinks: true
                 file_identity.fingerprint: {}
     processors:
