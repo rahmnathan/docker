@@ -1,6 +1,8 @@
 # helm upgrade --install -n artifactory artifactory jfrog/artifactory-oss --values artifactory/values.yml
 
 artifactory:
+  observability:
+    enabled: false
   postgresql:
     enabled: false
   artifactory:
