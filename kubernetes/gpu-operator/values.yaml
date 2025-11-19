@@ -1,0 +1,35 @@
+# helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
+# helm upgrade --install gpu-operator -n gpu-operator nvidia/gpu-operator --values gpu-operator/values.yaml
+
+# Install the NVIDIA driver DaemonSet
+driver:
+  enable: true
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+  # containerRuntime settings are optional; GPU Operator auto-detects K3s
+  containerRuntime:
+    containerd:
+    # Optional, only if you hit runtime errors
+    # socketPath: "/var/run/k3s/containerd/containerd.sock"
+
+# Enable NVIDIA device plugin for exposing GPUs to workloads
+devicePlugin:
+  enable: true
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+# Optional: enable DCGM exporter for GPU metrics
+dcgmExporter:
+  enable: true
+  tolerations:
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+
+# Optional: disable GPU Operator validator if not needed
+validator:
+  enable: false
