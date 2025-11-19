@@ -1,4 +1,4 @@
-# helm install -n open-webui oauth2-proxy ./oauth2-proxy --values oauth2-proxy/values.yaml --values oauth2-proxy/values-ollama.yaml
+# helm upgrade -i -n open-webui oauth2-proxy ./oauth2-proxy --values oauth2-proxy/values.yaml --values oauth2-proxy/values-ollama.yaml
 
 ingress:
   hostname: ollama.nathanrahm.com

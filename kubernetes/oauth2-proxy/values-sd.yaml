@@ -1,4 +1,4 @@
-# helm install -n stable-diffusion oauth2-proxy ./oauth2-proxy --values oauth2-proxy/values.yaml --values oauth2-proxy/values-sd.yaml
+# helm upgrade --install -n stable-diffusion oauth2-proxy ./oauth2-proxy --values oauth2-proxy/values.yaml --values oauth2-proxy/values-sd.yaml
 
 ingress:
   hostname: sd.nathanrahm.com

@@ -93,8 +93,14 @@ nextcloud:
         ),
       );
 
+# Install ffmpeg and launch background workers for AI task completion
 lifecycle:
-  postStartCommand: ["/bin/bash", "-c", "apt update -y && apt install ffmpeg -y"]
+  postStartCommand:
+    - /bin/bash
+    - -c
+    - >
+      nohup bash -c "apt update -y && apt install -y ffmpeg" >/dev/null 2>&1 & 
+      for i in {1..6}; do nohup su -s /bin/sh www-data -c 'php occ background-job:worker -v -t 60 "OC\TaskProcessing\SynchronousBackgroundJob"' >/dev/null 2>&1 & done
 
 externalDatabase:
   enabled: true

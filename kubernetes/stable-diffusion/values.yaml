@@ -1,4 +1,4 @@
-# helm install -n stable-diffusion stable-diffusion ./stable-diffusion
+# helm upgrade --install -n stable-diffusion stable-diffusion ./stable-diffusion
 
 ingress:
   hostname: sd.nathanrahm.com
