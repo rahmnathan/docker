@@ -39,6 +39,7 @@ spec:
             requests:
               cpu: "2"
               memory: "4Gi"
+              nvidia.com/gpu: 1
             limits:
               cpu: "8"
               memory: "24Gi"
