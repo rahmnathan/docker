@@ -1,0 +1,35 @@
+# kubectl -n gpu-operator apply -f gpu-operator/gpu-slicing.yaml
+#### Add time-slicing configuration
+# kubectl -n gpu-operator edit clusterpolicies.nvidia.com cluster-policy
+# spec:
+#  devicePlugin:
+#    config:
+#      name: plugin-config
+#      default: time-slicing
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plugin-config
+  namespace: gpu-operator
+data:
+  time-slicing: |-
+    version: v1
+    flags:
+      migStrategy: none
+    sharing:
+      timeSlicing:
+        renameByDefault: false
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 4
+  mps: |-
+    version: v1
+    flags:
+      migStrategy: none
+    sharing:
+      mps:
+        renameByDefault: false
+        resources:
+          - name: nvidia.com/gpu
+            replicas: 4
