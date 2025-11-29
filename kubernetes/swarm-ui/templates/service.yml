@@ -10,4 +10,4 @@ spec:
     - name: http
       port: 7801
     - name: comfy-ui
-      port: 8000
+      port: 7821

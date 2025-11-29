@@ -17,6 +17,9 @@ spec:
         app: swarm-ui
     spec:
       serviceAccountName: swarm-ui
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       containers:
         - image: "{{ .Values.image.registry }}/swarmui:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: Always
@@ -29,12 +32,8 @@ spec:
             - name: PATH
               value: /usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin
           volumeMounts:
-            - name: models
-              mountPath: /SwarmUI/Models
-            - name: output
-              mountPath: /SwarmUI/Output
-            - name: custom-workflows
-              mountPath: /SwarmUI/src/BuiltinExtensions/ComfyUIBackend/CustomWorkflows
+            - name: swarm-ui
+              mountPath: /SwarmUI
           resources:
             requests:
               cpu: "2"
@@ -49,12 +48,6 @@ spec:
           key: nvidia.com/gpu
           operator: Exists
       volumes:
-        - name: models
+        - name: swarm-ui
           persistentVolumeClaim:
-            claimName: swarm-ui-models
-        - name: output
-          persistentVolumeClaim:
-            claimName: swarm-ui-output
-        - name: custom-workflows
-          persistentVolumeClaim:
-            claimName: swarm-ui-custom-workflows
+            claimName: swarm-ui
