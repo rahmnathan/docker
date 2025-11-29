@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swarm-ui-output
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.capacity.output }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swarm-ui-models
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.capacity.data }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: swarm-ui-custom-workflows
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.capacity.data }}

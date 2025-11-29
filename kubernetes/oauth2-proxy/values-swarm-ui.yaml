@@ -1,0 +1,13 @@
+# helm upgrade --install -n stable-diffusion oauth2-proxy ./oauth2-proxy --values oauth2-proxy/values.yaml --values oauth2-proxy/values-swarm-ui.yaml
+
+ingress:
+  hostname: swarm-ui.nathanrahm.com
+  tlsSecretName: swarm-ui-tls
+
+cookieSecret: <cookie-secret>
+
+keycloak:
+  realm: NathanRahm
+  clientId: ollama
+  clientSecret: <client-secret>
+  role: ollama

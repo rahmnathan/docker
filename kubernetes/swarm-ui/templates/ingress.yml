@@ -1,0 +1,29 @@
+# Using this together with nginx-ingress installed as described here - https://kubernetes.github.io/ingress-nginx/deploy/#generic-deployment
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+    name: swarm-ui-ingress
+    annotations:
+        kubernetes.io/tls-acme: 'true'
+        ingress.kubernetes.io/ssl-redirect: "true"
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        kubernetes.io/ingress.class: "nginx"
+        nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.swarm-ui.svc.cluster.local:4180/oauth2/auth"
+        nginx.ingress.kubernetes.io/auth-signin: "https://swarm-ui.nathanrahm.com/oauth2/start?rd=$escaped_request_uri"
+spec:
+  rules:
+    - host: {{ .Values.ingress.hostname }}
+      http:
+        paths:
+         - path: /
+           pathType: ImplementationSpecific
+           backend:
+             service:
+               name: swarm-ui
+               port:
+                 name: http
+  tls:
+        - hosts:
+              - {{ .Values.ingress.hostname }}
+          secretName: swarm-ui-tls

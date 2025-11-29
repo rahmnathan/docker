@@ -4,37 +4,37 @@ metadata:
   annotations:
     deployment.kubernetes.io/revision: "1"
   labels:
-    app: stable-diffusion
-  name: stable-diffusion
+    app: swarm-ui
+  name: swarm-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stable-diffusion
+      app: swarm-ui
   template:
     metadata:
       labels:
-        app: stable-diffusion
+        app: swarm-ui
     spec:
-      serviceAccountName: stable-diffusion
+      serviceAccountName: swarm-ui
       containers:
-        - image: "{{ .Values.image.registry }}/sd-auto:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        - image: "{{ .Values.image.registry }}/swarmui:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: Always
-          name: stable-diffusion
+          name: swarm-ui
           env:
             - name: LANG
               value: en_US.utf8
             - name: TZ
               value: {{ .Values.service.timezone }}
-            - name: CLI_ARGS
-              value: --allow-code --medvram --xformers --enable-insecure-extension-access --api
             - name: PATH
               value: /usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin
           volumeMounts:
-            - name: data
-              mountPath: /data
+            - name: models
+              mountPath: /SwarmUI/Models
             - name: output
-              mountPath: /output
+              mountPath: /SwarmUI/Output
+            - name: custom-workflows
+              mountPath: /SwarmUI/src/BuiltinExtensions/ComfyUIBackend/CustomWorkflows
           resources:
             requests:
               cpu: "2"
@@ -49,9 +49,12 @@ spec:
           key: nvidia.com/gpu
           operator: Exists
       volumes:
-        - name: data
+        - name: models
           persistentVolumeClaim:
-            claimName: stable-diffusion-data
+            claimName: swarm-ui-models
         - name: output
           persistentVolumeClaim:
-            claimName: stable-diffusion-output
+            claimName: swarm-ui-output
+        - name: custom-workflows
+          persistentVolumeClaim:
+            claimName: swarm-ui-custom-workflows

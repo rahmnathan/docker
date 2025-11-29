@@ -1,0 +1,16 @@
+# helm upgrade --install -n swarm-ui swarm-ui ./swarm-ui
+
+ingress:
+  hostname: swarm-ui.nathanrahm.com
+
+image:
+  registry: rahmnathan
+  tag: 1
+
+persistence:
+  capacity:
+    data: 100Gi
+    output: 100Gi
+
+service:
+  timezone: "America/Los_Angeles"

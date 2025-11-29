@@ -1,4 +1,5 @@
 # kubectl -n gpu-operator apply -f gpu-operator/gpu-slicing.yaml
+
 #### Add time-slicing configuration
 # kubectl -n gpu-operator edit clusterpolicies.nvidia.com cluster-policy
 # spec:

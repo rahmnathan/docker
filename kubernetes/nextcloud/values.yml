@@ -6,6 +6,8 @@
 
 # Trigger memory index inside container: su -s /bin/bash www-data -c "./occ memories:index"
 
+# Install nvidia docker support for assistant: sudo apt install nvidia-docker2
+
 ## Official nextcloud image version
 ## ref: https://hub.docker.com/r/library/nextcloud/tags/
 ##
@@ -65,33 +67,42 @@ nextcloud:
   host: nextcloud.nathanrahm.com
   username: nrahm
   password: <password>
-  mail:
-    enabled: true
-    fromAddress: support
-    domain: nathanrahm.com
-    smtp:
-      host: 10.0.0.33
-      secure: STARTTLS
-      port: 1025
-      authtype: LOGIN
-      name: <username>
-      password: <password>
-  defaultConfigs:
-    smtp.config.php: false
-  configs:
-    smtp.config.php: |-
-      <?php
-      $CONFIG = array (
-        'mail_smtpstreamoptions' =>
-        array (
-          'ssl' =>
-          array (
-            'allow_self_signed' => true,
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-          ),
-        ),
-      );
+  extraVolumes:
+    - name: docker
+      hostPath:
+        path: /var/run/docker.sock
+        type: Socket
+  extraVolumeMounts:
+    - name: docker
+      mountPath: /var/run/docker.sock
+
+#  mail:
+#    enabled: true
+#    fromAddress: support
+#    domain: nathanrahm.com
+#    smtp:
+#      host: 10.0.0.33
+#      secure: STARTTLS
+#      port: 1025
+#      authtype: LOGIN
+#      name: <username>
+#      password: <password>
+#  defaultConfigs:
+#    smtp.config.php: false
+#  configs:
+#    smtp.config.php: |-
+#      <?php
+#      $CONFIG = array (
+#        'mail_smtpstreamoptions' =>
+#        array (
+#          'ssl' =>
+#          array (
+#            'allow_self_signed' => true,
+#            'verify_peer' => false,
+#            'verify_peer_name' => false,
+#          ),
+#        ),
+#      );
 
 # Install ffmpeg and launch background workers for AI task completion
 lifecycle:
