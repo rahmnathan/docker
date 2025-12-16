@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: context-chat-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: context-chat-backend
+  ports:
+    - name: http
+      port: 10034
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: context-chat-backend
+  name: context-chat-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: context-chat-backend
+  template:
+    metadata:
+      labels:
+        app: context-chat-backend
+    spec:
+      containers:
+        - image: ghcr.io/nextcloud/context_chat_backend:5.0.1
+          imagePullPolicy: IfNotPresent
+          name: context-chat-backend
+          env:
+            - name: NEXTCLOUD_URL
+              value: "https://nextcloud.nathanrahm.com"
+            - name: APP_HOST
+              value: "0.0.0.0"
+            - name: APP_PORT
+              value: "10034"
+            - name: APP_ID
+              value: "context_chat_backend"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute"
+            - name: APP_VERSION
+              value: "5.0.1"
+            - name: APP_SECRET
+              value: "12345"
+            - name: APP_NAME
+              value: "Context Chat Backend"
+          volumeMounts:
+            - name: context-chat-backend-persistence
+              mountPath: /app/persistence
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+      volumes:
+        - name: context-chat-backend-persistence
+          persistentVolumeClaim:
+            claimName: context-chat-backend-persistence-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: context-chat-backend-persistence-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

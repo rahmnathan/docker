@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: subgen
+data:
+ subgen.env: |
+    WHISPER_MODEL=medium
+    WHISPER_THREADS=4
+    WEBHOOKPORT=9000
+    TRANSCRIBE_DEVICE=cuda
+    DEBUG=True
+    CLEAR_VRAM_ON_COMPLETE=True
+    APPEND=False
+    TRANSCRIBE_OR_TRANSLATE=transcribe
+    NAMESUBLANG=ai

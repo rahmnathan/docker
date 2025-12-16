@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  labels:
+    app: subgen
+  name: subgen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subgen
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: subgen
+    spec:
+      serviceAccountName: subgen
+      containers:
+        - image: "{{ .Values.image.registry }}/subgen:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: IfNotPresent
+          name: subgen
+          env:
+            - name: LANG
+              value: en_US.utf8
+            - name: TZ
+              value: {{ .Values.service.timezone }}
+            - name: PATH
+              value: /usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin
+          volumeMounts:
+            - name: application-config
+              mountPath: /subgen/subgen.env
+              subPath: subgen.env
+              readOnly: true
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+              nvidia.com/gpu: 1
+            limits:
+              cpu: "6"
+              memory: "12Gi"
+              nvidia.com/gpu: 1
+      volumes:
+        - name: application-config
+          configMap:
+            name: subgen
+            items:
+              - key: subgen.env
+                path: subgen.env
