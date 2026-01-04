@@ -21,7 +21,7 @@ jdbcOverwrite:
   enable: true
   enabled: true
   # The JDBC url of the external DB
-  jdbcUrl: "jdbc:postgresql://postgresql.postgres.svc.cluster.local:5432/sonarqube?socketTimeout=1500"
+  jdbcUrl: "jdbc:postgresql://postgres-rw.postgres-18.svc.cluster.local:5432/sonarqube?socketTimeout=1500"
   # The DB user that should be used for the JDBC connection
   jdbcUsername: "sonarqube"
   # Use this if you don't mind the DB password getting stored in plain text within the values file
