@@ -1,0 +1,6 @@
+# helm upgrade --install cnpg -n postgres-18 cloudnative-pg/cloudnative-pg --values postgres-cloudnative/values-operator.yaml
+
+
+config:
+  clusterWide: false
+

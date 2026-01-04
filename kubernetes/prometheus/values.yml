@@ -13,7 +13,7 @@ grafana:
       org_role: Viewer
     database:
       type: postgres
-      host: postgresql.postgres:5432
+      host: postgres-rw.postgres-18:5432
       name: grafana
       user: grafana
       password: pw123

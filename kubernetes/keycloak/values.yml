@@ -40,7 +40,7 @@ dbchecker:
 
 database:
   vendor: postgres
-  hostname: postgresql.postgres.svc.cluster.local
+  hostname: postgres-rq.postgres-18.svc.cluster.local
   port: 5432
   username: 'keycloak'
   password: 'pw123'

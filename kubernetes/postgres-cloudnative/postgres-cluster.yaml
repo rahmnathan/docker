@@ -1,0 +1,43 @@
+# kubectl apply -n postgres-18 -f postgres-cloudnative/postgres-cluster.yaml
+
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+spec:
+  instances: 1
+
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1
+
+  primaryUpdateStrategy: unsupervised
+
+  storage:
+    size: 10Gi
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: "4G"
+    limits:
+      cpu: "4"
+      memory: "4G"
+
+# Use existing volume claim
+  pvcTemplate:
+    metadata:
+      name: postgres-1
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: nfs-client
+
+#  bootstrap:
+#    initdb:
+#      database: appdb
+#      owner: appuser
+#      postInitSQL:
+#        - |
+#          CREATE EXTENSION IF NOT EXISTS pgcrypto;

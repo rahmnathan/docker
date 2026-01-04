@@ -1,0 +1,36 @@
+apiVersion: v1
+items:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      annotations:
+        cnpg.io/nodeSerial: "1"
+        cnpg.io/operatorVersion: 1.28.0
+        cnpg.io/pvcStatus: ready
+        pv.kubernetes.io/bind-completed: "yes"
+        pv.kubernetes.io/bound-by-controller: "yes"
+        volume.beta.kubernetes.io/storage-provisioner: cluster.local/nfs-subdir-external-provisioner
+        volume.kubernetes.io/storage-provisioner: cluster.local/nfs-subdir-external-provisioner
+      finalizers:
+        - kubernetes.io/pvc-protection
+      labels:
+        app.kubernetes.io/component: database
+        app.kubernetes.io/managed-by: cloudnative-pg
+        app.kubernetes.io/name: postgresql
+        cnpg.io/cluster: postgres
+        cnpg.io/instanceName: postgres-1
+        cnpg.io/instanceRole: primary
+        cnpg.io/pvcRole: PG_DATA
+        role: primary
+      name: postgres-1
+      namespace: postgres-18
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: nfs-client
+      volumeMode: Filesystem
+      volumeName: pvc-2f6bc2bd-fa7b-4ae6-8224-6dcb12b672d3
+kind: List

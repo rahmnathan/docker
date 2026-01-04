@@ -5,23 +5,23 @@ metadata:
     pv.kubernetes.io/provisioned-by: cluster.local/nfs-subdir-external-provisioner
   finalizers:
     - kubernetes.io/pv-protection
-  name: pv-postgres-2
+  name: pvc-2f6bc2bd-fa7b-4ae6-8224-6dcb12b672d3
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   capacity:
-    storage: 8Gi
+    storage: 10Gi
   claimRef:
     apiVersion: v1
     kind: PersistentVolumeClaim
-    name: postgres-postgresql-2
-    namespace: postgres
+    name: postgres-1
+    namespace: postgres-18
   mountOptions:
-  - nolock
-  - soft
-  - rw
+    - nolock
+    - soft
+    - rw
   nfs:
-    path: /export/PersistentVolumes1/postgres-data-postgresql-0-pvc-ea7ef126-bc56-4b63-9ae3-6ffe14c98f25
+    path: /export/PersistentVolumes1/postgres-18-postgres-1-pvc-2f6bc2bd-fa7b-4ae6-8224-6dcb12b672d3
     server: 10.0.0.195
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-client

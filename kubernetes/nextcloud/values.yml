@@ -116,7 +116,7 @@ lifecycle:
 externalDatabase:
   enabled: true
   type: postgresql
-  host: postgresql.postgres.svc.cluster.local
+  host: postgres-rw.postgres-18.svc.cluster.local
   user: nextcloud
   password: pw123
   database: nextcloud
