@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/keycloak/keycloak
-  tag: "25.0"
+  tag: "26.4"
 
 ingress:
   enabled: true
@@ -40,7 +40,7 @@ dbchecker:
 
 database:
   vendor: postgres
-  hostname: postgres-rq.postgres-18.svc.cluster.local
+  hostname: postgres-rw.postgres-18.svc.cluster.local
   port: 5432
   username: 'keycloak'
   password: 'pw123'
