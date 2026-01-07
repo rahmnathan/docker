@@ -39,33 +39,37 @@ spec:
       data:
         compression: gzip
 
+  externalClusters:
+    - name: postgres-backup
+      barmanObjectStore:
+        destinationPath: s3://postgres-backups
+        endpointURL: http://10.0.0.195:9000
+        s3Credentials:
+          accessKeyId:
+            name: postgres-backup-creds
+            key: MINIO_USER
+          secretAccessKey:
+            name: postgres-backup-creds
+            key: MINIO_PASSWORD
+        wal:
+          compression: gzip
+        data:
+          compression: gzip
+
   bootstrap:
-    initdb:
-      database: defaultdb
-      owner: defaultuser
-      postInitSQL:
-        - "CREATE USER nextcloud WITH PASSWORD 'pw123';"
-        - "CREATE USER keycloak WITH PASSWORD 'pw123';"
-        - "CREATE USER localmovies WITH PASSWORD 'pw123';"
-        - "CREATE USER grafana WITH PASSWORD 'pw123';"
-        - "CREATE DATABASE nextcloud with owner nextcloud;"
-        - "CREATE DATABASE keycloak with owner keycloak;"
-        - "CREATE DATABASE localmovies with owner localmovies;"
-        - "CREATE DATABASE grafana with owner grafana;"
+    # Restore from backup
 #    recovery:
-#      source:
-#        # The bucket name or backup path from your barmanObjectStore
-#        barmanObjectStore:
-#          destinationPath: s3://postgres-backups
-#          endpointURL: http://10.0.0.195:9000
-#          s3Credentials:
-#            accessKeyId:
-#              name: postgres-backup-creds
-#              key: MINIO_USER
-#            secretAccessKey:
-#              name: postgres-backup-creds
-#              key: MINIO_PASSWORD
-#          wal:
-#            compression: gzip
-#          data:
-#            compression: gzip
+#      source: postgres-backup
+    # Create initial DB
+#    initdb:
+#      database: defaultdb
+#      owner: defaultuser
+#      postInitSQL:
+#        - "CREATE USER nextcloud WITH PASSWORD 'pw123';"
+#        - "CREATE USER keycloak WITH PASSWORD 'pw123';"
+#        - "CREATE USER localmovies WITH PASSWORD 'pw123';"
+#        - "CREATE USER grafana WITH PASSWORD 'pw123';"
+#        - "CREATE DATABASE nextcloud with owner nextcloud;"
+#        - "CREATE DATABASE keycloak with owner keycloak;"
+#        - "CREATE DATABASE localmovies with owner localmovies;"
+#        - "CREATE DATABASE grafana with owner grafana;"
