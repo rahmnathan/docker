@@ -30,7 +30,9 @@ ENV ANDROID_HOME=/home/jenkins/android-home
 ENV SDK_MANAGER_ROOT=$ANDROID_HOME/tools
 ENV PATH=/home/jenkins/linux-amd64:/home/jenkins/apache-jmeter-5.6.3/bin:$SDK_MANAGER_ROOT/bin:$SOPS_HOME:$PATH
 
-RUN yes | sdkmanager --sdk_root=$SDK_MANAGER_ROOT --licenses &&\
+RUN set +o pipefail &&\
+    yes | sdkmanager --sdk_root=$SDK_MANAGER_ROOT --licenses &&\
+    set -o pipefail &&\
     sdkmanager --sdk_root=$SDK_MANAGER_ROOT "platforms;android-29" "build-tools;29.0.3"
 
 RUN mv $SDK_MANAGER_ROOT/licenses $ANDROID_HOME/licenses
