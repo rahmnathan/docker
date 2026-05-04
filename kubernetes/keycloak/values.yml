@@ -3,7 +3,7 @@
 
 image:
   repository: quay.io/keycloak/keycloak
-  tag: "26.4"
+  tag: "26.6"
 
 ingress:
   enabled: true
