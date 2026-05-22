@@ -1,4 +1,4 @@
-# helm install -n ingress ingress-nginx ingress-nginx/ingress-nginx --values ingress/values.yml
+# helm upgrade --install -n ingress ingress-nginx ingress-nginx/ingress-nginx --values ingress/values.yml
 
 metrics:
   prometheusRules: true

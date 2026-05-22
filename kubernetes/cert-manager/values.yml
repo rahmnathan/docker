@@ -1,4 +1,4 @@
-# helm install -n cert-manager cert-manager jetstack/cert-manager --values cert-manager/values.yml
+# helm upgrade --install -n cert-manager cert-manager jetstack/cert-manager --values cert-manager/values.yml
 
 crds:
   enabled: true
