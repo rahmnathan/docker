@@ -13,7 +13,7 @@
 ##
 image:
   repository: nextcloud
-  tag: 33.0.3-apache
+  tag: 34.0.0-apache
   pullPolicy: IfNotPresent
 
 # Number of replicas to be deployed
@@ -89,20 +89,26 @@ nextcloud:
 #      password: <password>
 #  defaultConfigs:
 #    smtp.config.php: false
-#  configs:
-#    smtp.config.php: |-
-#      <?php
-#      $CONFIG = array (
-#        'mail_smtpstreamoptions' =>
-#        array (
-#          'ssl' =>
-#          array (
-#            'allow_self_signed' => true,
-#            'verify_peer' => false,
-#            'verify_peer_name' => false,
-#          ),
-#        ),
-#      );
+  configs:
+    previews.config.php: |-
+      <?php
+      $CONFIG = array (
+        'enable_previews' => true,
+        'enabledPreviewProviders' => array (
+          'OC\Preview\Movie',
+          'OC\Preview\PNG',
+          'OC\Preview\JPEG',
+          'OC\Preview\GIF',
+          'OC\Preview\BMP',
+          'OC\Preview\XBitmap',
+          'OC\Preview\MP3',
+          'OC\Preview\MP4',
+          'OC\Preview\TXT',
+          'OC\Preview\MarkDown',
+          'OC\Preview\PDF',
+          'OC\Preview\HEIC'
+        ),
+      );
 
 # Install ffmpeg and launch background workers for AI task completion
 lifecycle:
