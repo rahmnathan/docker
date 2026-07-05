@@ -108,8 +108,8 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (service) (rate(envoy_cluster_external_upstream_rq{envoy_cluster_name=~\"httproute/.*\"}[$__rate_interval])) > 0",
-          "legendFormat": "{{service}}",
+          "expr": "sum by (envoy_cluster_name) (rate(envoy_cluster_external_upstream_rq{envoy_cluster_name=~\"httproute/.*\"}[$__rate_interval])) > 0",
+          "legendFormat": "{{envoy_cluster_name}}",
           "range": true,
           "refId": "A"
         }
@@ -119,8 +119,8 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "httproute/([^/]+)/.*",
-            "renamePattern": "$1"
+            "regex": "httproute/([^/]+)/([^/]+)/.*",
+            "renamePattern": "$1/$2"
           }
         }
       ],
