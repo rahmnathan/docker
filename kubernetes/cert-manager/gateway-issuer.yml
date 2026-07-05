@@ -1,0 +1,19 @@
+# ClusterIssuer for Gateway API (uses gatewayHTTPRoute solver instead of ingress)
+# Apply after Envoy Gateway is installed and main-gateway exists
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-gateway
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: rahm.nathan@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-gateway
+    solvers:
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: main-gateway
+                namespace: envoy-gateway-system

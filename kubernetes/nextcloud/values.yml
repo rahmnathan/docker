@@ -1,4 +1,5 @@
 # helm -n nextcloud upgrade --install nextcloud nextcloud/nextcloud --values nextcloud/values.yml
+# Gateway API: kubectl apply -f nextcloud/httproute.yml -f nextcloud/backend-policy.yml
 # UPGRADE WARNING: Disable all health/liveness/readiness probes before upgrading or they will kill the pod mid-update.
 
 # Backup files: aws s3 sync /srv/dev-disk-by-id-ata-Samsung_SSD_860_EVO_1TB_S4X5NE0M704625B/PersistentVolumes/nextcloud-nextcloud-nextcloud-pvc-ba0e3573-dc02-4277-9149-017290a8e0f1/ s3://rahm-nextcloud-backup/
@@ -19,49 +20,8 @@ image:
 # Number of replicas to be deployed
 replicaCount: 1
 
-## Allowing use of ingress controllers
-## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
-##
 ingress:
-  enabled: true
-  annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 12G
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    ingress.kubernetes.io/ssl-redirect: "true"
-    kubernetes.io/ingress.class: nginx
-    kubernetes.io/tls-acme: "true"
-    # Keep this in sync with the README.md:
-    nginx.ingress.kubernetes.io/server-snippet: |-
-      server_tokens off;
-      proxy_hide_header X-Powered-By;
-      rewrite ^/.well-known/webfinger /index.php/.well-known/webfinger last;
-      rewrite ^/.well-known/nodeinfo /index.php/.well-known/nodeinfo last;
-      rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
-      rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
-      location = /.well-known/carddav {
-        return 301 $scheme://$host/remote.php/dav;
-      }
-      location = /.well-known/caldav {
-        return 301 $scheme://$host/remote.php/dav;
-      }
-      location = /robots.txt {
-        allow all;
-        log_not_found off;
-        access_log off;
-      }
-      location ~ ^/(?:build|tests|config|lib|3rdparty|templates|data)/ {
-        deny all;
-      }
-      location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
-        deny all;
-      }
-  tls:
-    - secretName: nextcloud-tls
-      hosts:
-        - nextcloud.nathanrahm.com
-  labels: {}
-  path: /
-  pathType: Prefix
+  enabled: false
 
 nextcloud:
   host: nextcloud.nathanrahm.com

@@ -1,17 +1,6 @@
 # helm upgrade --install -n jenkins jenkins jenkins/jenkins --values jenkins/values.yml
+# Gateway API: kubectl apply -f jenkins/httproute.yml
 
 controller:
   ingress:
-      enabled: true
-      hostName: jenkins.nathanrahm.com
-      ingressClassName: nginx
-      apiVersion: networking.k8s.io/v1
-      annotations:
-         cert-manager.io/cluster-issuer:  letsencrypt-prod
-         ingress.kubernetes.io/ssl-redirect: "true"
-         kubernetes.io/ingress.class: nginx
-         kubernetes.io/tls-acme: "true"
-      tls:
-        - hosts:
-          - jenkins.nathanrahm.com
-          secretName: jenkins-tls
+    enabled: false

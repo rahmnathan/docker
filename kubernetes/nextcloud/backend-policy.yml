@@ -1,0 +1,17 @@
+# BackendTrafficPolicy for Nextcloud
+# Replaces nginx.ingress.kubernetes.io/proxy-body-size: 12G
+# Allows large file uploads
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: nextcloud-policy
+  namespace: nextcloud
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: nextcloud
+  # Note: Envoy max is ~4GB (4294967295 bytes). For larger uploads, Nextcloud handles chunking.
+  requestBuffer:
+    limit: "4294967295"

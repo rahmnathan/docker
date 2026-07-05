@@ -1,0 +1,16 @@
+# BackendTrafficPolicy for Keycloak
+# Replaces nginx.ingress.kubernetes.io/proxy-buffer-size: 256k
+# Note: Envoy handles large headers differently - this sets response buffer
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: keycloak-policy
+  namespace: keycloak
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: keycloak
+  # Envoy Gateway handles large auth responses well by default
+  # If issues occur, may need EnvoyProxy customization for http_connection_manager settings

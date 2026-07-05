@@ -3,6 +3,7 @@
 
 ## Install stack
 # helm -n monitoring upgrade --install eck-stack-with-logstash elastic/eck-stack --values elk/values.yaml
+# Gateway API: kubectl apply -f elk/httproute.yml -f elk/backend-tls-policy.yml
 
 eck-elasticsearch:
   nodeSets:
@@ -27,18 +28,7 @@ eck-elasticsearch:
 eck-kibana:
   enabled: true
   ingress:
-    enabled: true
-    className: nginx
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-prod
-      ingress.kubernetes.io/ssl-redirect: "true"
-      kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: logs.nathanrahm.com
-        paths: "/"
-    tls:
-      enabled: true
-      secretName: logs-nathanrahm-com-tls
+    enabled: false
   spec:
     count: 1
     elasticsearchRef:

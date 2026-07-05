@@ -1,0 +1,214 @@
+# 1. helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.8.2 -n envoy-gateway-system --create-namespace
+# 2. kubectl wait --timeout=5m -n envoy-gateway-system deployment/envoy-gateway --for=condition=Available
+# 3. kubectl apply -f envoy-gateway/gateway.yml
+# 4. kubectl apply -f cert-manager/gateway-issuer.yml
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: envoy
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+---
+# EnvoyProxy configures the data plane service type and NodePorts
+# This ensures Envoy Gateway uses the same ports your router forwards to
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: custom-proxy
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: NodePort
+        # Use the same NodePorts as nginx-ingress for seamless cutover
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - name: http-80
+                  port: 80
+                  targetPort: 10080
+                  nodePort: 31929
+                  protocol: TCP
+                - name: https-443
+                  port: 443
+                  targetPort: 10443
+                  nodePort: 30876
+                  protocol: TCP
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: main-gateway
+  namespace: envoy-gateway-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-gateway
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: custom-proxy
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    # Each hostname needs its own HTTPS listener for cert-manager to issue per-host certs
+    - name: https-audiobooks
+      hostname: audiobooks.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: audiobooks-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-jenkins
+      hostname: jenkins.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: jenkins-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-grafana
+      hostname: grafana.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: grafana-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-logs
+      hostname: logs.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: logs-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-movies
+      hostname: movies.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: movies-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-portfolio
+      hostname: nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: portfolio-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-artifactory
+      hostname: artifactory.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: artifactory-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-keycloak
+      hostname: login.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: keycloak-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-openwebui
+      hostname: llm.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: openwebui-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-ollama
+      hostname: ollama.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: ollama-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-swarmui
+      hostname: swarm-ui.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: swarmui-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-nextcloud
+      hostname: nextcloud.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: nextcloud-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+# HTTP -> HTTPS redirect for all traffic
+# Replaces ingress.kubernetes.io/ssl-redirect: "true" annotations
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-to-https-redirect
+  namespace: envoy-gateway-system
+spec:
+  parentRefs:
+    - name: main-gateway
+      sectionName: http
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301

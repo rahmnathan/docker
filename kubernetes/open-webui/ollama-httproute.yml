@@ -1,0 +1,21 @@
+# Gateway API HTTPRoute for Ollama API endpoint
+# Replaces open-webui-ollama ingress + oauth2-proxy ingress
+# Protected by OIDC via SecurityPolicy - Envoy handles /oauth2/callback internally
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ollama
+  namespace: open-webui
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: envoy-gateway-system
+  hostnames:
+    - ollama.nathanrahm.com
+  rules:
+    # Note: /oauth2/* paths are handled internally by Envoy Gateway OIDC
+    # No need for separate oauth2-proxy route
+    - backendRefs:
+        - name: open-webui-ollama
+          port: 11434

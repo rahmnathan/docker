@@ -1,0 +1,25 @@
+# ClientTrafficPolicy for Artifactory
+# Preserves matrix parameters (semicolons) in URLs for artifact deployment
+# Artifactory uses URLs like: /path/file.jar;vcs.revision=abc;build.timestamp=123
+#
+# Path normalization was causing:
+# - response_code: 307
+# - response_code_details: "path_normalization_failed"
+# - Connection reset during PUT requests from Jenkins/Maven
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: artifactory-client-policy
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: main-gateway
+      sectionName: https-artifactory
+  path:
+    # Keep escaped slashes as-is (don't unescape and redirect)
+    escapedSlashesAction: KeepUnchanged
+    # Don't merge adjacent slashes
+    disableMergeSlashes: true

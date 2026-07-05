@@ -1,0 +1,15 @@
+# HTTPRouteFilter to return 403 for blocked paths
+# Referenced by HTTPRoute rules that match sensitive paths
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: HTTPRouteFilter
+metadata:
+  name: block-403
+  namespace: nextcloud
+spec:
+  directResponse:
+    statusCode: 403
+    contentType: text/plain
+    body:
+      type: Inline
+      inline: "Forbidden"

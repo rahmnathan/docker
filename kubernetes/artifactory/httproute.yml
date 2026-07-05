@@ -1,0 +1,33 @@
+# Gateway API HTTPRoute for Artifactory
+# Replaces ingress config in artifactory/values.yml
+# Note: Two paths - /artifactory/ goes to 8081, / goes to 8082
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: artifactory
+  namespace: artifactory
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: envoy-gateway-system
+  hostnames:
+    - artifactory.nathanrahm.com
+  rules:
+    # /artifactory/ path -> port 8081
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /artifactory/
+      backendRefs:
+        - name: artifactory
+          port: 8081
+
+    # Default path -> port 8082
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: artifactory
+          port: 8082

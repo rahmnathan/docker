@@ -1,22 +1,8 @@
 # helm install -n vault vault hashicorp/vault --values vault/values.yml
+# Gateway API: Create httproute.yml if deploying (not currently deployed)
 
 server:
   ingress:
-    enabled: true
-    ingressClassName: "nginx"
-    hosts:
-      - host: vault.nathanrahm.com
-        paths: []
-    annotations:
-      kubernetes.io/tls-acme: 'true'
-      ingress.kubernetes.io/ssl-redirect: "true"
-      cert-manager.io/cluster-issuer:  letsencrypt-prod
-  #    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
-  #    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
-  #    nginx.ingress.kubernetes.io/modsecurity-transaction-id: "$request_id"
-    tls:
-    - secretName: vault-ingress-tls
-      hosts:
-      - vault.nathanrahm.com
+    enabled: false
   ui:
     enabled: true

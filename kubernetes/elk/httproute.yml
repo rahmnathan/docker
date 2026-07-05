@@ -1,0 +1,18 @@
+# Gateway API HTTPRoute for Kibana (ELK Stack)
+# Replaces ingress config in elk/values.yaml
+
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kibana
+  namespace: monitoring
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: envoy-gateway-system
+  hostnames:
+    - logs.nathanrahm.com
+  rules:
+    - backendRefs:
+        - name: eck-stack-with-logstash-eck-kibana-kb-http
+          port: 5601

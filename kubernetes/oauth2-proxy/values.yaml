@@ -1,6 +1,0 @@
-image:
-  registry: quay.io/oauth2-proxy
-  tag: v7.7.1
-
-keycloak:
-  hostname: login.nathanrahm.com

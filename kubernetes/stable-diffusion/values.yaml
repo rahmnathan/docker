@@ -1,7 +1,5 @@
 # helm upgrade --install -n stable-diffusion stable-diffusion ./stable-diffusion
-
-ingress:
-  hostname: sd.nathanrahm.com
+# Gateway API: Create httproute.yml if deploying (not currently deployed)
 
 image:
   registry: rahmnathan

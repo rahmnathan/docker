@@ -1,0 +1,15 @@
+# BackendTrafficPolicy for Open-WebUI
+# Replaces nginx.ingress.kubernetes.io/proxy-body-size: 25m
+
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: open-webui-policy
+  namespace: open-webui
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: open-webui
+  requestBuffer:
+    limit: 25Mi

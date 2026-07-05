@@ -1,7 +1,6 @@
 # helm upgrade --install -n swarm-ui swarm-ui ./swarm-ui
-
-ingress:
-  hostname: swarm-ui.nathanrahm.com
+# Gateway API: kubectl apply -f swarm-ui/httproute.yml -f swarm-ui/security-policy.yml
+#   PREREQ: Create OIDC secret first - see swarm-ui/oidc-secret.yml for instructions
 
 image:
   registry: rahmnathan

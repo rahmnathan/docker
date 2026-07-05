@@ -1,4 +1,11 @@
 # helm upgrade --install -n cert-manager cert-manager jetstack/cert-manager --values cert-manager/values.yml
+# After upgrade, apply Gateway API issuer: kubectl apply -f cert-manager/gateway-issuer.yml
 
 crds:
   enabled: true
+
+# Enable Gateway API support for cert-manager
+config:
+  apiVersion: controller.config.cert-manager.io/v1alpha1
+  kind: ControllerConfiguration
+  enableGatewayAPI: true

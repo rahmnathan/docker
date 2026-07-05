@@ -1,9 +1,7 @@
 # helm upgrade --install -n audiobookshelf audiobookshelf ./audiobookshelf
+# Gateway API: kubectl apply -f audiobookshelf/httproute.yml
 
 ### Apply existing volumes configuration if restoring from backup
-
-ingress:
-  hostname: audiobooks.nathanrahm.com
 
 image:
   registry: ghcr.io/advplyr
