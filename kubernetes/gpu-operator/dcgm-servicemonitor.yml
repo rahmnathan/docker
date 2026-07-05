@@ -1,0 +1,17 @@
+# Enable Prometheus scraping of NVIDIA DCGM GPU metrics
+# kubectl apply -f gpu-operator/dcgm-servicemonitor.yml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nvidia-dcgm-exporter
+  namespace: gpu-operator
+  labels:
+    app: nvidia-dcgm-exporter
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: nvidia-dcgm-exporter
+  endpoints:
+    - port: gpu-metrics
+      interval: 15s

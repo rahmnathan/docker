@@ -141,12 +141,185 @@ eck-logstash:
           }
         }
         filter {
-          grok {
-            match => { "message" => "%{HTTPD_COMMONLOG}"}
+          # Promote kubernetes metadata to top level for easier filtering in Kibana
+          if [kubernetes] {
+            mutate {
+              add_field => {
+                "k8s_namespace" => "%{[kubernetes][namespace]}"
+                "k8s_pod" => "%{[kubernetes][pod][name]}"
+                "k8s_container" => "%{[kubernetes][container][name]}"
+              }
+            }
+            # Extract app label - check common label patterns (ECS uses underscores)
+            if [kubernetes][labels][app] {
+              mutate { add_field => { "k8s_app" => "%{[kubernetes][labels][app]}" } }
+            } else if [kubernetes][labels][app_kubernetes_io/name] {
+              mutate { add_field => { "k8s_app" => "%{[kubernetes][labels][app_kubernetes_io/name]}" } }
+            }
           }
-          geoip {
-            source => "[source][address]"
-            target => "[source]"
+
+          # Try to parse JSON logs (Spring Boot, Postgres, Envoy, etc.)
+          if [message] =~ /^\s*\{/ {
+            json {
+              source => "message"
+              target => "parsed_log"
+              skip_on_invalid_json => true
+            }
+            # Extract log level from JSON
+            if [parsed_log][level] {
+              mutate { add_field => { "log_level" => "%{[parsed_log][level]}" } }
+            }
+            # Envoy access logs - derive level from response_code
+            if [parsed_log][response_code] {
+              if [parsed_log][response_code] >= 500 {
+                mutate { add_field => { "log_level" => "ERROR" } }
+              } else if [parsed_log][response_code] >= 400 {
+                mutate { add_field => { "log_level" => "WARN" } }
+              } else {
+                mutate { add_field => { "log_level" => "INFO" } }
+              }
+              # Extract useful Envoy fields
+              mutate {
+                add_field => {
+                  "http_method" => "%{[parsed_log][method]}"
+                  "http_status" => "%{[parsed_log][response_code]}"
+                }
+              }
+              if [parsed_log][x-envoy-origin-path] {
+                mutate { add_field => { "http_path" => "%{[parsed_log][x-envoy-origin-path]}" } }
+              }
+              if [parsed_log][:authority] {
+                mutate { add_field => { "http_host" => "%{[parsed_log][:authority]}" } }
+              }
+              # Build readable message for Envoy
+              mutate { replace => { "message" => "%{[parsed_log][method]} %{[parsed_log][x-envoy-origin-path]} %{[parsed_log][response_code]}" } }
+            } else {
+              # Non-Envoy JSON: Extract message
+              if [parsed_log][message] {
+                mutate { replace => { "message" => "%{[parsed_log][message]}" } }
+              } else if [parsed_log][record][message] {
+                mutate { replace => { "message" => "%{[parsed_log][record][message]}" } }
+              } else if [parsed_log][msg] {
+                mutate { replace => { "message" => "%{[parsed_log][msg]}" } }
+              }
+            }
+            # Extract logger name
+            if [parsed_log][logger_name] {
+              mutate { add_field => { "logger" => "%{[parsed_log][logger_name]}" } }
+            } else if [parsed_log][logger] {
+              mutate { add_field => { "logger" => "%{[parsed_log][logger]}" } }
+            }
+            # Extract timestamp if present
+            if [parsed_log][@timestamp] {
+              date {
+                match => [ "[parsed_log][@timestamp]", "ISO8601" ]
+                target => "@timestamp"
+              }
+            }
+            # Extract stack trace
+            if [parsed_log][stack_trace] {
+              mutate { add_field => { "stack_trace" => "%{[parsed_log][stack_trace]}" } }
+            }
+          }
+
+          # Kubernetes-style logs: I0705, W0705, E0705, F0705
+          if ![log_level] and [message] =~ /^[IWEF]\d{4}/ {
+            grok {
+              match => { "message" => "^(?<k8s_level>[IWEF])\d{4}" }
+              tag_on_failure => []
+            }
+            if [k8s_level] == "I" { mutate { add_field => { "log_level" => "INFO" } } }
+            if [k8s_level] == "W" { mutate { add_field => { "log_level" => "WARN" } } }
+            if [k8s_level] == "E" { mutate { add_field => { "log_level" => "ERROR" } } }
+            if [k8s_level] == "F" { mutate { add_field => { "log_level" => "FATAL" } } }
+            mutate { remove_field => [ "k8s_level" ] }
+          }
+
+          # GIN framework logs: [GIN] ... | 200 | or | 500 |
+          if ![log_level] and [message] =~ /^\[GIN\]/ {
+            grok {
+              match => { "message" => "\| (?<gin_status>\d{3}) \|" }
+              tag_on_failure => []
+            }
+            if [gin_status] {
+              if [gin_status] >= "500" {
+                mutate { add_field => { "log_level" => "ERROR" } }
+              } else if [gin_status] >= "400" {
+                mutate { add_field => { "log_level" => "WARN" } }
+              } else {
+                mutate { add_field => { "log_level" => "INFO" } }
+              }
+              mutate {
+                add_field => { "http_status" => "%{gin_status}" }
+                remove_field => [ "gin_status" ]
+              }
+            }
+          }
+
+          # HTTP access logs (Apache/nginx style): "GET /path" 200 (including WebDAV methods)
+          if ![log_level] and [message] =~ /\"(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK|REPORT)\s+[^"]+\"\s+\d{3}/ {
+            grok {
+              match => { "message" => "\"(?<http_method>GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS|PROPFIND|PROPPATCH|MKCOL|COPY|MOVE|LOCK|UNLOCK|REPORT)\s+(?<http_path>[^\s\"]+)[^\"]*\"\s+(?<http_status>\d{3})" }
+              tag_on_failure => []
+            }
+            if [http_status] {
+              if [http_status] >= "500" {
+                mutate { add_field => { "log_level" => "ERROR" } }
+              } else if [http_status] >= "400" {
+                mutate { add_field => { "log_level" => "WARN" } }
+              } else {
+                mutate { add_field => { "log_level" => "INFO" } }
+              }
+            }
+          }
+
+          # Redis logs: "1:M 05 Jul 2026 20:28:39.197 * message" (* = info, # = warning, - = verbose)
+          if ![log_level] and [message] =~ /^\d+:[MCSXW] \d{2} [A-Z][a-z]{2} \d{4}/ {
+            grok {
+              match => { "message" => "^\d+:[MCSXW] \d{2} [A-Z][a-z]{2} \d{4} [0-9:.]+\s+(?<redis_level>[*#\-.])" }
+              tag_on_failure => []
+            }
+            if [redis_level] == "*" { mutate { add_field => { "log_level" => "INFO" } } }
+            if [redis_level] == "#" { mutate { add_field => { "log_level" => "WARN" } } }
+            if [redis_level] == "-" { mutate { add_field => { "log_level" => "DEBUG" } } }
+            if [redis_level] == "." { mutate { add_field => { "log_level" => "DEBUG" } } }
+            mutate { remove_field => [ "redis_level" ] }
+          }
+
+          # Logfmt style: ts=... level=info ... (Prometheus operator, etc.)
+          if ![log_level] and [message] =~ /level=(info|warn|warning|error|debug)/ {
+            grok {
+              match => { "message" => "level=(?<log_level>info|warn|warning|error|debug)" }
+              tag_on_failure => []
+            }
+          }
+
+          # Parse standard log levels from plain text (DEBUG, INFO, WARN, etc.) - case insensitive
+          if ![log_level] {
+            grok {
+              match => { "message" => "(?i)[\[\s](?<log_level>debug|info|warn|warning|error|fatal|trace)[\]\s\-]" }
+              tag_on_failure => []
+            }
+          }
+
+          # Filebeat connection messages - classify as INFO/WARN/ERROR
+          if ![log_level] and [message] =~ /^(Connecting|Connection|Attempting|Failed|failed)/ {
+            if [message] =~ /^(Failed|failed)/ {
+              mutate { add_field => { "log_level" => "WARN" } }
+            } else {
+              mutate { add_field => { "log_level" => "INFO" } }
+            }
+          }
+
+          # Metrics/stats messages (Filebeat "Non-zero metrics")
+          if ![log_level] and [message] =~ /^Non-zero metrics/ {
+            mutate { add_field => { "log_level" => "DEBUG" } }
+          }
+
+          # Normalize log levels to uppercase
+          if [log_level] {
+            mutate { uppercase => [ "log_level" ] }
+            if [log_level] == "WARNING" { mutate { replace => { "log_level" => "WARN" } } }
           }
         }
         output {
