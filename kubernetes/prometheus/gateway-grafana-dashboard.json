@@ -38,8 +38,8 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 20,
+            "drawStyle": "points",
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -49,16 +49,16 @@
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 8,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -74,7 +74,7 @@
               }
             ]
           },
-          "unit": "reqps"
+          "unit": "short"
         },
         "overrides": []
       },
@@ -108,13 +108,13 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (envoy_cluster_name) (rate(envoy_cluster_external_upstream_rq{envoy_cluster_name=~\"httproute/.*\"}[$__rate_interval])) > 0",
+          "expr": "sum by (envoy_cluster_name) (increase(envoy_cluster_external_upstream_rq{envoy_cluster_name=~\"httproute/.*\"}[1m])) > 0",
           "legendFormat": "{{envoy_cluster_name}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Requests per Second by Service",
+      "title": "Requests by Service (dots = requests)",
       "transformations": [
         {
           "id": "renameByRegex",
