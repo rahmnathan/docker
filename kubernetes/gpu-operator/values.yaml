@@ -24,11 +24,16 @@ devicePlugin:
 
 # Optional: enable DCGM exporter for GPU metrics
 dcgmExporter:
-  enable: true
+  enabled: true
   tolerations:
     - key: "node-role.kubernetes.io/control-plane"
       operator: "Exists"
       effect: "NoSchedule"
+  serviceMonitor:
+    enabled: true
+    interval: 15s
+    additionalLabels:
+      release: kube-prometheus-stack
 
 # Optional: disable GPU Operator validator if not needed
 validator:
