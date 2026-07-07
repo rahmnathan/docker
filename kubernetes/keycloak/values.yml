@@ -1,5 +1,6 @@
 # helm repo add codecentric https://codecentric.github.io/helm-charts
 # helm upgrade --install -n keycloak keycloak codecentric/keycloakx --values keycloak/values.yml
+# Theme: kubectl apply -f keycloak/theme-configmap.yml
 # Gateway API: kubectl apply -f keycloak/httproute.yml -f keycloak/backend-policy.yml
 
 image:
@@ -17,6 +18,9 @@ command:
   - "start"
   - "--http-port=8080"
   - "--hostname=https://login.nathanrahm.com"
+  - "--spi-theme-static-max-age=-1"
+  - "--spi-theme-cache-themes=false"
+
 dbchecker:
   enabled: true
 
@@ -27,6 +31,28 @@ database:
   username: 'keycloak'
   password: 'pw123'
   database: keycloak
+
+extraVolumes: |
+  - name: theme-properties
+    configMap:
+      name: keycloak-localmovies-theme
+      items:
+        - key: theme.properties
+          path: theme.properties
+  - name: theme-css
+    configMap:
+      name: keycloak-localmovies-theme
+      items:
+        - key: localmovies.css
+          path: localmovies.css
+
+extraVolumeMounts: |
+  - name: theme-properties
+    mountPath: /opt/keycloak/themes/localmovies/login/theme.properties
+    subPath: theme.properties
+  - name: theme-css
+    mountPath: /opt/keycloak/themes/localmovies/login/resources/css/localmovies.css
+    subPath: localmovies.css
 
 extraEnv: |
   - name: KC_BOOTSTRAP_ADMIN_USERNAME

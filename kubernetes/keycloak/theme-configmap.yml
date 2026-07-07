@@ -1,0 +1,171 @@
+# Apply with: kubectl apply -f keycloak/theme-configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-localmovies-theme
+  namespace: keycloak
+data:
+  theme.properties: |
+    parent=keycloak
+    styles=css/localmovies.css
+
+  localmovies.css: |
+    /* LocalMovies Theme for Keycloak */
+
+    /* ===== Page Background ===== */
+    .login-pf,
+    .login-pf-page,
+    body {
+        background: rgb(12, 12, 20) !important;
+        background-image: none !important;
+    }
+
+    /* ===== Login Card ===== */
+    .card-pf {
+        background: rgb(24, 24, 36) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15) !important;
+        max-width: 400px !important;
+        margin: 0 auto !important;
+        padding: 2rem !important;
+    }
+
+    /* ===== Header ===== */
+    .login-pf-page-header,
+    .login-pf-header,
+    #kc-header-wrapper {
+        color: white !important;
+        text-align: center !important;
+    }
+
+    #kc-page-title {
+        color: white !important;
+    }
+
+    /* ===== Form Labels ===== */
+    .pf-c-form__label,
+    .pf-c-form__label-text,
+    label {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* ===== Input Fields ===== */
+    .pf-c-form-control,
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        background-color: rgb(18, 18, 28) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px !important;
+        color: white !important;
+    }
+
+    .pf-c-form-control:focus,
+    input:focus {
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25) !important;
+        outline: none !important;
+    }
+
+    /* ===== Input Group (password field with eye button) ===== */
+    .pf-c-input-group {
+        background-color: rgb(18, 18, 28) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px !important;
+    }
+
+    .pf-c-input-group .pf-c-form-control {
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* ===== Password Toggle Button (Eye Icon) ===== */
+    .pf-c-button.pf-m-control {
+        background: transparent !important;
+        border: none !important;
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .pf-c-button.pf-m-control:hover {
+        color: #667eea !important;
+        background: transparent !important;
+    }
+
+    .pf-c-button.pf-m-control .fa,
+    .pf-c-button.pf-m-control i {
+        color: inherit !important;
+    }
+
+    /* ===== Primary Button (Login) ===== */
+    .pf-c-button.pf-m-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        border: none !important;
+        border-radius: 8px !important;
+        color: white !important;
+        font-weight: 600 !important;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3) !important;
+    }
+
+    .pf-c-button.pf-m-primary:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4) !important;
+    }
+
+    /* ===== Links ===== */
+    a {
+        color: #667eea !important;
+    }
+
+    a:hover {
+        color: #764ba2 !important;
+    }
+
+    /* ===== Form Options (Remember me, Forgot password) ===== */
+    .login-pf-settings,
+    #kc-form-options {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    .login-pf-settings label {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* ===== Checkbox ===== */
+    input[type="checkbox"] {
+        accent-color: #667eea !important;
+    }
+
+    /* ===== Registration/Info Links ===== */
+    #kc-registration,
+    #kc-info,
+    #kc-info-wrapper {
+        color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    /* ===== Alerts ===== */
+    .alert,
+    .pf-c-alert {
+        background: rgba(220, 53, 69, 0.1) !important;
+        border: 1px solid rgba(220, 53, 69, 0.3) !important;
+        border-radius: 8px !important;
+        color: #ff6b6b !important;
+    }
+
+    .alert-success {
+        background: rgba(40, 167, 69, 0.1) !important;
+        border-color: rgba(40, 167, 69, 0.3) !important;
+        color: #51cf66 !important;
+    }
+
+    .alert-warning,
+    .alert-info {
+        background: rgba(102, 126, 234, 0.1) !important;
+        border-color: rgba(102, 126, 234, 0.3) !important;
+        color: #667eea !important;
+    }
+
+    /* ===== Hide Keycloak Logo ===== */
+    .kc-logo-text {
+        display: none !important;
+    }
