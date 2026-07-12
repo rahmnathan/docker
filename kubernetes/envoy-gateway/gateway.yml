@@ -205,6 +205,17 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-home-assistant
+      hostname: home-assistant.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: home-assistant-tls
+      allowedRoutes:
+        namespaces:
+          from: All
 ---
 # HTTP -> HTTPS redirect for all traffic
 # Replaces ingress.kubernetes.io/ssl-redirect: "true" annotations

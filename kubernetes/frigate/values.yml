@@ -1,5 +1,8 @@
 # Frigate NVR with GPU-accelerated object detection (NVIDIA RTX 4060 Ti)
 #
+# Prerequisites:
+#   - Deploy Mosquitto first: kubectl apply -f mosquitto/mosquitto.yml
+#
 # Setup (run in order):
 # 1. helm repo add blakeblackshear https://blakeblackshear.github.io/blakeshome-charts/
 # 2. helm repo update
@@ -8,10 +11,17 @@
 # 5. kubectl logs -n frigate -l job-name=yolov9-download -f  # Wait for completion
 # 6. kubectl rollout restart deployment/frigate -n frigate   # Restart to load model
 # 7. kubectl apply -f frigate/httproute.yml   # Gateway API route
+# 8. kubectl apply -f frigate/security-policy.yml   # Keycloak OIDC auth
 #
 # Verify detection is working:
 #   kubectl exec -n frigate deploy/frigate -- curl -s http://localhost:5000/api/stats | jq '.detectors, .detection_fps'
 #   Expected: ONNX detector with ~10ms inference speed, detection_fps > 0
+#
+# Home Assistant integration:
+#   - Frigate publishes to MQTT (mosquitto.home-automation.svc.cluster.local:1883)
+#   - Install Frigate integration via HACS in Home Assistant
+#   - URL: http://frigate.frigate.svc.cluster.local:5000
+#   - Creates switches for detect/record/snapshots per camera
 #
 # Model info:
 #   - YOLOv9-s-640 ONNX (27 MB) from https://github.com/oritromax/YOLOv9-onnx
@@ -32,7 +42,10 @@ env:
 # Frigate configuration
 config: |
   mqtt:
-    enabled: false
+    enabled: true
+    host: mosquitto.home-automation.svc.cluster.local
+    port: 1883
+    topic_prefix: frigate
 
   # GPU detection with YOLOv9 ONNX model
   # Model downloaded from: https://github.com/oritromax/YOLOv9-onnx
@@ -61,9 +74,7 @@ config: |
           - path: rtsp://10.0.0.52:8554/cam
             roles:
               - detect
-              # - record  # Uncomment to enable recording
       detect:
-        enabled: true
         width: 1280
         height: 720
         fps: 5
@@ -72,20 +83,6 @@ config: |
           - person
           - dog
           - cat
-          - car
-      record:
-        enabled: false
-        # retain:
-        #   days: 7
-        #   mode: motion
-        # events:
-        #   retain:
-        #     default: 14
-        #     mode: active_objects
-      snapshots:
-        enabled: false
-        # retain:
-        #   default: 14
 
     octopi:
       ffmpeg:
@@ -94,21 +91,15 @@ config: |
             input_args: preset-http-mjpeg-generic
             roles:
               - detect
-              # - record  # Uncomment to enable recording
       detect:
         width: 640
         height: 480
         fps: 5
-        enabled: false  # No object detection needed for 3D printer
-      record:
-        enabled: false
-        # retain:
-        #   days: 3
-        #   mode: all  # Record continuously while printing
-      snapshots:
-        enabled: false
-        # retain:
-        #   default: 7
+      objects:
+        track:
+          - person
+          - dog
+          - cat
 
     picam2:
       ffmpeg:
@@ -116,9 +107,7 @@ config: |
           - path: rtsp://10.0.0.54:8554/cam
             roles:
               - detect
-              # - record  # Uncomment to enable recording
       detect:
-        enabled: true
         width: 1280
         height: 720
         fps: 5
@@ -127,33 +116,26 @@ config: |
           - person
           - dog
           - cat
-          - car
-      record:
-        enabled: false
-        # retain:
-        #   days: 7
-        #   mode: motion
-        # events:
-        #   retain:
-        #     default: 14
-        #     mode: active_objects
-      snapshots:
-        enabled: false
-        # retain:
-        #   default: 14
 
-  # Global recording settings (uncomment to enable)
+  # Global settings - toggle via Home Assistant automations based on presence
   record:
     enabled: false
-    # retain:
-    #   days: 7
-    #   mode: motion
+    alerts:
+      retain:
+        days: 7
+        mode: motion
+    detections:
+      retain:
+        days: 7
+        mode: motion
 
-  # Global snapshot settings (uncomment to enable)
   snapshots:
     enabled: false
-    # retain:
-    #   default: 14
+
+  detect:
+    enabled: false
+
+  version: 0.17-0
 
 shmSize: 256Mi
 

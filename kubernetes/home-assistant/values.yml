@@ -1,0 +1,72 @@
+# Home Assistant
+#
+# Prerequisites:
+#   - Deploy Mosquitto first: kubectl apply -f mosquitto/mosquitto.yml
+#   - Add HTTPS listener to gateway: kubectl apply -f envoy-gateway/gateway.yml
+#
+# Setup:
+# 1. helm repo add pajikos https://pajikos.github.io/home-assistant-helm-chart/
+# 2. helm repo update
+# 3. helm -n home-automation upgrade --install home-assistant pajikos/home-assistant --values home-assistant/values.yml
+#
+# Initial setup:
+# - Access https://home-assistant.nathanrahm.com and create your admin account
+# - Install the Home Assistant Companion app on your phone for presence detection
+# - Install HACS (run in HA container, then restart):
+#     kubectl exec -it -n home-automation home-assistant-0 -- bash -c "wget -O - https://get.hacs.xyz | bash -"
+#     kubectl rollout restart statefulset/home-assistant -n home-automation
+# - Add HACS integration: Settings > Devices & Services > Add Integration > HACS (requires GitHub auth)
+# - Install Frigate via HACS: HACS > Integrations > + Explore & Download > Frigate > Download > Restart HA
+# - Add MQTT integration: Settings > Devices & Services > Add Integration > MQTT
+#   - Broker: mosquitto.home-automation.svc.cluster.local
+#   - Port: 1883
+# - Add Frigate integration: Settings > Devices & Services > Add Integration > Frigate
+#   - URL: http://frigate.frigate.svc.cluster.local:5000
+#
+# Presence automation example (create in HA UI under Settings > Automations):
+#   Trigger: Zone "Home" - when you leave
+#   Actions: Turn on detection/recording switches for your cameras (or target by Area)
+
+image:
+  repository: ghcr.io/home-assistant/home-assistant
+  tag: "2026.7"
+  pullPolicy: IfNotPresent
+
+env:
+  - name: TZ
+    value: America/Chicago
+
+# Enable configuration management with trusted proxies for reverse proxy setup
+configuration:
+  enabled: true
+  forceInit: true
+  trusted_proxies:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+
+persistence:
+  enabled: true
+  size: 5Gi
+  accessMode: ReadWriteOnce
+
+service:
+  type: ClusterIP
+  port: 8123
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 100m
+  limits:
+    memory: 1Gi
+
+# HTTPRoute managed by Helm chart (also triggers trusted proxy config generation)
+httpRoute:
+  enabled: true
+  parentRefs:
+    - name: main-gateway
+      namespace: envoy-gateway-system
+      sectionName: https-home-assistant
+  hostnames:
+    - home-assistant.nathanrahm.com
