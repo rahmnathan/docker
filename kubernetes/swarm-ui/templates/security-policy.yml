@@ -1,7 +1,5 @@
-# kubectl apply -f swarm-ui/security-policy.yml
-# PREREQS: Create secret & update Keycloak redirect URI:
-#   kubectl create secret generic oidc-client-secret -n swarm-ui --from-literal=client-secret=<secret>
-#   Keycloak: Add https://swarm-ui.nathanrahm.com/oauth2/callback to "ollama" client (shared client)
+# OIDC authentication with Keycloak via Envoy Gateway.
+# Prereq: create oidc-client-secret in the swarm-ui namespace.
 
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy

@@ -1,0 +1,123 @@
+# Context Chat Backend for Nextcloud
+# Provides RAG (Retrieval Augmented Generation) capabilities
+# kubectl apply -f nextcloud/context-chat-backend.yml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: context-chat-backend
+  namespace: nextcloud
+type: Opaque
+stringData:
+  APP_SECRET: "context-chat-secret-12345"
+  EXTERNAL_DB: "postgresql+psycopg://postgres:pw123@postgres-rw.postgres-18.svc.cluster.local:5432/context_chat"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: context-chat-backend-data
+  namespace: nextcloud
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: context-chat-backend
+  namespace: nextcloud
+  labels:
+    app: context-chat-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: context-chat-backend
+  template:
+    metadata:
+      labels:
+        app: context-chat-backend
+    spec:
+      containers:
+        - name: context-chat-backend
+          image: ghcr.io/nextcloud/context_chat_backend:5.3.0
+          ports:
+            - containerPort: 10034
+          env:
+            - name: APP_ID
+              value: "context_chat_backend"
+            - name: APP_HOST
+              value: "0.0.0.0"
+            - name: APP_PORT
+              value: "10034"
+            - name: APP_VERSION
+              value: "5.4.0"
+            - name: APP_DISPLAY_NAME
+              value: "Context Chat Backend"
+            - name: AA_VERSION
+              value: "3.0.0"
+            - name: APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: context-chat-backend
+                  key: APP_SECRET
+            - name: EXTERNAL_DB
+              valueFrom:
+                secretKeyRef:
+                  name: context-chat-backend
+                  key: EXTERNAL_DB
+            - name: NEXTCLOUD_URL
+              value: "http://nextcloud.nextcloud.svc.cluster.local:8080"
+            - name: APP_PERSISTENT_STORAGE
+              value: "/app/persistent_storage"
+            - name: CC_DOWNLOAD_MODELS_FROM_HF
+              value: "true"
+            # GPU support
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: "all"
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: "compute,utility"
+          volumeMounts:
+            - name: data
+              mountPath: /app/persistent_storage
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+            requests:
+              memory: "4Gi"
+              cpu: "1"
+          livenessProbe:
+            httpGet:
+              path: /heartbeat
+              port: 10034
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /heartbeat
+              port: 10034
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: context-chat-backend-data
+      runtimeClassName: nvidia
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: context-chat-backend
+  namespace: nextcloud
+spec:
+  selector:
+    app: context-chat-backend
+  ports:
+    - port: 10034
+      targetPort: 10034
+  type: ClusterIP

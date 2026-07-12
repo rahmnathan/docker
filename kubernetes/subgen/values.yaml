@@ -1,8 +1,0 @@
-# helm upgrade --install -n subgen subgen ./subgen
-
-image:
-  registry: mccloud
-  tag: latest
-
-service:
-  timezone: "America/Los_Angeles"

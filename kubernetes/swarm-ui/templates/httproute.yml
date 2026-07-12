@@ -1,6 +1,5 @@
 # Gateway API HTTPRoute for Swarm-UI
-# Replaces swarm-ui/templates/ingress.yml
-# Note: This route is protected by OIDC via SecurityPolicy
+# Protected by OIDC via SecurityPolicy.
 
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

@@ -1,7 +1,7 @@
 # helm upgrade --install -n audiobookshelf audiobookshelf ./audiobookshelf
-# Gateway API: kubectl apply -f audiobookshelf/httproute.yml
+# Gateway API HTTPRoute is included in this chart.
 
-### Apply existing volumes configuration if restoring from backup
+### Apply volume-config/* first if restoring existing PV/PVCs from backup.
 
 image:
   registry: ghcr.io/advplyr

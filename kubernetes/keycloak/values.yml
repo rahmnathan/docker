@@ -2,6 +2,7 @@
 # helm upgrade --install -n keycloak keycloak codecentric/keycloakx --values keycloak/values.yml
 # Theme: kubectl apply -f keycloak/theme-configmap.yml
 # Gateway API: kubectl apply -f keycloak/httproute.yml -f keycloak/backend-policy.yml
+# Client role access gates: see keycloak/client-role-access.md
 
 image:
   repository: quay.io/keycloak/keycloak

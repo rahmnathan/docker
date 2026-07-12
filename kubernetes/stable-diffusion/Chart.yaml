@@ -1,5 +1,0 @@
-apiVersion: v1
-appVersion: 78
-description: A Helm chart for stable-diffusion in Kubernetes
-name: stable-diffusion
-version: 1.0.0

@@ -1,5 +1,4 @@
-# Gateway API HTTPRoute for Audiobookshelf
-# Replaces: audiobookshelf/templates/ingress.yml
+# Gateway API HTTPRoute for Audiobookshelf.
 
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
