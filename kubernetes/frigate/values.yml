@@ -1,0 +1,200 @@
+# Frigate NVR with GPU-accelerated object detection (NVIDIA RTX 4060 Ti)
+#
+# Setup (run in order):
+# 1. helm repo add blakeblackshear https://blakeblackshear.github.io/blakeshome-charts/
+# 2. helm repo update
+# 3. helm -n frigate upgrade --install frigate blakeblackshear/frigate --values frigate/values.yml --create-namespace
+# 4. kubectl apply -f frigate/yolov9-download-job.yml   # Download ONNX model to PVC
+# 5. kubectl logs -n frigate -l job-name=yolov9-download -f  # Wait for completion
+# 6. kubectl rollout restart deployment/frigate -n frigate   # Restart to load model
+# 7. kubectl apply -f frigate/httproute.yml   # Gateway API route
+#
+# Verify detection is working:
+#   kubectl exec -n frigate deploy/frigate -- curl -s http://localhost:5000/api/stats | jq '.detectors, .detection_fps'
+#   Expected: ONNX detector with ~10ms inference speed, detection_fps > 0
+#
+# Model info:
+#   - YOLOv9-s-640 ONNX (27 MB) from https://github.com/oritromax/YOLOv9-onnx
+#   - COCO 80-class labelmap included
+#   - ~10ms inference on RTX 4060 Ti
+
+image:
+  repository: ghcr.io/blakeblackshear/frigate
+  tag: 0.17.2-tensorrt  # NVIDIA image for GPU detection + ffmpeg decoding
+  pullPolicy: IfNotPresent
+
+# GPU still used for ffmpeg hardware decoding
+runtimeClassName: nvidia
+
+env:
+  TZ: America/Chicago
+
+# Frigate configuration
+config: |
+  mqtt:
+    enabled: false
+
+  # GPU detection with YOLOv9 ONNX model
+  # Model downloaded from: https://github.com/oritromax/YOLOv9-onnx
+  # See: https://docs.frigate.video/configuration/object_detectors/
+  detectors:
+    onnx:
+      type: onnx
+
+  model:
+    path: /config/model_cache/yolov9-s-640.onnx
+    input_tensor: nchw
+    input_pixel_format: rgb
+    width: 640
+    height: 640
+    model_type: yolo-generic
+    input_dtype: float
+    labelmap_path: /config/model_cache/coco-80.txt
+
+  ffmpeg:
+    hwaccel_args: preset-nvidia-h264
+
+  cameras:
+    picam:
+      ffmpeg:
+        inputs:
+          - path: rtsp://10.0.0.52:8554/cam
+            roles:
+              - detect
+              # - record  # Uncomment to enable recording
+      detect:
+        enabled: true
+        width: 1280
+        height: 720
+        fps: 5
+      objects:
+        track:
+          - person
+          - dog
+          - cat
+          - car
+      record:
+        enabled: false
+        # retain:
+        #   days: 7
+        #   mode: motion
+        # events:
+        #   retain:
+        #     default: 14
+        #     mode: active_objects
+      snapshots:
+        enabled: false
+        # retain:
+        #   default: 14
+
+    octopi:
+      ffmpeg:
+        inputs:
+          - path: http://10.0.0.53:8080/?action=stream
+            input_args: preset-http-mjpeg-generic
+            roles:
+              - detect
+              # - record  # Uncomment to enable recording
+      detect:
+        width: 640
+        height: 480
+        fps: 5
+        enabled: false  # No object detection needed for 3D printer
+      record:
+        enabled: false
+        # retain:
+        #   days: 3
+        #   mode: all  # Record continuously while printing
+      snapshots:
+        enabled: false
+        # retain:
+        #   default: 7
+
+    picam2:
+      ffmpeg:
+        inputs:
+          - path: rtsp://10.0.0.54:8554/cam
+            roles:
+              - detect
+              # - record  # Uncomment to enable recording
+      detect:
+        enabled: true
+        width: 1280
+        height: 720
+        fps: 5
+      objects:
+        track:
+          - person
+          - dog
+          - cat
+          - car
+      record:
+        enabled: false
+        # retain:
+        #   days: 7
+        #   mode: motion
+        # events:
+        #   retain:
+        #     default: 14
+        #     mode: active_objects
+      snapshots:
+        enabled: false
+        # retain:
+        #   default: 14
+
+  # Global recording settings (uncomment to enable)
+  record:
+    enabled: false
+    # retain:
+    #   days: 7
+    #   mode: motion
+
+  # Global snapshot settings (uncomment to enable)
+  snapshots:
+    enabled: false
+    # retain:
+    #   default: 14
+
+shmSize: 256Mi
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 500m
+  limits:
+    nvidia.com/gpu: 1
+    memory: 2Gi
+
+persistence:
+  config:
+    enabled: true
+    size: 100Mi
+    accessMode: ReadWriteOnce
+  media:
+    enabled: true
+    size: 50Gi
+    accessMode: ReadWriteOnce
+
+service:
+  type: ClusterIP
+  port: 5000
+
+probes:
+  liveness:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+  readiness:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+  startup:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 30

@@ -194,6 +194,17 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-frigate
+      hostname: frigate.nathanrahm.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: frigate-tls
+      allowedRoutes:
+        namespaces:
+          from: All
 ---
 # HTTP -> HTTPS redirect for all traffic
 # Replaces ingress.kubernetes.io/ssl-redirect: "true" annotations
