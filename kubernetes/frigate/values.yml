@@ -117,6 +117,22 @@ config: |
           - dog
           - cat
 
+    picam3:
+      ffmpeg:
+        inputs:
+          - path: rtsp://10.0.0.56:8554/cam
+            roles:
+              - detect
+      detect:
+        width: 1280
+        height: 720
+        fps: 5
+      objects:
+        track:
+          - person
+          - dog
+          - cat
+
   # Global settings - toggle via Home Assistant automations based on presence
   record:
     enabled: false
