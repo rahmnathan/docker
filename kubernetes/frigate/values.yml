@@ -69,6 +69,7 @@ config: |
 
   cameras:
     picam:
+      enabled: false  # 10.0.0.52 is currently unreachable; re-enable after fixing routing/camera.
       ffmpeg:
         inputs:
           - path: rtsp://10.0.0.52:8554/cam
@@ -135,7 +136,8 @@ config: |
 
   # Global settings - toggle via Home Assistant automations based on presence
   record:
-    enabled: false
+    # Must be enabled in config for Home Assistant/MQTT to toggle camera recordings.
+    enabled: true
     alerts:
       retain:
         days: 7
@@ -153,7 +155,7 @@ config: |
 
   version: 0.17-0
 
-shmSize: 256Mi
+shmSize: 512Mi
 
 resources:
   requests:
@@ -161,7 +163,7 @@ resources:
     cpu: 500m
   limits:
     nvidia.com/gpu: 1
-    memory: 2Gi
+    memory: 4Gi
 
 persistence:
   config:
