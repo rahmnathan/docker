@@ -4,3 +4,7 @@
 controller:
   ingress:
     enabled: false
+  # Fix for init container CrashLoopBackOff - when false, the init script uses
+  # "yes n | cp -i" which fails with set -e due to broken pipe. Setting to true
+  # uses "cp" without -i, avoiding the issue entirely.
+  overwritePlugins: true

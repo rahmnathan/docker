@@ -1,6 +1,6 @@
 # BackendTrafficPolicy for Nextcloud
 # Replaces nginx.ingress.kubernetes.io/proxy-body-size: 12G
-# Allows large file uploads
+# Allows large file uploads and long-running downloads
 
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: BackendTrafficPolicy
@@ -15,3 +15,15 @@ spec:
   # Note: Envoy max is ~4GB (4294967295 bytes). For larger uploads, Nextcloud handles chunking.
   requestBuffer:
     limit: "4294967295"
+  # Timeout settings for large file downloads
+  timeout:
+    http:
+      # Idle timeout for HTTP connection (no active requests) - 1 hour
+      connectionIdleTimeout: 3600s
+      # Max time for entire request/response - 0s = unlimited for large files
+      requestTimeout: 0s
+      # Stream idle timeout - time without activity on a stream
+      streamIdleTimeout: 3600s
+    tcp:
+      # TCP/TLS handshake timeout
+      connectTimeout: 30s
