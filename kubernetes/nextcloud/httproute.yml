@@ -106,6 +106,12 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Strict-Transport-Security
+                value: "max-age=15552000; includeSubDomains"
       backendRefs:
         - name: nextcloud
           port: 8080
