@@ -1,6 +1,6 @@
 version: '2'
 
-# Using with CNAME records for subdomains.
+# DDNS for origin subdomain. Other subdomains CNAME to this.
 
 services:
   cloudflare-nathanrahm-ddns:
@@ -9,4 +9,5 @@ services:
     environment:
       - API_KEY=<api-key>
       - ZONE=nathanrahm.com
-      - PROXIED=true
+      - SUBDOMAIN=k8x9m2q7
+      - PROXIED=false

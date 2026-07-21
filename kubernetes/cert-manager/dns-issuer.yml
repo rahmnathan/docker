@@ -1,0 +1,19 @@
+# ClusterIssuer for DNS-01 challenge (required for wildcard certificates)
+# Requires cloudflare-secrets.yml to be applied first
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-dns
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: rahm.nathan@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-dns
+    solvers:
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token
+              key: api-token

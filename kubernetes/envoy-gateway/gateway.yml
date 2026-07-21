@@ -61,158 +61,27 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    # Each hostname needs its own HTTPS listener for cert-manager to issue per-host certs
-    - name: https-audiobooks
-      hostname: audiobooks.nathanrahm.com
+    # Wildcard HTTPS listener - covers *.nathanrahm.com
+    - name: https-wildcard
+      hostname: "*.nathanrahm.com"
       protocol: HTTPS
       port: 443
       tls:
         mode: Terminate
         certificateRefs:
-          - name: audiobooks-tls
+          - name: wildcard-nathanrahm-tls
       allowedRoutes:
         namespaces:
           from: All
-    - name: https-jenkins
-      hostname: jenkins.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: jenkins-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-grafana
-      hostname: grafana.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: grafana-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-logs
-      hostname: logs.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: logs-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-movies
-      hostname: movies.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: movies-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-portfolio
+    # Root domain listener (wildcard doesn't cover naked domain)
+    - name: https-root
       hostname: nathanrahm.com
       protocol: HTTPS
       port: 443
       tls:
         mode: Terminate
         certificateRefs:
-          - name: portfolio-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-artifactory
-      hostname: artifactory.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: artifactory-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-keycloak
-      hostname: login.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: keycloak-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-openwebui
-      hostname: llm.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: openwebui-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-ollama
-      hostname: ollama.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: ollama-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-swarmui
-      hostname: swarm-ui.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: swarmui-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-nextcloud
-      hostname: nextcloud.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: nextcloud-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-frigate
-      hostname: frigate.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: frigate-tls
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: https-home-assistant
-      hostname: home-assistant.nathanrahm.com
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: home-assistant-tls
+          - name: wildcard-nathanrahm-tls
       allowedRoutes:
         namespaces:
           from: All

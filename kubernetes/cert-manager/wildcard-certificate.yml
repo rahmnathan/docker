@@ -1,0 +1,16 @@
+# Wildcard certificate for *.nathanrahm.com
+# Uses DNS-01 challenge via Cloudflare
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-nathanrahm
+  namespace: envoy-gateway-system
+spec:
+  secretName: wildcard-nathanrahm-tls
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.nathanrahm.com"
+    - "nathanrahm.com"
