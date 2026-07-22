@@ -67,6 +67,5 @@ httpRoute:
   parentRefs:
     - name: main-gateway
       namespace: envoy-gateway-system
-      sectionName: https-home-assistant
   hostnames:
     - home-assistant.nathanrahm.com
