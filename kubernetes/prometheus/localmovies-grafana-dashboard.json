@@ -515,131 +515,6 @@
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
-      "id": 108,
-      "panels": [],
-      "title": "Metadata Retry",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "insertNulls": false,
-            "lineInterpolation": "stepAfter",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "failed" },
-            "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }]
-          }
-        ]
-      },
-      "gridPos": { "h": 5, "w": 12, "x": 0, "y": 22 },
-      "id": 53,
-      "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true },
-        "tooltip": { "hideZeros": false, "mode": "single", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "editorMode": "code",
-          "expr": "increase(localmovies_metadata_retry_success_total[$__range])",
-          "legendFormat": "success",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "editorMode": "code",
-          "expr": "increase(localmovies_metadata_retry_failed_total[$__range])",
-          "legendFormat": "failed",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "IMDB ID Retry Results",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "points",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 8,
-            "scaleDistribution": { "type": "linear" },
-            "showPoints": "always",
-            "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
-          },
-          "mappings": [],
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 22 },
-      "id": 54,
-      "options": {
-        "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": false },
-        "tooltip": { "hideZeros": false, "mode": "single", "sort": "none" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "editorMode": "code",
-          "expr": "localmovies_metadata_retry_process_seconds_max > 0",
-          "legendFormat": "duration",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Metadata Retry Job Duration",
-      "transparent": true,
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
       "id": 102,
       "panels": [],
       "title": "API Requests",
@@ -796,7 +671,8 @@
             { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_scan_queued_jobs_seconds_max", "legendFormat": "Scan Jobs", "range": true, "refId": "A" },
             { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_update_job_status_seconds_max", "legendFormat": "Update Status", "range": true, "refId": "B" },
             { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_file_list_initialization_seconds_max", "legendFormat": "File List Init", "range": true, "refId": "D" },
-            { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_subtitle_initialization_seconds_max", "legendFormat": "Subtitle Init", "range": true, "refId": "E" }
+            { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_subtitle_initialization_seconds_max", "legendFormat": "Subtitle Init", "range": true, "refId": "E" },
+            { "datasource": { "type": "prometheus", "uid": "prometheus" }, "editorMode": "code", "expr": "localmovies_metadata_retry_process_seconds_max", "legendFormat": "Metadata Retry", "range": true, "refId": "F" }
           ],
           "title": "Background Task Duration",
           "transparent": true,
