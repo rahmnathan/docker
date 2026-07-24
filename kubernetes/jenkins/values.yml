@@ -8,3 +8,25 @@ controller:
   # "yes n | cp -i" which fails with set -e due to broken pipe. Setting to true
   # uses "cp" without -i, avoiding the issue entirely.
   overwritePlugins: true
+  JCasC:
+    configScripts:
+      auth-config: |
+        jenkins:
+          authorizationStrategy:
+            loggedInUsersCanDoAnything:
+              allowAnonymousRead: true
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - ssh-agent
+    - junit
+    - pipeline-stage-view
+    - artifactory
+    - credentials-binding
+    - google-play-android-publisher
+    - eddsa-api
+    - trilead-api
+    - jsch
+    - maven-plugin
