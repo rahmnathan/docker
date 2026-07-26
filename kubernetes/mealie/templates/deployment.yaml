@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mealie
+  labels:
+    app: mealie
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: mealie
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mealie
+    spec:
+      containers:
+        - name: mealie
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          env:
+            - name: TZ
+              value: {{ .Values.app.timezone }}
+            - name: BASE_URL
+              value: {{ .Values.app.baseUrl }}
+            - name: ALLOW_SIGNUP
+              value: {{ .Values.app.allowSignup | quote }}
+            - name: DEFAULT_GROUP
+              value: {{ .Values.app.defaultGroup }}
+            - name: DEFAULT_HOUSEHOLD
+              value: {{ .Values.app.defaultHousehold }}
+            # PostgreSQL
+            - name: DB_ENGINE
+              value: {{ .Values.database.engine }}
+            - name: POSTGRES_SERVER
+              value: {{ .Values.database.host }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.database.port | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.database.name }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-db-credentials
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-db-credentials
+                  key: password
+            {{- if .Values.oidc.enabled }}
+            # OIDC
+            - name: OIDC_AUTH_ENABLED
+              value: "true"
+            - name: OIDC_PROVIDER_NAME
+              value: {{ .Values.oidc.providerName }}
+            - name: OIDC_CONFIGURATION_URL
+              value: {{ .Values.oidc.configurationUrl }}
+            - name: OIDC_CLIENT_ID
+              value: {{ .Values.oidc.clientId }}
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: mealie-oidc-credentials
+                  key: client-secret
+            - name: OIDC_AUTO_REDIRECT
+              value: {{ .Values.oidc.autoRedirect | quote }}
+            - name: OIDC_SIGNUP_ENABLED
+              value: {{ .Values.oidc.signupEnabled | quote }}
+            - name: OIDC_USER_CLAIM
+              value: {{ .Values.oidc.userClaim }}
+            - name: OIDC_NAME_CLAIM
+              value: {{ .Values.oidc.nameClaim }}
+            {{- if .Values.oidc.groupsClaim }}
+            - name: OIDC_GROUPS_CLAIM
+              value: {{ .Values.oidc.groupsClaim }}
+            {{- end }}
+            {{- if .Values.oidc.adminGroup }}
+            - name: OIDC_ADMIN_GROUP
+              value: {{ .Values.oidc.adminGroup }}
+            {{- end }}
+            {{- if .Values.oidc.userGroup }}
+            - name: OIDC_USER_GROUP
+              value: {{ .Values.oidc.userGroup }}
+            {{- end }}
+            {{- end }}
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          livenessProbe:
+            httpGet:
+              path: /api/app/about
+              port: 9000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/app/about
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mealie-data

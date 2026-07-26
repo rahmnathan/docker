@@ -1,0 +1,65 @@
+# helm upgrade --install -n mealie mealie ./mealie --create-namespace
+# Gateway API HTTPRoute is included in this chart.
+
+image:
+  repository: ghcr.io/mealie-recipes/mealie
+  tag: v3.21.0
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+  limits:
+    cpu: "2"
+    memory: "1Gi"
+
+persistence:
+  storageClass: nfs-client
+  size: 10Gi
+
+# PostgreSQL connection (CloudNativePG)
+database:
+  engine: postgres
+  host: postgres-rw.postgres-18.svc.cluster.local
+  port: 5432
+  name: mealie
+  user: mealie
+  # Password will be read from secret 'mealie-db-credentials'
+
+# OIDC / Keycloak configuration
+oidc:
+  enabled: true
+  providerName: "Keycloak"
+  configurationUrl: "https://login.nathanrahm.com/realms/NathanRahm/.well-known/openid-configuration"
+  clientId: "mealie"
+  # clientSecret will be read from secret 'mealie-oidc-credentials'
+  autoRedirect: true
+  signupEnabled: true
+  userClaim: "preferred_username"
+  nameClaim: "name"
+  groupsClaim: "groups"
+  adminGroup: "mealie-admin"
+  userGroup: ""
+
+# Application settings
+app:
+  baseUrl: "https://recipes.nathanrahm.com"
+  allowSignup: false
+  timezone: "America/Chicago"
+  defaultEmail: ""
+  defaultGroup: "Home"
+  defaultHousehold: "Family"
+
+# Gateway API HTTPRoute
+gateway:
+  enabled: true
+  hostname: recipes.nathanrahm.com
+  parentRef:
+    name: main-gateway
+    namespace: envoy-gateway-system
+
+service:
+  port: 80
+  targetPort: 9000
