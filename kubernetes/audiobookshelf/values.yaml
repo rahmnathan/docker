@@ -5,7 +5,7 @@
 
 image:
   registry: ghcr.io/advplyr
-  tag: 2.35.1
+  tag: 2.36.0
 
 persistence:
   capacity:
