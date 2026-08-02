@@ -1,0 +1,210 @@
+- id: '1783876516769'
+  alias: Disable detection when home
+  description: Turn off detection and recording when arriving home
+  triggers:
+  - trigger: zone.entered
+    target:
+      entity_id: person.nathan
+    options:
+      behavior: each
+      for: 00:00:00
+      zone: zone.home
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id:
+      - switch.picam_detect
+      - switch.picam2_detect
+      - switch.picam3_detect
+      - switch.octopi_detect
+      - switch.picam_recordings
+      - switch.picam2_recordings
+      - switch.picam3_recordings
+      - switch.octopi_recordings
+    data: {}
+  mode: single
+- id: '1783876590820'
+  alias: Enable detection when away
+  description: Turn on detection and recording when leaving home
+  triggers:
+  - trigger: zone.left
+    target:
+      entity_id: person.nathan
+    options:
+      behavior: each
+      for: 00:00:00
+      zone: zone.home
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id:
+      - switch.picam_detect
+      - switch.picam2_detect
+      - switch.picam3_detect
+      - switch.octopi_detect
+      - switch.picam_recordings
+      - switch.picam2_recordings
+      - switch.picam3_recordings
+      - switch.octopi_recordings
+    data: {}
+  mode: single
+- id: '1783901500001'
+  alias: Notify on person detected
+  description: Push notification with snapshot when person detected while away
+  triggers:
+  - trigger: mqtt
+    topic: frigate/events
+    payload: person
+    value_template: '{{ value_json.after.label }}'
+  conditions:
+  - condition: state
+    entity_id: person.nathan
+    state: not_home
+  - condition: template
+    value_template: '{{ trigger.payload_json.type == ''new'' }}'
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: Person Detected
+      message: '{{ trigger.payload_json.after.camera | title }} camera'
+      data:
+        image: /api/frigate/notifications/{{ trigger.payload_json.after.id }}/snapshot.jpg
+        tag: frigate-{{ trigger.payload_json.after.id }}
+        clickAction: /lovelace/home
+  mode: single
+- id: '1783901500002'
+  alias: Disable octopi detection while printing
+  description: Avoid false alerts from printer movement
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.octoprint_printing
+    to: 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.octopi_detect
+    data: {}
+  mode: single
+- id: '1783901500003'
+  alias: Re-enable octopi detection after printing
+  description: Turn detection back on when print finishes (if away)
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.octoprint_printing
+    to: 'off'
+  conditions:
+  - condition: state
+    entity_id: person.nathan
+    state: not_home
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id: switch.octopi_detect
+    data: {}
+  mode: single
+- id: '1783901500004'
+  alias: UPS on battery alert
+  description: Notify when power goes out
+  triggers:
+  - trigger: state
+    entity_id: sensor.serverups_status
+    to: On Battery
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: ⚡ Power Outage
+      message: UPS running on battery - {{ states('sensor.serverups_battery_charge')
+        }}% remaining
+      data:
+        tag: ups-power
+        priority: high
+  mode: single
+- id: '1783901500005'
+  alias: UPS power restored
+  description: Notify when power is restored
+  triggers:
+  - trigger: state
+    entity_id: sensor.serverups_status
+    from: On Battery
+    to: Online
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: ✓ Power Restored
+      message: UPS back on line power - {{ states('sensor.serverups_battery_charge')
+        }}% battery
+      data:
+        tag: ups-power
+  mode: single
+- id: '1783901500006'
+  alias: UPS low battery warning
+  description: Critical alert when UPS battery is low
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.serverups_battery_charge
+    below: 20
+  conditions:
+  - condition: state
+    entity_id: sensor.serverups_status
+    state: On Battery
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: "\U0001F534 UPS Battery Critical"
+      message: Battery at {{ states('sensor.serverups_battery_charge') }}% - shutdown
+        imminent!
+      data:
+        tag: ups-critical
+        priority: high
+  mode: single
+- id: '1783901500007'
+  alias: Notify on cat detected (Grapes)
+  description: Push notification with snapshot when Grapes is detected while away
+  triggers:
+  - trigger: mqtt
+    topic: frigate/events
+    payload: cat
+    value_template: '{{ value_json.after.label }}'
+  conditions:
+  - condition: state
+    entity_id: person.nathan
+    state: not_home
+  - condition: template
+    value_template: '{{ trigger.payload_json.type == ''new'' }}'
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: Grapes Spotted!
+      message: '{{ trigger.payload_json.after.camera | title }} camera'
+      data:
+        image: /api/frigate/notifications/{{ trigger.payload_json.after.id }}/snapshot.jpg
+        tag: frigate-cat-{{ trigger.payload_json.after.id }}
+        clickAction: /lovelace/home
+  mode: single
+- id: '1783915899665'
+  alias: High AQI Alert
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.airnow_air_quality_index
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    above: 100
+  conditions: []
+  actions:
+  - action: notify.send_message
+    metadata: {}
+    target:
+      device_id: 80e228866fe98d7d5ee0453b153aa56f
+    data:
+      message: Reconsider outdoor activity
+      title: AQI Above 100
+  mode: single

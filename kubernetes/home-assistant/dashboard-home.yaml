@@ -1,0 +1,332 @@
+{
+  "views": [
+    {
+      "title": "Home",
+      "path": "home",
+      "cards": [
+        {
+          "type": "custom:advanced-camera-card",
+          "cameras": [
+            {
+              "camera_entity": "camera.picam2",
+              "live_provider": "go2rtc",
+              "title": "Picam 2"
+            },
+            {
+              "camera_entity": "camera.octopi",
+              "live_provider": "go2rtc",
+              "title": "3D Printer"
+            }
+          ],
+          "view": {
+            "default": "live"
+          },
+          "live": {
+            "display": {
+              "mode": "grid",
+              "grid_max_columns": 2
+            }
+          },
+          "menu": {
+            "style": "hover"
+          }
+        },
+        {
+          "type": "vertical-stack",
+          "title": "Grapes",
+          "cards": [
+            {
+              "type": "picture-entity",
+              "entity": "image.grapes_avatar",
+              "show_state": false,
+              "show_name": true,
+              "name": "Grapes"
+            },
+            {
+              "type": "glance",
+              "show_name": true,
+              "show_icon": true,
+              "show_state": true,
+              "entities": [
+                {
+                  "entity": "sensor.grapes_today_s_fountain_drinking_count",
+                  "name": "Drinks Today",
+                  "icon": "mdi:cup-water"
+                },
+                {
+                  "entity": "sensor.grapes_today_s_fountain_water_consumption",
+                  "name": "Water Today",
+                  "icon": "mdi:water"
+                },
+                {
+                  "entity": "sensor.grapes_today_s_fountain_drinking_time",
+                  "name": "Drink Time",
+                  "icon": "mdi:clock"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "title": "Water Fountain",
+          "cards": [
+            {
+              "type": "gauge",
+              "entity": "sensor.dockstream_2_smart_fountain_remaining_water_2",
+              "name": "Water Level",
+              "min": 0,
+              "max": 100,
+              "severity": {
+                "green": 50,
+                "yellow": 25,
+                "red": 10
+              },
+              "unit": "%"
+            },
+            {
+              "type": "glance",
+              "show_name": true,
+              "show_icon": true,
+              "show_state": true,
+              "entities": [
+                {
+                  "entity": "sensor.dockstream_2_smart_fountain_remaining_filter_day",
+                  "name": "Filter Days",
+                  "icon": "mdi:filter"
+                },
+                {
+                  "entity": "sensor.dockstream_2_smart_fountain_remaining_cleaning_days",
+                  "name": "Clean Days",
+                  "icon": "mdi:broom"
+                },
+                {
+                  "entity": "sensor.dockstream_2_smart_fountain_today_s_water_consumption",
+                  "name": "Used Today",
+                  "icon": "mdi:water-outline"
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "binary_sensor.dockstream_2_smart_fountain_water_dispensing_state",
+                  "name": "Dispensing"
+                },
+                {
+                  "entity": "select.dockstream_2_smart_fountain_water_dispensing_mode",
+                  "name": "Mode"
+                },
+                {
+                  "entity": "sensor.dockstream_2_smart_fountain_today_s_total_drinking_times",
+                  "name": "Drinking Sessions Today"
+                }
+              ]
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "button",
+                  "entity": "button.dockstream_2_smart_fountain_turn_on_indicator",
+                  "name": "Light On",
+                  "icon": "mdi:lightbulb-on",
+                  "tap_action": {
+                    "action": "toggle"
+                  }
+                },
+                {
+                  "type": "button",
+                  "entity": "button.dockstream_2_smart_fountain_turn_off_indicator",
+                  "name": "Light Off",
+                  "icon": "mdi:lightbulb-off",
+                  "tap_action": {
+                    "action": "toggle"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Frigate Controls",
+          "entities": [
+            {
+              "entity": "switch.picam2_detect",
+              "name": "Picam2 Detect"
+            },
+            {
+              "entity": "switch.picam2_recordings",
+              "name": "Picam2 Record"
+            },
+            {
+              "entity": "switch.octopi_detect",
+              "name": "Octopi Detect"
+            },
+            {
+              "entity": "switch.octopi_recordings",
+              "name": "Octopi Record"
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "title": "Weather",
+          "cards": [
+            {
+              "type": "weather-forecast",
+              "entity": "weather.nws_person_nathan_e0123",
+              "show_current": true,
+              "show_forecast": true,
+              "forecast_type": "hourly"
+            },
+            {
+              "type": "entities",
+              "title": "NWS",
+              "entities": [
+                {
+                  "entity": "weather.nws_person_nathan_e0123",
+                  "name": "Forecast"
+                },
+                {
+                  "entity": "weather.forecast_home",
+                  "name": "Met.no Backup"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "title": "Air Quality",
+          "cards": [
+            {
+              "type": "gauge",
+              "entity": "sensor.airnow_air_quality_index",
+              "name": "AQI",
+              "min": 0,
+              "max": 300,
+              "severity": {
+                "green": 0,
+                "yellow": 51,
+                "red": 151
+              }
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.airnow_reporting_station",
+                  "name": "Station"
+                },
+                {
+                  "entity": "sensor.airnow_pm2_5",
+                  "name": "PM2.5"
+                },
+                {
+                  "entity": "sensor.airnow_pm10",
+                  "name": "PM10"
+                },
+                {
+                  "entity": "sensor.airnow_ozone",
+                  "name": "Ozone"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "title": "3D Printer",
+          "cards": [
+            {
+              "type": "glance",
+              "entities": [
+                {
+                  "entity": "sensor.octoprint_current_state",
+                  "name": "State"
+                },
+                {
+                  "entity": "sensor.octoprint_job_percentage",
+                  "name": "Progress"
+                },
+                {
+                  "entity": "sensor.octoprint_actual_tool0_temp",
+                  "name": "Hotend"
+                },
+                {
+                  "entity": "sensor.octoprint_actual_bed_temp",
+                  "name": "Bed"
+                }
+              ]
+            },
+            {
+              "type": "conditional",
+              "conditions": [
+                {
+                  "condition": "state",
+                  "entity": "binary_sensor.octoprint_printing",
+                  "state": "on"
+                }
+              ],
+              "card": {
+                "type": "horizontal-stack",
+                "cards": [
+                  {
+                    "type": "button",
+                    "entity": "button.octoprint_pause_job",
+                    "name": "Pause",
+                    "icon": "mdi:pause"
+                  },
+                  {
+                    "type": "button",
+                    "entity": "button.octoprint_stop_job",
+                    "name": "Stop",
+                    "icon": "mdi:stop"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "vertical-stack",
+          "title": "UPS",
+          "cards": [
+            {
+              "type": "gauge",
+              "entity": "sensor.serverups_battery_charge",
+              "name": "Battery",
+              "min": 0,
+              "max": 100,
+              "severity": {
+                "green": 50,
+                "yellow": 20,
+                "red": 10
+              }
+            },
+            {
+              "type": "glance",
+              "entities": [
+                {
+                  "entity": "sensor.serverups_status",
+                  "name": "Status"
+                },
+                {
+                  "entity": "sensor.serverups_load",
+                  "name": "Load"
+                },
+                {
+                  "entity": "sensor.serverups_input_voltage",
+                  "name": "Input V"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
