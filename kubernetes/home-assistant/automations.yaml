@@ -334,29 +334,3 @@
       data:
         tag: aquarium-battery
   mode: single
-- id: '1783930000004'
-  alias: Aquarium Light On
-  description: Turn on aquarium light at 1pm
-  triggers:
-  - trigger: time
-    at: "13:00:00"
-  conditions: []
-  actions:
-  - action: switch.turn_on
-    target:
-      entity_id: switch.aquarium_light
-    data: {}
-  mode: single
-- id: '1783930000005'
-  alias: Aquarium Light Off
-  description: Turn off aquarium light at 7pm
-  triggers:
-  - trigger: time
-    at: "19:00:00"
-  conditions: []
-  actions:
-  - action: switch.turn_off
-    target:
-      entity_id: switch.aquarium_light
-    data: {}
-  mode: single
