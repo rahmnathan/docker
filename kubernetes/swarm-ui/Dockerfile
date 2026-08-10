@@ -1,4 +1,4 @@
-# docker build --network=host --build-arg UID=$UID -t rahmnathan/swarmui:1.1 .
+# docker build --network=host --build-arg UID=$UID -t rahmnathan/swarmui:1.6 .
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim
 

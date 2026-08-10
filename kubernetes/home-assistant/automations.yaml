@@ -208,3 +208,155 @@
       message: Reconsider outdoor activity
       title: AQI Above 100
   mode: single
+- id: '1783920000001'
+  alias: High CO2 Alert
+  description: Alert when indoor CO2 is high - open a window
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.apollo_air_1_506c08_co2
+    above: 1000
+    for:
+      minutes: 5
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: 🌬️ CO2 High
+      message: Indoor CO2 at {{ states('sensor.apollo_air_1_506c08_co2') }} ppm - consider opening a window
+      data:
+        tag: indoor-co2
+  mode: single
+- id: '1783920000002'
+  alias: Very High CO2 Alert
+  description: Critical alert when CO2 is very high
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.apollo_air_1_506c08_co2
+    above: 1500
+    for:
+      minutes: 2
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: 🔴 CO2 Critical
+      message: Indoor CO2 at {{ states('sensor.apollo_air_1_506c08_co2') }} ppm - ventilate immediately
+      data:
+        tag: indoor-co2
+        priority: high
+  mode: single
+- id: '1783920000003'
+  alias: High VOC Alert
+  description: Alert when VOC levels indicate poor air quality
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.apollo_air_1_506c08_sen55_voc
+    above: 250
+    for:
+      minutes: 10
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: ⚠️ High VOC Detected
+      message: VOC index at {{ states('sensor.apollo_air_1_506c08_sen55_voc') }} - check for sources of fumes
+      data:
+        tag: indoor-voc
+  mode: single
+- id: '1783920000004'
+  alias: High Indoor PM2.5 Alert
+  description: Alert when indoor particulates are elevated
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.apollo_air_1_506c08_pm_2_5mm_weight_concentration
+    above: 35
+    for:
+      minutes: 15
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: 😷 Indoor PM2.5 High
+      message: PM2.5 at {{ states('sensor.apollo_air_1_506c08_pm_2_5mm_weight_concentration') }} µg/m³ - check air filter or close windows
+      data:
+        tag: indoor-pm25
+  mode: single
+- id: '1783930000001'
+  alias: Aquarium Water Leak Alert
+  description: Emergency alert and shutoff when water detected
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.shellyfloodg4_e8f60a61d6a0_flood
+    to: 'on'
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.aquarium_filter
+    data: {}
+  - action: notify.mobile_app_phone
+    data:
+      title: "🚨 Aquarium Water Leak!"
+      message: "Water detected - filter has been shut off automatically"
+      data:
+        tag: aquarium-leak
+        priority: high
+  mode: single
+- id: '1783930000002'
+  alias: Aquarium Leak Resolved
+  description: Notify when water is no longer detected
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.shellyfloodg4_e8f60a61d6a0_flood
+    to: 'off'
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: "✓ Aquarium Leak Cleared"
+      message: "Water no longer detected. Filter remains OFF - turn on manually when safe."
+      data:
+        tag: aquarium-leak
+  mode: single
+- id: '1783930000003'
+  alias: Aquarium Flood Sensor Low Battery
+  description: Alert when flood sensor battery is low
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.shellyfloodg4_e8f60a61d6a0_battery
+    below: 20
+  conditions: []
+  actions:
+  - action: notify.mobile_app_phone
+    data:
+      title: "🔋 Aquarium Sensor Battery Low"
+      message: "Flood sensor battery at {{ states('sensor.shellyfloodg4_e8f60a61d6a0_battery') }}%"
+      data:
+        tag: aquarium-battery
+  mode: single
+- id: '1783930000004'
+  alias: Aquarium Light On
+  description: Turn on aquarium light at 1pm
+  triggers:
+  - trigger: time
+    at: "13:00:00"
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id: switch.aquarium_light
+    data: {}
+  mode: single
+- id: '1783930000005'
+  alias: Aquarium Light Off
+  description: Turn off aquarium light at 7pm
+  triggers:
+  - trigger: time
+    at: "19:00:00"
+  conditions: []
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.aquarium_light
+    data: {}
+  mode: single
