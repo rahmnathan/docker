@@ -1,12 +1,19 @@
 # helm upgrade --install -n jenkins jenkins jenkins/jenkins --values jenkins/values.yml
 # Gateway API: kubectl apply -f jenkins/httproute.yml
+#
+# To update plugins after changing installPlugins, delete the marker file first:
+#   kubectl exec jenkins-0 -n jenkins -c jenkins -- rm /var/jenkins_home/initialization-completed
+# Then run helm upgrade.
 
 controller:
   ingress:
     enabled: false
-  # Fix for init container CrashLoopBackOff - when false, the init script uses
-  # "yes n | cp -i" which fails with set -e due to broken pipe. Setting to true
-  # uses "cp" without -i, avoiding the issue entirely.
+  # Initialize plugins only on first install. This prevents the init container
+  # CrashLoopBackOff caused by helm chart bug: the init script uses "yes n | cp -i"
+  # which fails with set -e when EmptyDir volumes have stale data after container restart.
+  # With initializeOnce: true, plugin installation is skipped on restarts since plugins
+  # are persisted in the PVC. See: https://github.com/jenkinsci/helm-charts/issues/229
+  initializeOnce: true
   overwritePlugins: true
   JCasC:
     configScripts:
