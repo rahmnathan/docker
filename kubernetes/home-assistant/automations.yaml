@@ -338,8 +338,9 @@
   alias: Aquarium Light On Schedule
   description: Turn on aquarium light at 1:30pm PT (3:30pm CT) daily
   triggers:
-  - trigger: time
-    at: "15:30:00"
+  - trigger: time_pattern
+    hours: "15"
+    minutes: "30"
   conditions: []
   actions:
   - action: switch.turn_on
@@ -351,8 +352,9 @@
   alias: Aquarium Light Off Schedule
   description: Turn off aquarium light at 8:30pm PT (10:30pm CT) daily
   triggers:
-  - trigger: time
-    at: "22:30:00"
+  - trigger: time_pattern
+    hours: "22"
+    minutes: "30"
   conditions: []
   actions:
   - action: switch.turn_off
