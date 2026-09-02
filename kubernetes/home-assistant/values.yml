@@ -34,7 +34,7 @@ image:
 
 env:
   - name: TZ
-    value: America/Chicago
+    value: America/Los_Angeles
 
 # Enable configuration management with trusted proxies for reverse proxy setup
 configuration:

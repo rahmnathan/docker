@@ -114,14 +114,16 @@
     to: On Battery
   conditions: []
   actions:
-  - action: notify.mobile_app_phone
+  - action: retry.action
     data:
-      title: ⚡ Power Outage
-      message: UPS running on battery - {{ states('sensor.serverups_battery_charge')
-        }}% remaining
+      action: notify.mobile_app_phone
+      retries: 5
       data:
-        tag: ups-power
-        priority: high
+        title: "⚡ Power Outage"
+        message: "UPS running on battery - {{ states('sensor.serverups_battery_charge') }}% remaining"
+        data:
+          tag: ups-power
+          priority: high
   mode: single
 - id: '1783901500005'
   alias: UPS power restored
@@ -153,14 +155,16 @@
     entity_id: sensor.serverups_status
     state: On Battery
   actions:
-  - action: notify.mobile_app_phone
+  - action: retry.action
     data:
-      title: "\U0001F534 UPS Battery Critical"
-      message: Battery at {{ states('sensor.serverups_battery_charge') }}% - shutdown
-        imminent!
+      action: notify.mobile_app_phone
+      retries: 10
       data:
-        tag: ups-critical
-        priority: high
+        title: "🔴 UPS Battery Critical"
+        message: "Battery at {{ states('sensor.serverups_battery_charge') }}% - shutdown imminent!"
+        data:
+          tag: ups-critical
+          priority: high
   mode: single
 - id: '1783901500007'
   alias: Notify on cat detected (Grapes)
@@ -290,10 +294,21 @@
     to: 'on'
   conditions: []
   actions:
-  - action: switch.turn_off
+  - action: retry.action
+    data:
+      action: switch.turn_off
+      retries: 10
+      expected_state: "off"
+      on_error:
+        - action: notify.mobile_app_phone
+          data:
+            title: "🚨 CRITICAL: Filter Shutoff FAILED!"
+            message: "Water leak detected but FAILED to turn off filter after 10 attempts! Manual intervention required!"
+            data:
+              tag: aquarium-leak-critical
+              priority: high
     target:
       entity_id: switch.aquarium_filter
-    data: {}
   - action: notify.mobile_app_phone
     data:
       title: "🚨 Aquarium Water Leak!"
@@ -336,29 +351,35 @@
   mode: single
 - id: '1783930000004'
   alias: Aquarium Light On Schedule
-  description: Turn on aquarium light at 1:30pm PT (3:30pm CT) daily
+  description: Turn on aquarium light at 1:30pm PT daily
   triggers:
   - trigger: time_pattern
-    hours: "15"
+    hours: "13"
     minutes: "30"
   conditions: []
   actions:
-  - action: switch.turn_on
+  - action: retry.action
+    data:
+      action: switch.turn_on
+      retries: 5
+      expected_state: "on"
     target:
       entity_id: switch.aquarium_light
-    data: {}
   mode: single
 - id: '1783930000005'
   alias: Aquarium Light Off Schedule
-  description: Turn off aquarium light at 8:30pm PT (10:30pm CT) daily
+  description: Turn off aquarium light at 8:30pm PT daily
   triggers:
   - trigger: time_pattern
-    hours: "22"
+    hours: "20"
     minutes: "30"
   conditions: []
   actions:
-  - action: switch.turn_off
+  - action: retry.action
+    data:
+      action: switch.turn_off
+      retries: 5
+      expected_state: "off"
     target:
       entity_id: switch.aquarium_light
-    data: {}
   mode: single
