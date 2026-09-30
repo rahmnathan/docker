@@ -3,10 +3,14 @@
 # Theme: kubectl apply -f keycloak/theme-configmap.yml
 # Gateway API: kubectl apply -f keycloak/httproute.yml -f keycloak/backend-policy.yml
 # Client role access gates: see keycloak/client-role-access.md
+#
+# SECURITY UPDATE (2026-09-15):
+# - Upgraded from 26.7 to 26.7.3 to patch CVE-2026-18963 (Critical - unauthenticated account takeover via password reset)
+# - Also fixes CVE-2026-45292, CVE-2026-14613, and 5 other CVEs from 26.7.1/26.7.2
 
 image:
   repository: quay.io/keycloak/keycloak
-  tag: "26.7"
+  tag: "26.7.4"
 
 ingress:
   enabled: false

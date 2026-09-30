@@ -1,5 +1,18 @@
 # helm upgrade --install -n artifactory artifactory jfrog/artifactory-oss --values artifactory/values.yml
 # Gateway API: kubectl apply -f artifactory/httproute.yml -f artifactory/backend-policy.yml -f artifactory/client-policy.yml
+#
+# UPGRADE NOTES (2026-09-15):
+# - Upgraded from 7.146.17 to 7.161.26 to patch CVE-2026-82329 (critical auth bypass)
+# - Chart 107.161+ requires master/join keys passed explicitly
+# - Keys are stored in secret "artifactory-mandatory-keys" (created during upgrade)
+# - To retrieve keys from a running instance if needed:
+#     Master key: kubectl exec -it artifactory-0 -n artifactory -c artifactory -- cat /opt/jfrog/artifactory/var/etc/security/master.key
+#     Join key:   kubectl exec -it artifactory-0 -n artifactory -c artifactory -- cat /opt/jfrog/artifactory/var/etc/security/join.key
+# - New chart adds separate frontend and jfbus deployments (normal, don't delete)
+
+global:
+  masterKeySecretName: artifactory-mandatory-keys
+  joinKeySecretName: artifactory-mandatory-keys
 
 artifactory:
   observability:

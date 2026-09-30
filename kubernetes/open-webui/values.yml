@@ -3,6 +3,11 @@
 # Gateway API: kubectl apply -f open-webui/httproute.yml -f open-webui/backend-policy.yml
 # Gateway API (ollama): kubectl apply -f open-webui/ollama-httproute.yml -f open-webui/security-policy.yml
 #   PREREQ: Create OIDC secret first - see open-webui/oidc-secret.yml for instructions
+#
+# SECURITY UPDATE (2026-09-15):
+# - Upgraded to 0.11.3 to patch multiple CVEs including:
+#   CVE-2026-87996 (High - DNS rebinding), CVE-2026-45401 (SSRF bypass),
+#   CVE-2026-87994 (auth flaw), CVE-2026-87014 (role sync bypass)
 
 ingress:
   enabled: false

@@ -38,3 +38,4 @@ controller:
     - trilead-api
     - jsch
     - maven-plugin
+    - embeddable-build-status
