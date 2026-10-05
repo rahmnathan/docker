@@ -351,11 +351,11 @@
   mode: single
 - id: '1783930000004'
   alias: Aquarium Light On Schedule
-  description: Turn on aquarium light at 1:30pm PT daily
+  description: Turn on aquarium light at 1:00pm PT daily
   triggers:
   - trigger: time_pattern
     hours: "13"
-    minutes: "30"
+    minutes: "00"
   conditions: []
   actions:
   - action: retry.action
@@ -368,11 +368,11 @@
   mode: single
 - id: '1783930000005'
   alias: Aquarium Light Off Schedule
-  description: Turn off aquarium light at 8:30pm PT daily
+  description: Turn off aquarium light at 9:00pm PT daily
   triggers:
   - trigger: time_pattern
-    hours: "20"
-    minutes: "30"
+    hours: "21"
+    minutes: "00"
   conditions: []
   actions:
   - action: retry.action
