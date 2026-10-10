@@ -246,6 +246,28 @@
           "cards": [
             {
               "type": "markdown",
+              "content": "### Climate"
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "button",
+                  "entity": "switch.window_fan",
+                  "name": "Window Fan",
+                  "icon": "mdi:fan",
+                  "show_state": true
+                },
+                {
+                  "type": "entity",
+                  "entity": "automation.window_fan_on_cooler_outside",
+                  "name": "Auto Mode",
+                  "icon": "mdi:fan-auto"
+                }
+              ]
+            },
+            {
+              "type": "markdown",
               "content": "### Air Quality"
             },
             {

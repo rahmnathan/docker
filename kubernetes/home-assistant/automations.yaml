@@ -383,3 +383,51 @@
     target:
       entity_id: switch.aquarium_light
   mode: single
+- id: '1783940000001'
+  alias: Window Fan On - Cooler Outside
+  description: Turn on window fan when outside is cooler than inside and indoor temp above 60
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.apollo_air_1_506c08_sen55_temperature
+    - weather.forecast_home
+  - trigger: time_pattern
+    minutes: "/5"
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.apollo_air_1_506c08_sen55_temperature
+    above: 60
+  - condition: template
+    value_template: >-
+      {{ state_attr('weather.forecast_home', 'temperature') | float <
+         states('sensor.apollo_air_1_506c08_sen55_temperature') | float }}
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id: switch.window_fan
+  mode: single
+- id: '1783940000002'
+  alias: Window Fan Off - Too Warm Outside or Indoor Cool Enough
+  description: Turn off window fan when outside is warmer than inside or indoor temp drops to 60
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.apollo_air_1_506c08_sen55_temperature
+    - weather.forecast_home
+  - trigger: time_pattern
+    minutes: "/5"
+  conditions:
+  - condition: or
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.apollo_air_1_506c08_sen55_temperature
+      below: 60
+    - condition: template
+      value_template: >-
+        {{ state_attr('weather.forecast_home', 'temperature') | float >=
+           states('sensor.apollo_air_1_506c08_sen55_temperature') | float }}
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.window_fan
+  mode: single
