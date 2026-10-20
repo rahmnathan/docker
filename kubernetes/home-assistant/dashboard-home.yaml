@@ -267,6 +267,19 @@
               ]
             },
             {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "input_number.window_fan_on_temp",
+                  "name": "Turn On Above"
+                },
+                {
+                  "entity": "input_number.window_fan_min_temp",
+                  "name": "Turn Off Below"
+                }
+              ]
+            },
+            {
               "type": "markdown",
               "content": "### Air Quality"
             },

@@ -385,7 +385,7 @@
   mode: single
 - id: '1783940000001'
   alias: Window Fan On - Cooler Outside
-  description: Turn on window fan when outside is cooler than inside and indoor temp above 62
+  description: Turn on window fan when outside is cooler than inside and indoor temp above threshold
   triggers:
   - trigger: state
     entity_id:
@@ -394,9 +394,10 @@
   - trigger: time_pattern
     minutes: "/5"
   conditions:
-  - condition: numeric_state
-    entity_id: sensor.apollo_air_1_506c08_sen55_temperature
-    above: 62
+  - condition: template
+    value_template: >-
+      {{ states('sensor.apollo_air_1_506c08_sen55_temperature') | float >
+         states('input_number.window_fan_on_temp') | float }}
   - condition: template
     value_template: >-
       {{ state_attr('weather.forecast_home', 'temperature') | float <
@@ -408,7 +409,7 @@
   mode: single
 - id: '1783940000002'
   alias: Window Fan Off - Too Warm Outside or Indoor Cool Enough
-  description: Turn off window fan when outside is warmer than inside or indoor temp drops to 60
+  description: Turn off window fan when outside is warmer than inside or indoor temp drops below threshold
   triggers:
   - trigger: state
     entity_id:
@@ -419,9 +420,10 @@
   conditions:
   - condition: or
     conditions:
-    - condition: numeric_state
-      entity_id: sensor.apollo_air_1_506c08_sen55_temperature
-      below: 60
+    - condition: template
+      value_template: >-
+        {{ states('sensor.apollo_air_1_506c08_sen55_temperature') | float <
+           states('input_number.window_fan_min_temp') | float }}
     - condition: template
       value_template: >-
         {{ state_attr('weather.forecast_home', 'temperature') | float >=
