@@ -1,4 +1,4 @@
-# 1. helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.8.2 -n envoy-gateway-system --create-namespace
+# 1. helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.8.5 -n envoy-gateway-system --create-namespace
 # 2. kubectl wait --timeout=5m -n envoy-gateway-system deployment/envoy-gateway --for=condition=Available
 # 3. kubectl apply -f envoy-gateway/gateway.yml
 # 4. kubectl apply -f cert-manager/gateway-issuer.yml
