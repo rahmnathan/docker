@@ -7,10 +7,11 @@
 # SECURITY UPDATE (2026-09-15):
 # - Upgraded from 26.7 to 26.7.3 to patch CVE-2026-18963 (Critical - unauthenticated account takeover via password reset)
 # - Also fixes CVE-2026-45292, CVE-2026-14613, and 5 other CVEs from 26.7.1/26.7.2
+# UPDATE (2026-11-12): Upgraded to 26.8.2 (latest stable)
 
 image:
   repository: quay.io/keycloak/keycloak
-  tag: "26.7.4"
+  tag: "26.8.2"
 
 ingress:
   enabled: false

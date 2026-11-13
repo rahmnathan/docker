@@ -3,7 +3,7 @@
 
 image:
   repository: ghcr.io/mealie-recipes/mealie
-  tag: v3.21.0
+  tag: v3.31.0
 
 replicaCount: 1
 

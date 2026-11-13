@@ -29,7 +29,7 @@
 
 image:
   repository: ghcr.io/home-assistant/home-assistant
-  tag: "2026.10"
+  tag: "2026.11"
   pullPolicy: IfNotPresent
 
 env:
