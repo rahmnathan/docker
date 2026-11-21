@@ -27,15 +27,6 @@ nextcloud:
   host: nextcloud.nathanrahm.com
   username: nrahm
   password: <password>
-  extraVolumes:
-    - name: docker
-      hostPath:
-        path: /var/run/docker.sock
-        type: Socket
-  extraVolumeMounts:
-    - name: docker
-      mountPath: /var/run/docker.sock
-
 #  mail:
 #    enabled: true
 #    fromAddress: support
