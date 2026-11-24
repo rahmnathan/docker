@@ -6,6 +6,7 @@
 # Gateway API: kubectl apply -f elk/httproute.yml -f elk/backend-tls-policy.yml
 
 eck-elasticsearch:
+  version: 9.5.5
   nodeSets:
     - name: default
       count: 3
@@ -27,12 +28,16 @@ eck-elasticsearch:
                   memory: 2Gi
 eck-kibana:
   enabled: true
+  version: 9.5.5
   ingress:
     enabled: false
   spec:
     count: 1
     elasticsearchRef:
       name: elasticsearch
+    config:
+      # Disable Security Solution (SIEM) plugin to prevent errors about missing value lists
+      xpack.securitySolution.enabled: false
 eck-beats:
   enabled: true
   serviceAccount:
@@ -100,22 +105,27 @@ eck-beats:
         providers:
           - type: kubernetes
             node: ${NODE_NAME}
-            hints:
-              enabled: true
-              default_config:
-                type: filestream
-                id: kubernetes-container-logs-${data.kubernetes.pod.name}-${data.kubernetes.container.id}
-                paths:
-                  - /var/log/containers/*${data.kubernetes.container.id}.log
-                parsers:
-                  - container: {}
-                prospector:
-                  scanner:
-                    fingerprint:
-                      enabled: true
-                      length: 64
-                    symlinks: true
-                file_identity.fingerprint: {}
+            # Use templates with match-all condition for consistent input configuration
+            # This avoids the hints system which auto-detects elasticsearch/kibana modules
+            # and causes "more than one namespace" and "duplicate ID" errors
+            templates:
+              - condition:
+                  regexp:
+                    kubernetes.container.name: ".*"
+                config:
+                  - type: filestream
+                    id: kubernetes-container-logs-${data.kubernetes.pod.name}-${data.kubernetes.container.id}
+                    paths:
+                      - /var/log/containers/*${data.kubernetes.container.id}.log
+                    parsers:
+                      - container: {}
+                    prospector:
+                      scanner:
+                        fingerprint:
+                          enabled: true
+                          length: 64
+                        symlinks: true
+                    file_identity.fingerprint: {}
     processors:
       - add_host_metadata: {}
       - add_cloud_metadata: {}

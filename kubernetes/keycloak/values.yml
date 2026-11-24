@@ -65,8 +65,8 @@ extraEnv: |
     value: admin
   - name: KC_BOOTSTRAP_ADMIN_PASSWORD
     value: admin
-  - name: KC_PROXY
-    value: "passthrough"
+  - name: KC_PROXY_HEADERS
+    value: "xforwarded"
   - name: JAVA_OPTS_APPEND
     value: >-
       -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless

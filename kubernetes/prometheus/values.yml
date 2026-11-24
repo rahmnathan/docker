@@ -18,6 +18,9 @@ grafana:
       name: grafana
       user: grafana
       password: pw123
+    # Suppress manifest watcher warnings by setting log level for search component
+    log:
+      filters: search-manifest-watcher:error
   ingress:
     enabled: false
 prometheus:

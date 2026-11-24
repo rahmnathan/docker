@@ -103,6 +103,7 @@ config: |
           - cat
 
     picam2:
+      enabled: false  # 10.0.0.54 is currently unreachable; re-enable after fixing routing/camera.
       ffmpeg:
         inputs:
           - path: rtsp://10.0.0.54:8554/cam
@@ -119,6 +120,7 @@ config: |
           - cat
 
     picam3:
+      enabled: false  # 10.0.0.56 is currently unreachable; re-enable after fixing routing/camera.
       ffmpeg:
         inputs:
           - path: rtsp://10.0.0.56:8554/cam
